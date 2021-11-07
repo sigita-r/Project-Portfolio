@@ -5,7 +5,10 @@ using System.Threading.Tasks;
 
 namespace Rawdata_Porfolio_2.Pages.Entity_Framework.Domain
 {
-    public class User
+    public class user
     {
+        public int Id { get; set; }
+        public string Username { get; set; }
+        public 
     }
 }
