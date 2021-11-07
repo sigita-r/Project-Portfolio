@@ -9,6 +9,6 @@ namespace Rawdata_Porfolio_2.Pages.Entity_Framework.Domain
     {
         public int Id { get; set; }
         public string Username { get; set; }
-        public 
+        
     }
 }
