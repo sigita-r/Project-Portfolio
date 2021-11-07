@@ -24,6 +24,8 @@ namespace Rawdata_Porfolio_2.Entity_Framework
         public DbSet<User> Users { get; set; }
         public DbSet<wi> Wis { get; set; }
 
+        // EF Code First Succintly 17  
+
 
     }
 }
