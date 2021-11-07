@@ -21,7 +21,7 @@ namespace Rawdata_Porfolio_2.Entity_Framework
         public DbSet<title> Titles { get; set; }
         public DbSet<title_genres> title_Genres { get; set; }
         public DbSet<title_localization> Title_Localizations { get; set; }
-        public DbSet<user> Users { get; set; }
+        public DbSet<User> Users { get; set; }
         public DbSet<wi> Wis { get; set; }
 
 
