@@ -8,10 +8,10 @@ using System.Text;
 
 
 namespace Rawdata_Porfolio_2.Pages.Entity_Framework
-{
+{/*
     public class Program
     {
-   /*
+   
             string connString = "host=rawdata.ruc.dk;db=raw14;uid=raw14;pwd=I.eSywI3";
 
             var conn = new NpgsqlConnection(connString);
@@ -28,5 +28,4 @@ namespace Rawdata_Porfolio_2.Pages.Entity_Framework
             };
             Console.WriteLine(instance from the while statement);
         */
-    }
 }
