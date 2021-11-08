@@ -5,11 +5,15 @@ using System.Threading.Tasks;
 
 namespace Rawdata_Porfolio_2.Pages.Entity_Framework.Domain
 {
-    public class personality
+    public class Personality
     {
         public int Id { get; set; }
         public string Name { get; set; }
         public int Year_Birth { get; set; }
         public int Year_Death { get; set; }
+        public List<Bookmarks_Personality> Bookmarks_Personalities { get; set; }
+        public List<Character> Characters { get; set; }
+        public List<Personality> Personalities { get; set; }
+        public List<Role> Roles { get; set; }
     }
 }

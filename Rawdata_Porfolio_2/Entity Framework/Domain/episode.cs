@@ -5,10 +5,11 @@ using System.Threading.Tasks;
 
 namespace Rawdata_Porfolio_2.Pages.Entity_Framework.Domain
 {
-    public class episode
+    public class Episode
     {
         public int Id { get; set; }
         public int Title_Id { get; set; }
+        public Title Title { get; set; }
         public int Season { get; set; }
         public int Ep_Number { get; set; }
 

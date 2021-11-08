@@ -5,9 +5,10 @@ using System.Threading.Tasks;
 
 namespace Rawdata_Porfolio_2.Pages.Entity_Framework.Domain
 {
-    public class title_localization
+    public class Title_Localization
     {
         public int Tilte_Id { get; set; }
+        public Title Title { get; set; }
         public int Id { get; set; }
         public string Name { get; set; }
         public string Language { get; set; }
