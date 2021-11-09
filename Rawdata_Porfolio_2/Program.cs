@@ -6,6 +6,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Rawdata_Porfolio_2.Entity_Framework;
 
 namespace Rawdata_Porfolio_2
 {
@@ -13,6 +14,9 @@ namespace Rawdata_Porfolio_2
     {
         public static void Main(string[] args)
         {
+
+            var ds = new DataService();
+            // Console.WriteLine(ds.ReadTitles(1));
             CreateHostBuilder(args).Build().Run();
         }
 
@@ -22,5 +26,6 @@ namespace Rawdata_Porfolio_2
                 {
                     webBuilder.UseStartup<Startup>();
                 });
+
     }
 }
