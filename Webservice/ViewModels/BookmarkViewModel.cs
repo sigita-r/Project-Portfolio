@@ -5,8 +5,10 @@ using System.Threading.Tasks;
 
 namespace Webservice.ViewModels
 {
-    public class BookmarkPersonalityViewModel
+    public class BookmarkViewModel
     {
+        public string Url { get; set; }
+
         public string Username { get; set; }
 
         public string TitleName { get; set; }

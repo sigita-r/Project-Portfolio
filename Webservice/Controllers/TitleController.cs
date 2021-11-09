@@ -3,14 +3,33 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Rawdata_Porfolio_2;
+using Rawdata_Porfolio_2.Entity_Framework;
+using Microsoft.AspNetCore.Routing;
+using Webservice.ViewModels;
+
 
 namespace Webservice.Controllers
 {
+    [ApiController]
+    [Route("api/titles")]
     public class TitleController : Controller
     {
-        public IActionResult Index()
+        IDataService _dataService;
+        LinkGenerator _linkGenerator;
+
+        public TitleController(IDataService dataService, LinkGenerator linkGenerator)
         {
-            return View();
+            _dataService = dataService;
+            _linkGenerator = linkGenerator;
+        }
+
+        [HttpGet]
+        public IActionResult GetTitles()
+        {
+            var titles = DataService.GetTitles();
+
+            return Ok(titles.Select(x => GetTitleViewModel(x)));
         }
     }
 }

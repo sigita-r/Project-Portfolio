@@ -5,8 +5,9 @@ using System.Threading.Tasks;
 
 namespace Rawdata_Porfolio_2.Entity_Framework
 {
-    interface IDataService
+   public interface IDataService
     {
+
     }
     public class DataService : IDataService 
     { 
