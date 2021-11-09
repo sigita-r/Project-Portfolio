@@ -4,11 +4,11 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
-
+/*
 namespace Rawdata_Porfolio_2.Entity_Framework
 {
     interface IDataService
-    {/*
+    {
         Bookmarks_Personality CreatePersonalityBM(int userID, int personalityID);
         Bookmarks_Personality ReadPersonalityBM();
         Bookmarks_Personality DeletePersonalityBM();
@@ -49,10 +49,10 @@ namespace Rawdata_Porfolio_2.Entity_Framework
         User UpdateUser();
 
         Wi ReadWi();
-*/
+
     }
     public class DataService : IDataService 
-    {/*
+    {
         Bookmarks_Personality CreatePersonalityBM(int userID, int personalityID) 
         {
             //tag personligheds id og brugerens id og indsæt en række med informationerne.
@@ -94,6 +94,7 @@ namespace Rawdata_Porfolio_2.Entity_Framework
             var ctx = new OurMDB_Context();
             return ctx.Titles.Find(Id);
         }
-        */
+        
     }
 }
+*/
