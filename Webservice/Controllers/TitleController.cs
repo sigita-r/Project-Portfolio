@@ -6,7 +6,6 @@ using System.Threading.Tasks;
 using Rawdata_Porfolio_2;
 using Rawdata_Porfolio_2.Entity_Framework;
 using Rawdata_Porfolio_2.Pages.Entity_Framework.Domain;
-
 using Microsoft.AspNetCore.Routing;
 using Webservice.ViewModels;
 

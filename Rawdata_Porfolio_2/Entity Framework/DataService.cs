@@ -6,110 +6,127 @@ using System.Threading.Tasks;
 
 
 namespace Rawdata_Porfolio_2.Entity_Framework
-{/*
-   public interface IDataService
 {
-    interface IDataService
+    public interface IDataService
     {
-        Bookmarks_Personality CreatePersonalityBM(int userID, int personalityID, string note);
-        Bookmarks_Personality ReadPersonalityBM(int userID);
-        public bool DeletePersonalityBM(int userID);
-        public bool UpdatePersonalityBM(int userID, string note, DateTime timestamp);
+        // This is 1 too many interfaces, this is just extra that was inserted by mistake we think.
+        // We didnt have access to any of the methods
+       // interface IDataService
+     //   {
 
-        Bookmarks_Title CreateTitleBM(int userID, int personalityID, string note);
-        Bookmarks_Title ReadTitleBM();
-        Bookmarks_Title DeleteTitleBM();
-        Bookmarks_Title UpdateTitleBM();
+            IEnumerable<Title> GetTitles();
+            /*
+            Bookmarks_Personality CreatePersonalityBM(int userID, int personalityID, string note);
+            Bookmarks_Personality ReadPersonalityBM(int userID);
+            */
 
-        Character ReadCharacter();
-       
-        Episode ReadEpisode();
+            public bool DeletePersonalityBM(int userID);
+            public bool UpdatePersonalityBM(int userID, string note, DateTime timestamp);
 
-        Personality ReadPersonality();
+            /*
+            Bookmarks_Title CreateTitleBM(int userID, int personalityID, string note);
+            Bookmarks_Title ReadTitleBM();
+            Bookmarks_Title DeleteTitleBM();
+            Bookmarks_Title UpdateTitleBM();
 
-        Personality_Profession ReadPersonalityProfession();
+            Character ReadCharacter();
 
-        Rating CreateRating();
-        Rating ReadRating();
-        Rating UpdateRating();
-        Rating DeleteRating();
+            Episode ReadEpisode();
 
-        Role ReadRole();
+            Personality ReadPersonality();
 
-        Search_Queries CreateSQ();
-        Search_Queries ReadSQ();
-        Search_Queries DeleteSQ();
+            Personality_Profession ReadPersonalityProfession();
 
-        Title ReadTitles(int Id);
+            Rating CreateRating();
+            Rating ReadRating();
+            Rating UpdateRating();
+            Rating DeleteRating();
 
-        Title_Genre ReadTG();
+            Role ReadRole();
 
-        Title_Localization ReadTL();
+            Search_Queries CreateSQ();
+            Search_Queries ReadSQ();
+            Search_Queries DeleteSQ();
 
-        User CreateUser();
-        User ReadUser();
-        User UpdateUser();
+            */
 
-        Wi ReadWi();
+            // Should also be renamed to getTitle(int id)
+            Title ReadTitles(int Id);
 
-    }
-    public class DataService : IDataService 
-    {
-        Bookmarks_Personality CreatePersonalityBM(int userID, int personalityID, string note) 
-        {
-         
-            var ctx = new OurMDB_Context();
-            var c = new Bookmarks_Personality();
+            /*
+            Title_Genre ReadTG();
 
-            c.User_Id = userID; //use this one for authentification
-            c.Personality_Id = personalityID;
-            c.Note = note;
-            c.Timestamp = DateTime.Now;
-            ctx.Add(c);
-            ctx.SaveChanges();
-            return c;   
+            Title_Localization ReadTL();
+
+            User CreateUser();
+            User ReadUser();
+            User UpdateUser();
+
+            Wi ReadWi();
+            */
         }
-        Bookmarks_Personality ReadPersonalityBM(int UserId)
+        public class DataService : IDataService
         {
-            var ctx = new OurMDB_Context();
-            return ctx.Bookmark_Personalities.Find(UserId);
+            // making our context so we can add to it all the time
+            // instead of createing a new one in each method, which is kinda sus
+            OurMDB_Context ctx = new OurMDB_Context();
 
-        }
-        public bool DeletePersonalityBM(int UserId) 
-        {
-            var ctx = new OurMDB_Context();
-            var bookmark = ctx.Bookmark_Personalities.Find(UserId); 
-
-            if (bookmark == null)
-
+            Bookmarks_Personality CreatePersonalityBM(int userID, int personalityID, string note)
             {
-                return false;
-            }
-            else 
-            {
-                ctx.Remove(bookmark);
+
+                var ctx = new OurMDB_Context();
+                var c = new Bookmarks_Personality();
+
+                c.User_Id = userID; //use this one for authentification
+                c.Personality_Id = personalityID;
+                c.Note = note;
+                c.Timestamp = DateTime.Now;
+                ctx.Add(c);
                 ctx.SaveChanges();
-                return true;
+                return c;
             }
-
-        }
-        public bool UpdatePersonalityBM(int UserId, string note, DateTime timestamp) 
-        {
-            var ctx = new OurMDB_Context();
-            var bookmark = ctx.Bookmark_Personalities.Find(UserId);
-
-            if(bookmark == null) 
+            Bookmarks_Personality ReadPersonalityBM(int UserId)
             {
-                return false;
-            }
-            else
-            {
-                bookmark.Note = note;
-                bookmark.Timestamp = DateTime.Now;
-                return true;
-            }
-        }
+                var ctx = new OurMDB_Context();
+                return ctx.Bookmark_Personalities.Find(UserId);
 
+            }
+            public bool DeletePersonalityBM(int UserId)
+            {
+                var ctx = new OurMDB_Context();
+                var bookmark = ctx.Bookmark_Personalities.Find(UserId);
+
+                if (bookmark == null)
+
+                {
+                    return false;
+                }
+                else
+                {
+                    ctx.Remove(bookmark);
+                    ctx.SaveChanges();
+                    return true;
+                }
+
+            }
+            public bool UpdatePersonalityBM(int UserId, string note, DateTime timestamp)
+            {
+                var ctx = new OurMDB_Context();
+                var bookmark = ctx.Bookmark_Personalities.Find(UserId);
+
+                if (bookmark == null)
+                {
+                    return false;
+                }
+                else
+                {
+                    bookmark.Note = note;
+                    bookmark.Timestamp = DateTime.Now;
+                    return true;
+                }
+            }
+
+            /*
         Bookmarks_Title CreateTitleBM(int userID, int personalityID, string note) 
         {
             var ctx = new OurMDB_Context();
@@ -138,12 +155,24 @@ namespace Rawdata_Porfolio_2.Entity_Framework
         Search_Queries CreateSQ() { }
         Search_Queries ReadSQ() { }
         Search_Queries DeleteSQ() { }
-        public Title ReadTitles (int Id)
-        {
-     
-            var ctx = new OurMDB_Context();
-            return ctx.Titles.Find(Id);
+
+            */
+
+            // should be renames to gettitle(int id) and then just return what it returns
+            // Sigita and I think that we shouldnt create a new ctx each time
+            public Title ReadTitles(int Id)
+            {
+
+                var ctx = new OurMDB_Context();
+                return ctx.Titles.Find(Id);
+            }
+
+            // getting all the titles from context and putting them
+            // into a list
+            public IEnumerable<Title> GetTitles()
+            {
+                return ctx.Titles.ToList();
+            }
+
         }
-        
     }
-*/}
