@@ -7,6 +7,8 @@ using System.Threading.Tasks;
 
 namespace Rawdata_Porfolio_2.Entity_Framework
 {/*
+   public interface IDataService
+{
     interface IDataService
     {
         Bookmarks_Personality CreatePersonalityBM(int userID, int personalityID, string note);

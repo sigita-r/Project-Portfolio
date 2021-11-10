@@ -5,7 +5,7 @@ VisualStudioVersion = 16.0.31729.503
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Rawdata_Porfolio_2", "Rawdata_Porfolio_2\Rawdata_Porfolio_2.csproj", "{D443E927-30B4-4331-8E61-243C1ED7C1F4}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Webservice", "Webservice\Webservice.csproj", "{903C8644-69E6-44AE-8297-FDE67FEC24D4}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Webservice", "Webservice\Webservice.csproj", "{903C8644-69E6-44AE-8297-FDE67FEC24D4}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

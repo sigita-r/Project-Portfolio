@@ -8,4 +8,8 @@
     <PackageReference Include="Swashbuckle.AspNetCore" Version="5.6.3" />
   </ItemGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\Rawdata_Porfolio_2\Rawdata_Porfolio_2.csproj" />
+  </ItemGroup>
+
 </Project>

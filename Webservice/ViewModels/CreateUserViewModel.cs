@@ -7,6 +7,7 @@ namespace Webservice.ViewModels
 {
     public class CreateUserViewModel
     {
+        public string Url { get; set; }
 
         public string Username { get; set; }
 

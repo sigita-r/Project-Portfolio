@@ -7,6 +7,8 @@ namespace Webservice.ViewModels
 {
     public class TitleViewModel
     {
+        public string Url { get; set; }
+
         public int Id { get; set; }
         public string Type { get; set; }
         public string Genre { get; set; }
