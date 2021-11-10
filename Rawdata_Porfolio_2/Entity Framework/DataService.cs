@@ -4,17 +4,17 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
-/*
+
 namespace Rawdata_Porfolio_2.Entity_Framework
-{
+{/*
     interface IDataService
     {
-        Bookmarks_Personality CreatePersonalityBM(int userID, int personalityID);
-        Bookmarks_Personality ReadPersonalityBM();
-        Bookmarks_Personality DeletePersonalityBM();
-        Bookmarks_Personality UpdatePersonalityBM();
+        Bookmarks_Personality CreatePersonalityBM(int userID, int personalityID, string note);
+        Bookmarks_Personality ReadPersonalityBM(int userID);
+        public bool DeletePersonalityBM(int userID);
+        public bool UpdatePersonalityBM(int userID, string note, DateTime timestamp);
 
-        Bookmarks_Title CreateTitleBM();
+        Bookmarks_Title CreateTitleBM(int userID, int personalityID, string note);
         Bookmarks_Title ReadTitleBM();
         Bookmarks_Title DeleteTitleBM();
         Bookmarks_Title UpdateTitleBM();
@@ -53,19 +53,67 @@ namespace Rawdata_Porfolio_2.Entity_Framework
     }
     public class DataService : IDataService 
     {
-        Bookmarks_Personality CreatePersonalityBM(int userID, int personalityID) 
+        Bookmarks_Personality CreatePersonalityBM(int userID, int personalityID, string note) 
         {
-            //tag personligheds id og brugerens id og indsæt en række med informationerne.
+         
             var ctx = new OurMDB_Context();
-            var updatePersonalityBM = ctx.
+            var c = new Bookmarks_Personality();
 
-             
+            c.User_Id = userID; //use this one for authentification
+            c.Personality_Id = personalityID;
+            c.Note = note;
+            c.Timestamp = DateTime.Now;
+            ctx.Add(c);
+            ctx.SaveChanges();
+            return c;   
         }
-        Bookmarks_Personality ReadPersonalityBM() { }
-        Bookmarks_Personality DeletePersonalityBM() { }
-        Bookmarks_Personality UpdatePersonalityBM() { }
+        Bookmarks_Personality ReadPersonalityBM(int UserId)
+        {
+            var ctx = new OurMDB_Context();
+            return ctx.Bookmark_Personalities.Find(UserId);
 
-        Bookmarks_Title CreateTitleBM() { }
+        }
+        public bool DeletePersonalityBM(int UserId) 
+        {
+            var ctx = new OurMDB_Context();
+            var bookmark = ctx.Bookmark_Personalities.Find(UserId); 
+
+            if (bookmark == null)
+
+            {
+                return false;
+            }
+            else 
+            {
+                ctx.Remove(bookmark);
+                ctx.SaveChanges();
+                return true;
+            }
+
+        }
+        public bool UpdatePersonalityBM(int UserId, string note, DateTime timestamp) 
+        {
+            var ctx = new OurMDB_Context();
+            var bookmark = ctx.Bookmark_Personalities.Find(UserId);
+
+            if(bookmark == null) 
+            {
+                return false;
+            }
+            else
+            {
+                bookmark.Note = note;
+                bookmark.Timestamp = DateTime.Now;
+                return true;
+            }
+        }
+
+        Bookmarks_Title CreateTitleBM(int userID, int personalityID, string note) 
+        {
+            var ctx = new OurMDB_Context();
+            var bookmark = new Bookmarks_Title();
+            bookmark.User_Id = userID; //use for authentication            
+        }
         Bookmarks_Title ReadTitleBM() { }
         Bookmarks_Title DeleteTitleBM() { }
         Bookmarks_Title UpdateTitleBM() { }
@@ -96,5 +144,4 @@ namespace Rawdata_Porfolio_2.Entity_Framework
         }
         
     }
-}
-*/
+*/}

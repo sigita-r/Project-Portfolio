@@ -144,7 +144,7 @@ namespace Rawdata_Porfolio_2.Entity_Framework
             modelBuilder.Entity<User>().Property(x => x.Email).HasColumnName("email");
             modelBuilder.Entity<User>().Property(x => x.DateOfBirth).HasColumnName("dob");
             modelBuilder.Entity<User>().Property(x => x.Created).HasColumnName("created"); 
-        //    modelBuilder.Entity<User>().Property(x => x.Is_Admin).HasColumnName("isAdmin"); if we have time to make admin roles :)
+        //  modelBuilder.Entity<User>().Property(x => x.Is_Admin).HasColumnName("isAdmin"); if we have time to make admin roles :)
     
 
 
