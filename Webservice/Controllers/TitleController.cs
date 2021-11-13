@@ -28,7 +28,7 @@ namespace Webservice.Controllers
         [HttpGet("{id}", Name = nameof(GetTitle))]
         public IActionResult GetTitle(int id)
         {
-            var title = _dataService.ReadTitles(id);
+            var title = _dataService.GetTitles(id);
 
             if (title == null)
             {

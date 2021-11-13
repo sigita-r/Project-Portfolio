@@ -22,7 +22,7 @@ namespace Webservice.Controllers
             _dataService = dataService;
             _linkGenerator = linkGenerator;
         }
-
+/*
         [HttpGet("{id}", Name = nameof(GetPersonality))]
         public IActionResult GetPersonality(int id)
         {
@@ -46,6 +46,6 @@ namespace Webservice.Controllers
                 Year_Death = personality.Year_Death,
                // Profession = personality.Profession,
             };
-        }
-    }
+        }*/
+    } 
 }
