@@ -1,42 +1,41 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Routing;
 using Rawdata_Porfolio_2.Entity_Framework;
-using Rawdata_Porfolio_2.Pages.Entity_Framework.Domain;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using Webservice.ViewModels;
 
 namespace Webservice.Controllers
 {
     [ApiController]
-    [Route("api/personalities")]
-    public class PersonalityViewController : Controller
-    {
+    [Route("api/user/bookmarks")] //??? dont remember
+    public class BookmarkController : Controller
+    { 
         IDataService _dataService;
         LinkGenerator _linkGenerator;
 
-        public PersonalityViewController(IDataService dataService, LinkGenerator linkGenerator)
+        public BookmarkController(IDataService dataService, LinkGenerator linkGenerator)
         {
             _dataService = dataService;
             _linkGenerator = linkGenerator;
         }
-
-        [HttpGet("{id}", Name = nameof(GetPersonality))]
-        public IActionResult GetPersonality(int id)
+   /*         
+        [HttpGet("{id}", Name = nameof(GetUser))]
+        public IActionResult GetBookmarks()
         {
-            var personality = _dataService.GetPersonality(id);
+            var bookmark = _dataService.GetBookmarks(id);
 
-            if (personality == null)
+            if (bookmark == null)
             {
                 return NotFound();
             }
 
-            return Ok(GetPersonalityViewModel(personality));
+            return Ok(GetBookmarkViewModel(bookmarks));
         }
 
-        private PersonalityViewModel GetPersonalityViewModel(Personality personality)
+
+        private BookmarkViewModel GetPersonalityViewModel(Bookmarks personality)
         {
             return new PersonalityViewModel
             {
@@ -44,8 +43,12 @@ namespace Webservice.Controllers
                 Name = personality.Name,
                 Year_Birth = personality.Year_Birth,
                 Year_Death = personality.Year_Death,
-               // Profession = personality.Profession,
+                // Profession = personality.Profession,
             };
         }
+        
+    }
+         */   
+        
     }
 }

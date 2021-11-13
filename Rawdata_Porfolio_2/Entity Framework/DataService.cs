@@ -16,7 +16,7 @@ namespace Rawdata_Porfolio_2.Entity_Framework
         IEnumerable<Title> GetTitles();
         
         public bool CreatePersonalityBM(int userID, int personalityID, string note);
-        public List<Bookmarks_Personality> ReadPersonalityBM(int userID);
+        public List<Bookmarks_Personality> GetPersonalityBM(int userID);
         
 
         public bool DeletePersonalityBM(int userID, int personalityID);
@@ -24,35 +24,34 @@ namespace Rawdata_Porfolio_2.Entity_Framework
 
        
         public bool CreateTitleBM(int userID, int titleID, string note);
-         public List<Bookmarks_Title> ReadTitleBM(int userID);
+         public List<Bookmarks_Title> GetTitleBM(int userID);
          public bool DeleteTitleBM(int userID, int titleID);
          public bool UpdateTitleBM(int userID, int titleID, string note);
 
-        public List<Character> GetPersonalityCharacters(int personality_Id);
-
-        public List<Character> GetCharactersFromTitleID(int personality_Id);
-
-        //public List<Episode> ReadEpisode(int titleID);
-
-     //   Personality ReadPersonality(int userID);
+        public List<Character> GetCharactersFromPersonality(int personality_Id);
         /*
-         Personality_Profession ReadPersonalityProfession();
+         *  public List<Character> GetCharactersFromTitleID(int personality_Id);
+        public List<Episode> GetEpisode(int titleID);
+        
+         Personality GetPersonality();
+
+         Personality_Profession GetPersonalityProfession();
 
          Rating CreateRating();
-         Rating ReadRating();
+         Rating GetRating();
          Rating UpdateRating();
          Rating DeleteRating();
 
-         Role ReadRole();
+         Role GetRole();
 
          Search_Queries CreateSQ();
-         Search_Queries ReadSQ();
+         Search_Queries GetSQ();
          Search_Queries DeleteSQ();
 
          */
 
         // Should also be renamed to getTitle(int id)
-        Title ReadTitles(int Id);
+        Title GetTitles(int Id);
 
         /*
         Title_Genre ReadTG();
@@ -60,11 +59,12 @@ namespace Rawdata_Porfolio_2.Entity_Framework
         Title_Localization ReadTL();
 
         User CreateUser();
-        User ReadUser();
+        User GetUser();
         User UpdateUser();
 
-        Wi ReadWi();
+        Wi GettWi();
         */
+        
     }
     public class DataService : IDataService
     {
@@ -74,7 +74,7 @@ namespace Rawdata_Porfolio_2.Entity_Framework
         public ConnString connection = new ConnString();
 
 
-        public bool CreatePersonalityBM( int userID, int personalityID, string note)
+        public bool CreatePersonalityBM(int userID, int personalityID, string note)
         {
             
            
@@ -92,7 +92,7 @@ namespace Rawdata_Porfolio_2.Entity_Framework
 
          
         }
-        public List<Bookmarks_Personality> ReadPersonalityBM(int userID)
+        public List<Bookmarks_Personality> GetPersonalityBM(int userID)
         {
 
             var cmd = new NpgsqlCommand("select * FROM select_user_bookmarks('p', @ID)", connection.Connect());
@@ -110,26 +110,22 @@ namespace Rawdata_Porfolio_2.Entity_Framework
                         Timestamp = (DateTime)reader["timestamp"]
                     };     
                     result.Add(row);
-
                 }
-                
-            
-
             connection.Connect().Close();
             return result;
-
-            
         }
+
         public bool DeletePersonalityBM(int UserId, int PersonalityId)
         {
-        using (var cmd = new NpgsqlCommand("call update_bookmark('d','p', @ID, @PID)", connection.Connect()))
-        {
+            using (var cmd = new NpgsqlCommand("call update_bookmark('d','p', @ID, @PID)", connection.Connect()))
+            {
                 cmd.Parameters.AddWithValue("ID", UserId);
                 cmd.Parameters.AddWithValue("PID", PersonalityId);
                 NpgsqlDataReader reader = cmd.ExecuteReader();
-        }
+            }
             return true;
         }
+
         public bool UpdatePersonalityBM(int UserId, int PersonalityId, string note)
         {
             using (var cmd = new NpgsqlCommand("call update_bookmark('u','p', @ID, @PID, @NOTE)", connection.Connect()))
@@ -141,13 +137,10 @@ namespace Rawdata_Porfolio_2.Entity_Framework
                 NpgsqlDataReader reader = cmd.ExecuteReader();
             }
             return true;
-
         }
-
        
-    public bool CreateTitleBM(int userID, int titleID, string note) 
-    {
-
+        public bool CreateTitleBM(int userID, int titleID, string note) 
+        {
             using (var cmd = new NpgsqlCommand("call update_bookmark('n', 't', @ID, @PID, @note)", connection.Connect()))
             {
                 cmd.Parameters.AddWithValue("ID", userID);
@@ -157,13 +150,11 @@ namespace Rawdata_Porfolio_2.Entity_Framework
             }
             connection.Connect().Close();
             return true;
-
         }
-        public List<Bookmarks_Title> ReadTitleBM(int userID)
+
+        public List<Bookmarks_Title> GetTitleBM(int userID)
         {
             var cmd = new NpgsqlCommand("select * FROM select_user_bookmarks('t', @ID)", connection.Connect());
-
-
             cmd.Parameters.AddWithValue("ID", userID);
             NpgsqlDataReader reader = cmd.ExecuteReader();
             List<Bookmarks_Title> result = new List<Bookmarks_Title>();
@@ -176,13 +167,11 @@ namespace Rawdata_Porfolio_2.Entity_Framework
                     Timestamp = (DateTime)reader["timestamp"]
                 };
                 result.Add(row);
-
             }
-
             return result;
         }
 
-            public bool DeleteTitleBM(int userID, int titleID) 
+        public bool DeleteTitleBM(int userID, int titleID) 
         {
             using (var cmd = new NpgsqlCommand("call update_bookmark('d','t', @ID, @PID)", connection.Connect()))
             {
@@ -193,9 +182,7 @@ namespace Rawdata_Porfolio_2.Entity_Framework
             return true;
         }
 
-
-           
-           public bool UpdateTitleBM(int userID, int titleID, string note) 
+        public bool UpdateTitleBM(int userID, int titleID, string note) 
         {
             using (var cmd = new NpgsqlCommand("call update_bookmark('u','t', @ID, @PID, @NOTE)", connection.Connect()))
             {
@@ -208,8 +195,8 @@ namespace Rawdata_Porfolio_2.Entity_Framework
             return true;
         }
         
-          public List<Character> GetPersonalityCharacters(int personality_Id) 
-            {
+        public List<Character> GetCharactersFromPersonality(int personality_Id) 
+        {
             using (var cmd = new NpgsqlCommand("SELECT * FROM public.characters WHERE \"personality_ID\" = @PID", connection.Connect()))
             {
                 cmd.Parameters.AddWithValue("PID", personality_Id);
@@ -312,7 +299,7 @@ namespace Rawdata_Porfolio_2.Entity_Framework
 
         // should be renames to gettitle(int id) and then just return what it returns
         // Sigita and I think that we shouldnt create a new ctx each time
-        public Title ReadTitles(int Id)
+        public Title GetTitles(int Id)
         {
          
                 return ctx.Titles.Find(Id);
@@ -327,7 +314,7 @@ namespace Rawdata_Porfolio_2.Entity_Framework
 
     }
 
-    public  class  ConnString 
+    public class ConnString
     {
         public NpgsqlConnection Connect(){
 
@@ -342,4 +329,4 @@ namespace Rawdata_Porfolio_2.Entity_Framework
             return connection;
         }
     }
-    }
+}

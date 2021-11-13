@@ -7,6 +7,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using Microsoft.OpenApi.Models;
+using Rawdata_Porfolio_2.Entity_Framework;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -27,6 +28,9 @@ namespace Webservice
         public void ConfigureServices(IServiceCollection services)
         {
 
+            services.AddMvc();
+            services.AddDbContext<OurMDB_Context>()
+                    .AddScoped<IDataService, DataService>();
             services.AddControllers();
             services.AddSwaggerGen(c =>
             {
