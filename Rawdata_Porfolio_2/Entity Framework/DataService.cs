@@ -116,12 +116,12 @@ namespace Rawdata_Porfolio_2.Entity_Framework
 
         public bool DeletePersonalityBM(int UserId, int PersonalityId)
         {
-        using (var cmd = new NpgsqlCommand("call update_bookmark('d','p', @ID, @PID)", connection.Connect()))
-        {
+            using (var cmd = new NpgsqlCommand("call update_bookmark('d','p', @ID, @PID)", connection.Connect()))
+            {
                 cmd.Parameters.AddWithValue("ID", UserId);
                 cmd.Parameters.AddWithValue("PID", PersonalityId);
                 NpgsqlDataReader reader = cmd.ExecuteReader();
-        }
+            }
             return true;
         }
 
