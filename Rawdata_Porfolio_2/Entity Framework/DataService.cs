@@ -3,176 +3,310 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-
+using Npgsql;
+using System.IO;
+using Rawdata_Porfolio_2.Pages.Entity_Framework;
+using System.Reflection;
 
 namespace Rawdata_Porfolio_2.Entity_Framework
 {
     public interface IDataService
     {
-        // This is 1 too many interfaces, this is just extra that was inserted by mistake we think.
-        // We didnt have access to any of the methods
-       // interface IDataService
-     //   {
 
-            IEnumerable<Title> GetTitles();
-            /*
-            Bookmarks_Personality CreatePersonalityBM(int userID, int personalityID, string note);
-            Bookmarks_Personality ReadPersonalityBM(int userID);
-            */
+        IEnumerable<Title> GetTitles();
+        
+        public bool CreatePersonalityBM(int userID, int personalityID, string note);
+        public List<Bookmarks_Personality> ReadPersonalityBM(int userID);
+        
 
-            public bool DeletePersonalityBM(int userID);
-            public bool UpdatePersonalityBM(int userID, string note, DateTime timestamp);
+        public bool DeletePersonalityBM(int userID, int personalityID);
+        public bool UpdatePersonalityBM(int userID, int personalityID, string note);
 
-            /*
-            Bookmarks_Title CreateTitleBM(int userID, int personalityID, string note);
-            Bookmarks_Title ReadTitleBM();
-            Bookmarks_Title DeleteTitleBM();
-            Bookmarks_Title UpdateTitleBM();
+       
+        public bool CreateTitleBM(int userID, int titleID, string note);
+         public List<Bookmarks_Title> ReadTitleBM(int userID);
+         public bool DeleteTitleBM(int userID, int titleID);
+         public bool UpdateTitleBM(int userID, int titleID, string note);
 
-            Character ReadCharacter();
+        public List<Character> ReadCharacter(int personality_Id);
+        /*
+        public List<Episode> ReadEpisode(int titleID);
+        
+         Personality ReadPersonality();
 
-            Episode ReadEpisode();
+         Personality_Profession ReadPersonalityProfession();
 
-            Personality ReadPersonality();
+         Rating CreateRating();
+         Rating ReadRating();
+         Rating UpdateRating();
+         Rating DeleteRating();
 
-            Personality_Profession ReadPersonalityProfession();
+         Role ReadRole();
 
-            Rating CreateRating();
-            Rating ReadRating();
-            Rating UpdateRating();
-            Rating DeleteRating();
+         Search_Queries CreateSQ();
+         Search_Queries ReadSQ();
+         Search_Queries DeleteSQ();
 
-            Role ReadRole();
+         */
 
-            Search_Queries CreateSQ();
-            Search_Queries ReadSQ();
-            Search_Queries DeleteSQ();
+        // Should also be renamed to getTitle(int id)
+        Title ReadTitles(int Id);
 
-            */
+        /*
+        Title_Genre ReadTG();
 
-            // Should also be renamed to getTitle(int id)
-            Title ReadTitles(int Id);
+        Title_Localization ReadTL();
 
-            /*
-            Title_Genre ReadTG();
+        User CreateUser();
+        User ReadUser();
+        User UpdateUser();
 
-            Title_Localization ReadTL();
+        Wi ReadWi();
+        */
+    }
+    public class DataService : IDataService
+    {
+        // making our context so we can add to it all the time
+        // instead of createing a new one in each method, which is kinda sus
+        public OurMDB_Context ctx = new OurMDB_Context();
+        public ConnString connection = new ConnString();
 
-            User CreateUser();
-            User ReadUser();
-            User UpdateUser();
 
-            Wi ReadWi();
-            */
-        }
-        public class DataService : IDataService
+        public bool CreatePersonalityBM( int userID, int personalityID, string note)
         {
-            // making our context so we can add to it all the time
-            // instead of createing a new one in each method, which is kinda sus
-            OurMDB_Context ctx = new OurMDB_Context();
-
-            Bookmarks_Personality CreatePersonalityBM(int userID, int personalityID, string note)
+            
+           
+            using (var cmd = new NpgsqlCommand("call update_bookmark('n', 'p', @ID, @PID, @note)", connection.Connect()))
             {
-
-                var ctx = new OurMDB_Context();
-                var c = new Bookmarks_Personality();
-
-                c.User_Id = userID; //use this one for authentification
-                c.Personality_Id = personalityID;
-                c.Note = note;
-                c.Timestamp = DateTime.Now;
-                ctx.Add(c);
-                ctx.SaveChanges();
-                return c;
+                cmd.Parameters.AddWithValue("ID", userID);
+                cmd.Parameters.AddWithValue("PID", personalityID);
+                cmd.Parameters.AddWithValue("note", note);
+                NpgsqlDataReader reader =  cmd.ExecuteReader();
+                
             }
-            Bookmarks_Personality ReadPersonalityBM(int UserId)
-            {
-                var ctx = new OurMDB_Context();
-                return ctx.Bookmark_Personalities.Find(UserId);
+            
+            connection.Connect().Close();
+            return true;
 
-            }
-            public bool DeletePersonalityBM(int UserId)
-            {
-                var ctx = new OurMDB_Context();
-                var bookmark = ctx.Bookmark_Personalities.Find(UserId);
-
-                if (bookmark == null)
-
-                {
-                    return false;
-                }
-                else
-                {
-                    ctx.Remove(bookmark);
-                    ctx.SaveChanges();
-                    return true;
-                }
-
-            }
-            public bool UpdatePersonalityBM(int UserId, string note, DateTime timestamp)
-            {
-                var ctx = new OurMDB_Context();
-                var bookmark = ctx.Bookmark_Personalities.Find(UserId);
-
-                if (bookmark == null)
-                {
-                    return false;
-                }
-                else
-                {
-                    bookmark.Note = note;
-                    bookmark.Timestamp = DateTime.Now;
-                    return true;
-                }
-            }
-
-            /*
-        Bookmarks_Title CreateTitleBM(int userID, int personalityID, string note) 
-        {
-            var ctx = new OurMDB_Context();
-            var bookmark = new Bookmarks_Title();
-            bookmark.User_Id = userID; //use for authentication            
+         
         }
-        Bookmarks_Title ReadTitleBM() { }
-        Bookmarks_Title DeleteTitleBM() { }
-        Bookmarks_Title UpdateTitleBM() { }
+        public List<Bookmarks_Personality> ReadPersonalityBM(int userID)
+        {
 
-        Character ReadCharacter() { }
+            var cmd = new NpgsqlCommand("select * FROM select_user_bookmarks('p', @ID)", connection.Connect());
+            
+           
+                cmd.Parameters.AddWithValue("ID", userID);
+                NpgsqlDataReader reader = cmd.ExecuteReader();
+                List<Bookmarks_Personality> result = new List<Bookmarks_Personality>();
+                while (reader.Read())
+                {
+                    Bookmarks_Personality row = new Bookmarks_Personality()
+                    {
+                        Name = reader["name"].ToString(),
+                        Note = reader["note"].ToString(),
+                        Timestamp = (DateTime)reader["timestamp"]
+                    };     
+                    result.Add(row);
 
-        Episode ReadEpisode() { }
+                }
+                
+            
 
-        Personality ReadPersonality() { }
+            connection.Connect().Close();
+            return result;
 
-        Personality_Profession ReadPersonalityProfession() { }
+            
+        }
+        public bool DeletePersonalityBM(int UserId, int PersonalityId)
+        {
+        using (var cmd = new NpgsqlCommand("call update_bookmark('d','p', @ID, @PID)", connection.Connect()))
+        {
+                cmd.Parameters.AddWithValue("ID", UserId);
+                cmd.Parameters.AddWithValue("PID", PersonalityId);
+                NpgsqlDataReader reader = cmd.ExecuteReader();
+        }
+            return true;
+        }
+        public bool UpdatePersonalityBM(int UserId, int PersonalityId, string note)
+        {
+            using (var cmd = new NpgsqlCommand("call update_bookmark('u','p', @ID, @PID, @NOTE)", connection.Connect()))
+            {
+                cmd.Parameters.AddWithValue("ID", UserId);
+                cmd.Parameters.AddWithValue("PID", PersonalityId);
+                cmd.Parameters.AddWithValue("NOTE", note);
 
-        Rating CreateRating() { }
-        Rating ReadRating() { }
-        Rating UpdateRating() { }
-        Rating DeleteRating() { }
+                NpgsqlDataReader reader = cmd.ExecuteReader();
+            }
+            return true;
 
-        Role ReadRole() { }
+        }
 
-        Search_Queries CreateSQ() { }
-        Search_Queries ReadSQ() { }
-        Search_Queries DeleteSQ() { }
+       
+    public bool CreateTitleBM(int userID, int titleID, string note) 
+    {
 
-            */
+            using (var cmd = new NpgsqlCommand("call update_bookmark('n', 't', @ID, @PID, @note)", connection.Connect()))
+            {
+                cmd.Parameters.AddWithValue("ID", userID);
+                cmd.Parameters.AddWithValue("PID", titleID);
+                cmd.Parameters.AddWithValue("note", note);
+                NpgsqlDataReader reader = cmd.ExecuteReader();
+            }
+            connection.Connect().Close();
+            return true;
 
-            // should be renames to gettitle(int id) and then just return what it returns
-            // Sigita and I think that we shouldnt create a new ctx each time
-            public Title ReadTitles(int Id)
+        }
+        public List<Bookmarks_Title> ReadTitleBM(int userID)
+        {
+            var cmd = new NpgsqlCommand("select * FROM select_user_bookmarks('t', @ID)", connection.Connect());
+
+
+            cmd.Parameters.AddWithValue("ID", userID);
+            NpgsqlDataReader reader = cmd.ExecuteReader();
+            List<Bookmarks_Title> result = new List<Bookmarks_Title>();
+            while (reader.Read())
+            {
+                Bookmarks_Title row = new Bookmarks_Title()
+                {
+                    Name = reader["name"].ToString(),
+                    Note = reader["note"].ToString(),
+                    Timestamp = (DateTime)reader["timestamp"]
+                };
+                result.Add(row);
+
+            }
+
+            return result;
+        }
+
+            public bool DeleteTitleBM(int userID, int titleID) 
+        {
+            using (var cmd = new NpgsqlCommand("call update_bookmark('d','t', @ID, @PID)", connection.Connect()))
+            {
+                cmd.Parameters.AddWithValue("ID", userID);
+                cmd.Parameters.AddWithValue("PID", titleID);
+                NpgsqlDataReader reader = cmd.ExecuteReader();
+            }
+            return true;
+        }
+
+
+           
+           public bool UpdateTitleBM(int userID, int titleID, string note) 
+        {
+            using (var cmd = new NpgsqlCommand("call update_bookmark('u','t', @ID, @PID, @NOTE)", connection.Connect()))
+            {
+                cmd.Parameters.AddWithValue("ID", userID);
+                cmd.Parameters.AddWithValue("PID", titleID);
+                cmd.Parameters.AddWithValue("NOTE", note);
+
+                NpgsqlDataReader reader = cmd.ExecuteReader();
+            }
+            return true;
+        }
+        
+          public List<Character> ReadCharacter(int personality_Id) 
             {
 
-                var ctx = new OurMDB_Context();
+            using (var cmd = new NpgsqlCommand("SELECT * FROM public.characters WHERE \"personality_ID\" = @PID", connection.Connect()))
+            {
+            
+                cmd.Parameters.AddWithValue("PID", personality_Id);
+             
+              
+              
+
+                NpgsqlDataReader reader = cmd.ExecuteReader();
+                List<Character> result = new List<Character>();
+                while (reader.Read())
+                {
+                    Character row = new Character()
+                    {
+                        CharacterOfPersonality = reader["character"].ToString(),
+                        
+                    };
+                    result.Add(row);
+
+                }
+                return result;
+            }
+            
+        }
+        /*
+        public List<Episode> ReadEpisode(int titleID)
+        {
+            using (var cmd = new NpgsqlCommand("SELECT * FROM public.characters WHERE \"title_ID\" = @TID", connection.Connect()))
+            {
+
+                cmd.Parameters.AddWithValue("TID", titleID);
+
+
+                NpgsqlDataReader reader = cmd.ExecuteReader();
+                List<Episode> result = new List<Episode>();
+                while (reader.Read())
+                {
+                    Episode row = new Episode()
+                    {
+                        Ep_Number = (int)reader["ep_number"],
+                        Season = (int)reader["season"],
+
+
+                    };
+                    result.Add(row);
+
+                }
+                return result;
+            }
+        }
+        
+            Personality ReadPersonality() { }
+
+            Personality_Profession ReadPersonalityProfession() { }
+
+            Rating CreateRating() { }
+            Rating ReadRating() { }
+            Rating UpdateRating() { }
+            Rating DeleteRating() { }
+
+            Role ReadRole() { }
+
+            Search_Queries CreateSQ() { }
+            Search_Queries ReadSQ() { }
+            Search_Queries DeleteSQ() { }
+
+                */
+
+        // should be renames to gettitle(int id) and then just return what it returns
+        // Sigita and I think that we shouldnt create a new ctx each time
+        public Title ReadTitles(int Id)
+        {
+         
                 return ctx.Titles.Find(Id);
-            }
-
-            // getting all the titles from context and putting them
-            // into a list
-            public IEnumerable<Title> GetTitles()
-            {
-                return ctx.Titles.ToList();
-            }
-
         }
+
+        // getting all the titles from context and putting them
+        // into a list
+        public IEnumerable<Title> GetTitles()
+        {
+            return ctx.Titles.ToList();
+        }
+
+    }
+
+    public  class  ConnString 
+    {
+        public NpgsqlConnection Connect(){
+
+            string connStringFromFile;
+            using (StreamReader readtext = new StreamReader("C:/Login/Login.txt"))
+            {
+                connStringFromFile = readtext.ReadLine();
+            }
+
+            var connection = new NpgsqlConnection(connStringFromFile);
+            connection.Open();
+            return connection;
+        }
+    }
     }

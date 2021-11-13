@@ -14,6 +14,7 @@ namespace Rawdata_Porfolio_2.Pages.Entity_Framework.Domain
         public Title Title { get; set; }
         public string Note { get; set; }
         public DateTime Timestamp { get; set; }
+        public string Name { get; set; }
 
         public override string ToString()
         {
