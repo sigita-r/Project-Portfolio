@@ -28,12 +28,14 @@ namespace Rawdata_Porfolio_2.Entity_Framework
          public bool DeleteTitleBM(int userID, int titleID);
          public bool UpdateTitleBM(int userID, int titleID, string note);
 
-        public List<Character> ReadCharacter(int personality_Id);
-        /*
-        public List<Episode> ReadEpisode(int titleID);
-        
-         Personality ReadPersonality();
+        public List<Character> GetPersonalityCharacters(int personality_Id);
 
+        public List<Character> GetCharactersFromTitleID(int personality_Id);
+
+        //public List<Episode> ReadEpisode(int titleID);
+
+     //   Personality ReadPersonality(int userID);
+        /*
          Personality_Profession ReadPersonalityProfession();
 
          Rating CreateRating();
@@ -206,17 +208,31 @@ namespace Rawdata_Porfolio_2.Entity_Framework
             return true;
         }
         
-          public List<Character> ReadCharacter(int personality_Id) 
+          public List<Character> GetPersonalityCharacters(int personality_Id) 
             {
-
             using (var cmd = new NpgsqlCommand("SELECT * FROM public.characters WHERE \"personality_ID\" = @PID", connection.Connect()))
             {
-            
                 cmd.Parameters.AddWithValue("PID", personality_Id);
-             
-              
-              
-
+                NpgsqlDataReader reader = cmd.ExecuteReader();
+                List<Character> result = new List<Character>();
+                while (reader.Read())
+                {
+                    Character row = new Character()
+                    {
+                        CharacterOfPersonality = reader["character"].ToString(),   
+                    };
+                    result.Add(row);
+                }
+                return result;
+            }
+          
+        }
+        public List<Character> GetCharactersFromTitleID(int title_Id) 
+        { 
+            //Get characters and Personalities from Title_ID
+            using (var cmd = new NpgsqlCommand("SELECT character FROM public.characters WHERE \"title_ID\" = @TID", connection.Connect()))
+            {
+                cmd.Parameters.AddWithValue("PID", title_Id);
                 NpgsqlDataReader reader = cmd.ExecuteReader();
                 List<Character> result = new List<Character>();
                 while (reader.Read())
@@ -224,19 +240,16 @@ namespace Rawdata_Porfolio_2.Entity_Framework
                     Character row = new Character()
                     {
                         CharacterOfPersonality = reader["character"].ToString(),
-                        
                     };
                     result.Add(row);
-
                 }
                 return result;
             }
-            
         }
         /*
         public List<Episode> ReadEpisode(int titleID)
         {
-            using (var cmd = new NpgsqlCommand("SELECT * FROM public.characters WHERE \"title_ID\" = @TID", connection.Connect()))
+            using (var cmd = new NpgsqlCommand("SELECT name, ep_number, season FROM public.title, public.title_localization, public.episode WHERE title.type = 'tvEpisode' AND title.\"ID\" = @TID AND title.\"ID\" = title_localization.\"title_ID\" AND title.\"ID\" = episode.\"title_ID\" AND primary_title = true", connection.Connect()))
             {
 
                 cmd.Parameters.AddWithValue("TID", titleID);
@@ -259,9 +272,29 @@ namespace Rawdata_Porfolio_2.Entity_Framework
                 return result;
             }
         }
-        
-            Personality ReadPersonality() { }
+        */
 
+        /*
+        Personality ReadPersonality(int userID) 
+        {
+            using (var cmd = new NpgsqlCommand("Select username, password, email, dob, created FROM user WHERE \"ID\" = @ID"))
+            {
+                cmd.Parameters.AddWithValue("ID", userID);
+                NpgsqlDataReader reader = cmd.ExecuteReader();
+                List<Personality> personalities = new List<Personality>();
+                while (reader.Read())
+                {
+                    Personality Row = new Personality()
+                    {
+                        Username = reader.GetString["username"],
+                        passwor
+                    }
+                }
+            }
+            
+        }
+        */
+        /*
             Personality_Profession ReadPersonalityProfession() { }
 
             Rating CreateRating() { }
