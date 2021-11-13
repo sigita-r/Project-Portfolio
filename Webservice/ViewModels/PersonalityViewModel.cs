@@ -13,7 +13,7 @@ namespace Webservice.ViewModels
         public string Name { get; set; }
         public int Year_Birth { get; set; }
         public int Year_Death { get; set; }
-        public string Profession { get; set; }
+       // public string Profession { get; set; }
 
         /*
         public List<Bookmarks_Personality> Bookmarks_Personalities { get; set; }
