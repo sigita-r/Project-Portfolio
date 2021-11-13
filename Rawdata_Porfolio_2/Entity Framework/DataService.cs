@@ -28,7 +28,7 @@ namespace Rawdata_Porfolio_2.Entity_Framework
          public bool DeleteTitleBM(int userID, int titleID);
          public bool UpdateTitleBM(int userID, int titleID, string note);
 
-        public List<Character> GetCharacter(int personality_Id);
+        public List<Character> GetCharactersFromPersonality(int personality_Id);
         /*
         public List<Episode> GetEpisode(int titleID);
         
@@ -194,7 +194,7 @@ namespace Rawdata_Porfolio_2.Entity_Framework
             return true;
         }
         
-        public List<Character> GetCharacter(int personality_Id) 
+        public List<Character> GetCharactersFromPersonality(int personality_Id) 
         {
             using (var cmd = new NpgsqlCommand("SELECT * FROM public.characters WHERE \"personality_ID\" = @PID", connection.Connect()))
             {
