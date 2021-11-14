@@ -19,9 +19,26 @@ namespace Rawdata_Porfolio_2.Entity_Framework
 
         IEnumerable<Title> GetTitles();
 
+        Title GetTitleById(int Id);
+
         // public List<Character> GetCharactersFromTitleById(int title_Id);
-      
+
         // public List<Episode> GetEpisode(int titleID);
+
+        //Title_Genre ReadTG();
+
+        //Title_Localization ReadTL();
+
+
+        ////////////////////////////////////////////////////////////
+        //                      PERSONALITY                       //
+        ////////////////////////////////////////////////////////////
+
+         // Personality GetPersonalityById(int personality_Id);
+
+        //  Personality_Profession GetPersonalityProfession();
+
+        public List<Character> GetCharactersFromPersonalityById(int personality_Id);
 
 
         ////////////////////////////////////////////////////////////
@@ -30,7 +47,7 @@ namespace Rawdata_Porfolio_2.Entity_Framework
 
         public bool CreatePersonalityBM(int userID, int personalityID, string note);
 
-        public List<Bookmarks_Personality> GetPersonalityBM(int userID);
+        public List<Bookmarks_Personality> GetPersonalityBMByUserID(int userID);
 
         public bool DeletePersonalityBM(int userID, int personalityID);
 
@@ -38,7 +55,7 @@ namespace Rawdata_Porfolio_2.Entity_Framework
 
         public bool CreateTitleBM(int userID, int titleID, string note);
 
-        public List<Bookmarks_Title> GetTitleBM(int userID);
+        public List<Bookmarks_Title> GetTitleBMByUserID(int userID);
 
         public bool DeleteTitleBM(int userID, int titleID);
 
@@ -49,6 +66,9 @@ namespace Rawdata_Porfolio_2.Entity_Framework
         //                          User                          //
         ////////////////////////////////////////////////////////////
 
+        //User CreateUser();
+        //User GetUser();
+        //User UpdateUser();
 
         ////////////////////////////////////////////////////////////
         //                         RATINGS                        //
@@ -63,89 +83,170 @@ namespace Rawdata_Porfolio_2.Entity_Framework
         //                          SEARCH                        //
         ////////////////////////////////////////////////////////////
 
+        //Search_Queries CreateSQ();
+        //Search_Queries GetSQ();
+        //Search_Queries DeleteSQ();
+
 
         ////////////////////////////////////////////////////////////
-        //                      PERSONALITY                       //
+        //                          OTHER                         //
         ////////////////////////////////////////////////////////////
 
-        //  Personality GetPersonality();
+        //  Role GetRole();
 
-        //  Personality_Profession GetPersonalityProfession();
+       // Wi GettWi();
 
-        public List<Character> GetCharactersFromPersonalityById(int personality_Id);
-       
-        
-        /*
+        ////////////////////////////////////////////////////////////
 
-         Role GetRole();
-
-         Search_Queries CreateSQ();
-         Search_Queries GetSQ();
-         Search_Queries DeleteSQ();
-
-         */
-
-        // Should also be renamed to getTitle(int id)
-        Title GetTitleById(int Id);
-
-        /*
-        Title_Genre ReadTG();
-
-        Title_Localization ReadTL();
-
-        User CreateUser();
-        User GetUser();
-        User UpdateUser();
-
-        Wi GettWi();
-        */
-        
     }
     public class DataService : IDataService
     {
+
         // making our context so we can add to it all the time
         // instead of createing a new one in each method, which is kinda sus
         public OurMDB_Context ctx = new OurMDB_Context();
         public ConnString connection = new ConnString();
 
+        public class ConnString
+        {
+            public NpgsqlConnection Connect()
+            {
+                string connStringFromFile;
+                using (StreamReader readtext = new StreamReader("C:/Login/Login.txt"))
+                {
+                    connStringFromFile = readtext.ReadLine();
+                }
+                var connection = new NpgsqlConnection(connStringFromFile);
+                connection.Open();
+                return connection;
+            }
+        }
+
+        ////////////////////////////////////////////////////////////
+        //                        TITLES                          //
+        ////////////////////////////////////////////////////////////
+
+        public Title GetTitleById(int Id)
+        {
+            return ctx.Titles.Find(Id);
+        }
+
+        public IEnumerable<Title> GetTitles()
+        {
+            return ctx.Titles.ToList();
+        }
+
+        public List<Character> GetCharactersFromTitleById(int title_Id)
+        {
+            //Get characters and Personalities from Title_ID
+            using (var cmd = new NpgsqlCommand("SELECT character FROM public.characters WHERE \"title_ID\" = @TID", connection.Connect()))
+            {
+                cmd.Parameters.AddWithValue("PID", title_Id);
+                NpgsqlDataReader reader = cmd.ExecuteReader();
+                List<Character> result = new List<Character>();
+                while (reader.Read())
+                {
+                    Character row = new Character()
+                    {
+                        CharacterOfPersonality = reader["character"].ToString(),
+                    };
+                    result.Add(row);
+                }
+                return result;
+            }
+        }
+
+        /*
+       public List<Episode> ReadEpisode(int titleID)
+       {
+           using (var cmd = new NpgsqlCommand("SELECT name, ep_number, season FROM public.title, public.title_localization, public.episode WHERE title.type = 'tvEpisode' AND title.\"ID\" = @TID AND title.\"ID\" = title_localization.\"title_ID\" AND title.\"ID\" = episode.\"title_ID\" AND primary_title = true", connection.Connect()))
+           {
+
+               cmd.Parameters.AddWithValue("TID", titleID);
+
+
+               NpgsqlDataReader reader = cmd.ExecuteReader();
+               List<Episode> result = new List<Episode>();
+               while (reader.Read())
+               {
+                   Episode row = new Episode()
+                   {
+                       Ep_Number = (int)reader["ep_number"],
+                       Season = (int)reader["season"],
+
+
+                   };
+                   result.Add(row);
+
+               }
+               return result;
+           }
+       }
+       */
+
+
+
+        ////////////////////////////////////////////////////////////
+        //                      PERSONALITY                       //
+        ////////////////////////////////////////////////////////////
+
+        public List<Character> GetCharactersFromPersonalityById(int personality_Id)
+        {
+            using (var cmd = new NpgsqlCommand("SELECT * FROM public.characters WHERE \"personality_ID\" = @PID", connection.Connect()))
+            {
+                cmd.Parameters.AddWithValue("PID", personality_Id);
+                NpgsqlDataReader reader = cmd.ExecuteReader();
+                List<Character> result = new List<Character>();
+                while (reader.Read())
+                {
+                    Character row = new Character()
+                    {
+                        CharacterOfPersonality = reader["character"].ToString(),
+                    };
+                    result.Add(row);
+                }
+                return result;
+            }
+        }
+
+      //  Personality_Profession ReadPersonalityProfession() { }
+
+
+
+        ////////////////////////////////////////////////////////////
+        //                       BOOKMARKS                        //
+        ////////////////////////////////////////////////////////////
 
         public bool CreatePersonalityBM(int userID, int personalityID, string note)
         {
-            
-           
             using (var cmd = new NpgsqlCommand("call update_bookmark('n', 'p', @ID, @PID, @note)", connection.Connect()))
             {
                 cmd.Parameters.AddWithValue("ID", userID);
                 cmd.Parameters.AddWithValue("PID", personalityID);
                 cmd.Parameters.AddWithValue("note", note);
-                NpgsqlDataReader reader =  cmd.ExecuteReader();
-                
+                NpgsqlDataReader reader = cmd.ExecuteReader();
             }
-            
             connection.Connect().Close();
             return true;
-
-         
         }
-        public List<Bookmarks_Personality> GetPersonalityBM(int userID)
-        {
 
+        public List<Bookmarks_Personality> GetPersonalityBMByUserID(int userID)
+        {
             var cmd = new NpgsqlCommand("select * FROM select_user_bookmarks('p', @ID)", connection.Connect());
-            
-           
-                cmd.Parameters.AddWithValue("ID", userID);
-                NpgsqlDataReader reader = cmd.ExecuteReader();
-                List<Bookmarks_Personality> result = new List<Bookmarks_Personality>();
-                while (reader.Read())
+
+            cmd.Parameters.AddWithValue("ID", userID);
+            NpgsqlDataReader reader = cmd.ExecuteReader();
+            List<Bookmarks_Personality> result = new List<Bookmarks_Personality>();
+            while (reader.Read())
+            {
+                Bookmarks_Personality row = new Bookmarks_Personality()
                 {
-                    Bookmarks_Personality row = new Bookmarks_Personality()
-                    {
-                        Name = reader["name"].ToString(),
-                        Note = reader["note"].ToString(),
-                        Timestamp = (DateTime)reader["timestamp"]
-                    };     
-                    result.Add(row);
-                }
+                    Name = reader["name"].ToString(),
+                    Note = reader["note"].ToString(),
+                    Timestamp = (DateTime)reader["timestamp"]
+                };
+                result.Add(row);
+            }
             connection.Connect().Close();
             return result;
         }
@@ -173,8 +274,8 @@ namespace Rawdata_Porfolio_2.Entity_Framework
             }
             return true;
         }
-       
-        public bool CreateTitleBM(int userID, int titleID, string note) 
+
+        public bool CreateTitleBM(int userID, int titleID, string note)
         {
             using (var cmd = new NpgsqlCommand("call update_bookmark('n', 't', @ID, @PID, @note)", connection.Connect()))
             {
@@ -187,7 +288,7 @@ namespace Rawdata_Porfolio_2.Entity_Framework
             return true;
         }
 
-        public List<Bookmarks_Title> GetTitleBM(int userID)
+        public List<Bookmarks_Title> GetTitleBMByUserID(int userID)
         {
             var cmd = new NpgsqlCommand("select * FROM select_user_bookmarks('t', @ID)", connection.Connect());
             cmd.Parameters.AddWithValue("ID", userID);
@@ -206,7 +307,7 @@ namespace Rawdata_Porfolio_2.Entity_Framework
             return result;
         }
 
-        public bool DeleteTitleBM(int userID, int titleID) 
+        public bool DeleteTitleBM(int userID, int titleID)
         {
             using (var cmd = new NpgsqlCommand("call update_bookmark('d','t', @ID, @PID)", connection.Connect()))
             {
@@ -217,7 +318,7 @@ namespace Rawdata_Porfolio_2.Entity_Framework
             return true;
         }
 
-        public bool UpdateTitleBM(int userID, int titleID, string note) 
+        public bool UpdateTitleBM(int userID, int titleID, string note)
         {
             using (var cmd = new NpgsqlCommand("call update_bookmark('u','t', @ID, @PID, @NOTE)", connection.Connect()))
             {
@@ -229,72 +330,34 @@ namespace Rawdata_Porfolio_2.Entity_Framework
             }
             return true;
         }
-        
-        public List<Character> GetCharactersFromPersonalityById(int personality_Id) 
-        {
-            using (var cmd = new NpgsqlCommand("SELECT * FROM public.characters WHERE \"personality_ID\" = @PID", connection.Connect()))
-            {
-                cmd.Parameters.AddWithValue("PID", personality_Id);
-                NpgsqlDataReader reader = cmd.ExecuteReader();
-                List<Character> result = new List<Character>();
-                while (reader.Read())
-                {
-                    Character row = new Character()
-                    {
-                        CharacterOfPersonality = reader["character"].ToString(),   
-                    };
-                    result.Add(row);
-                }
-                return result;
-            }
-          
-        }
-        public List<Character> GetCharactersFromTitleById(int title_Id) 
-        { 
-            //Get characters and Personalities from Title_ID
-            using (var cmd = new NpgsqlCommand("SELECT character FROM public.characters WHERE \"title_ID\" = @TID", connection.Connect()))
-            {
-                cmd.Parameters.AddWithValue("PID", title_Id);
-                NpgsqlDataReader reader = cmd.ExecuteReader();
-                List<Character> result = new List<Character>();
-                while (reader.Read())
-                {
-                    Character row = new Character()
-                    {
-                        CharacterOfPersonality = reader["character"].ToString(),
-                    };
-                    result.Add(row);
-                }
-                return result;
-            }
-        }
-        /*
-        public List<Episode> ReadEpisode(int titleID)
-        {
-            using (var cmd = new NpgsqlCommand("SELECT name, ep_number, season FROM public.title, public.title_localization, public.episode WHERE title.type = 'tvEpisode' AND title.\"ID\" = @TID AND title.\"ID\" = title_localization.\"title_ID\" AND title.\"ID\" = episode.\"title_ID\" AND primary_title = true", connection.Connect()))
-            {
-
-                cmd.Parameters.AddWithValue("TID", titleID);
 
 
-                NpgsqlDataReader reader = cmd.ExecuteReader();
-                List<Episode> result = new List<Episode>();
-                while (reader.Read())
-                {
-                    Episode row = new Episode()
-                    {
-                        Ep_Number = (int)reader["ep_number"],
-                        Season = (int)reader["season"],
+        ////////////////////////////////////////////////////////////
+        //                          User                          //
+        ////////////////////////////////////////////////////////////
 
 
-                    };
-                    result.Add(row);
 
-                }
-                return result;
-            }
-        }
-        */
+        ////////////////////////////////////////////////////////////
+        //                         RATINGS                        //
+        ////////////////////////////////////////////////////////////
+
+        //Rating CreateRating() { }
+        //Rating ReadRating() { }
+        //Rating UpdateRating() { }
+        //Rating DeleteRating() { }
+
+        ////////////////////////////////////////////////////////////
+        //                          SEARCH                        //
+        ////////////////////////////////////////////////////////////
+
+        //Search_Queries CreateSQ() { }
+        //Search_Queries ReadSQ() { }
+        //Search_Queries DeleteSQ() { }
+
+        ////////////////////////////////////////////////////////////
+        //                          OTHER                         //
+        ////////////////////////////////////////////////////////////
 
         /*
         Personality ReadPersonality(int userID) 
@@ -312,56 +375,12 @@ namespace Rawdata_Porfolio_2.Entity_Framework
                         passwor
                     }
                 }
-            }
-            
+            }   
         }
         */
-        /*
-            Personality_Profession ReadPersonalityProfession() { }
 
-            Rating CreateRating() { }
-            Rating ReadRating() { }
-            Rating UpdateRating() { }
-            Rating DeleteRating() { }
+        //   Role ReadRole() { }
 
-            Role ReadRole() { }
-
-            Search_Queries CreateSQ() { }
-            Search_Queries ReadSQ() { }
-            Search_Queries DeleteSQ() { }
-
-                */
-
-        // should be renames to gettitle(int id) and then just return what it returns
-        // Sigita and I think that we shouldnt create a new ctx each time
-        public Title GetTitleById(int Id)
-        {
-         
-                return ctx.Titles.Find(Id);
-        }
-
-        // getting all the titles from context and putting them
-        // into a list
-        public IEnumerable<Title> GetTitles()
-        {
-            return ctx.Titles.ToList();
-        }
-
-    }
-
-    public class ConnString
-    {
-        public NpgsqlConnection Connect(){
-
-            string connStringFromFile;
-            using (StreamReader readtext = new StreamReader("C:/Login/Login.txt"))
-            {
-                connStringFromFile = readtext.ReadLine();
-            }
-
-            var connection = new NpgsqlConnection(connStringFromFile);
-            connection.Open();
-            return connection;
-        }
+        ////////////////////////////////////////////////////////////
     }
 }
