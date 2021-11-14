@@ -23,10 +23,10 @@ namespace Webservice.Controllers
             _linkGenerator = linkGenerator;
         }
 
-        [HttpGet("{id}", Name = nameof(GetPersonality))]
-        public IActionResult GetPersonality(int id)
+        [HttpGet("{id}", Name = nameof(GetPersonalityByID))]
+        public IActionResult GetPersonalityByID(int id)
         {
-            var personality = _dataService.GetPersonality(id);
+            var personality = _dataService.GetPersonalityById(id);
             if (personality == null)
             {
                 return NotFound();
@@ -51,11 +51,11 @@ namespace Webservice.Controllers
         {
             return new PersonalityViewModel
             {
-              //  Url = (_linkGenerator.GetUriByName(HttpContext, nameof(GetPersonality), new { personality.Id })).Replace("%20", ""),
+                Url = (_linkGenerator.GetUriByName(HttpContext, nameof(GetPersonalityByID), new { personality.Id })).Replace("%20", ""),
                 Name = personality.Name,
                 Year_Birth = personality.Year_Birth,
                 Year_Death = personality.Year_Death,
-               // Profession = personality.Profession,
+                // Profession = personality.Profession,
             };
         }
     } 

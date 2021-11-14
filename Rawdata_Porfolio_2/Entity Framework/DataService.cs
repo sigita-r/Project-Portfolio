@@ -34,11 +34,11 @@ namespace Rawdata_Porfolio_2.Entity_Framework
         //                      PERSONALITY                       //
         ////////////////////////////////////////////////////////////
 
-         // Personality GetPersonalityById(int personality_Id);
+          Personality GetPersonalityById(int personality_Id);
 
         //  Personality_Profession GetPersonalityProfession();
 
-        public List<Character> GetCharactersFromPersonalityById(int personality_Id);
+         List<Character> GetCharactersFromPersonalityById(int personality_Id);
 
 
         ////////////////////////////////////////////////////////////
@@ -189,6 +189,11 @@ namespace Rawdata_Porfolio_2.Entity_Framework
         ////////////////////////////////////////////////////////////
         //                      PERSONALITY                       //
         ////////////////////////////////////////////////////////////
+
+       public Personality GetPersonalityById(int personality_Id)
+        {
+            return ctx.Personalities.Find(personality_Id);
+        }
 
         public List<Character> GetCharactersFromPersonalityById(int personality_Id)
         {
