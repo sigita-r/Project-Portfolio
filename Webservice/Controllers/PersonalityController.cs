@@ -22,7 +22,7 @@ namespace Webservice.Controllers
             _dataService = dataService;
             _linkGenerator = linkGenerator;
         }
-/*
+
         [HttpGet("{id}", Name = nameof(GetPersonality))]
         public IActionResult GetPersonality(int id)
         {
@@ -33,13 +33,13 @@ namespace Webservice.Controllers
             }
             return Ok(GetPersonalityViewModel(personality));
         }
-*/
+
 
         [HttpGet("{id}", Name = nameof(GetCharactersFromPersonality))]
         [ApiExplorerSettings(IgnoreApi = true)]
         public IActionResult GetCharactersFromPersonality(int id)
         {
-            var characters = _dataService.GetCharactersFromPersonality(id);
+            var characters = _dataService.GetCharactersFromPersonalityById(id);
             if (characters == null)
             {
                 return NotFound();

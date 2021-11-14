@@ -13,34 +13,69 @@ namespace Rawdata_Porfolio_2.Entity_Framework
     public interface IDataService
     {
 
+        ////////////////////////////////////////////////////////////
+        //                        TITLES                          //
+        ////////////////////////////////////////////////////////////
+
         IEnumerable<Title> GetTitles();
-        
+
+        // public List<Character> GetCharactersFromTitleById(int title_Id);
+      
+        // public List<Episode> GetEpisode(int titleID);
+
+
+        ////////////////////////////////////////////////////////////
+        //                       BOOKMARKS                        //
+        ////////////////////////////////////////////////////////////
+
         public bool CreatePersonalityBM(int userID, int personalityID, string note);
+
         public List<Bookmarks_Personality> GetPersonalityBM(int userID);
-        
 
         public bool DeletePersonalityBM(int userID, int personalityID);
+
         public bool UpdatePersonalityBM(int userID, int personalityID, string note);
 
-       
         public bool CreateTitleBM(int userID, int titleID, string note);
-         public List<Bookmarks_Title> GetTitleBM(int userID);
-         public bool DeleteTitleBM(int userID, int titleID);
-         public bool UpdateTitleBM(int userID, int titleID, string note);
 
-        public List<Character> GetCharactersFromPersonality(int personality_Id);
-        /*
-         *  public List<Character> GetCharactersFromTitleID(int personality_Id);
-        public List<Episode> GetEpisode(int titleID);
+        public List<Bookmarks_Title> GetTitleBM(int userID);
+
+        public bool DeleteTitleBM(int userID, int titleID);
+
+        public bool UpdateTitleBM(int userID, int titleID, string note);
+
+
+        ////////////////////////////////////////////////////////////
+        //                          User                          //
+        ////////////////////////////////////////////////////////////
+
+
+        ////////////////////////////////////////////////////////////
+        //                         RATINGS                        //
+        ////////////////////////////////////////////////////////////
+
+        //Rating CreateRating();
+        //Rating GetRating();
+        //Rating UpdateRating();
+        //Rating DeleteRating();
+
+        ////////////////////////////////////////////////////////////
+        //                          SEARCH                        //
+        ////////////////////////////////////////////////////////////
+
+
+        ////////////////////////////////////////////////////////////
+        //                      PERSONALITY                       //
+        ////////////////////////////////////////////////////////////
+
+        //  Personality GetPersonality();
+
+        //  Personality_Profession GetPersonalityProfession();
+
+        public List<Character> GetCharactersFromPersonalityById(int personality_Id);
+       
         
-         Personality GetPersonality();
-
-         Personality_Profession GetPersonalityProfession();
-
-         Rating CreateRating();
-         Rating GetRating();
-         Rating UpdateRating();
-         Rating DeleteRating();
+        /*
 
          Role GetRole();
 
@@ -51,7 +86,7 @@ namespace Rawdata_Porfolio_2.Entity_Framework
          */
 
         // Should also be renamed to getTitle(int id)
-        Title GetTitles(int Id);
+        Title GetTitleById(int Id);
 
         /*
         Title_Genre ReadTG();
@@ -195,7 +230,7 @@ namespace Rawdata_Porfolio_2.Entity_Framework
             return true;
         }
         
-        public List<Character> GetCharactersFromPersonality(int personality_Id) 
+        public List<Character> GetCharactersFromPersonalityById(int personality_Id) 
         {
             using (var cmd = new NpgsqlCommand("SELECT * FROM public.characters WHERE \"personality_ID\" = @PID", connection.Connect()))
             {
@@ -214,7 +249,7 @@ namespace Rawdata_Porfolio_2.Entity_Framework
             }
           
         }
-        public List<Character> GetCharactersFromTitleID(int title_Id) 
+        public List<Character> GetCharactersFromTitleById(int title_Id) 
         { 
             //Get characters and Personalities from Title_ID
             using (var cmd = new NpgsqlCommand("SELECT character FROM public.characters WHERE \"title_ID\" = @TID", connection.Connect()))
@@ -299,7 +334,7 @@ namespace Rawdata_Porfolio_2.Entity_Framework
 
         // should be renames to gettitle(int id) and then just return what it returns
         // Sigita and I think that we shouldnt create a new ctx each time
-        public Title GetTitles(int Id)
+        public Title GetTitleById(int Id)
         {
          
                 return ctx.Titles.Find(Id);
