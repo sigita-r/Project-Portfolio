@@ -25,8 +25,8 @@ namespace Webservice.Controllers
             _linkGenerator = linkGenerator;
         }
 
-        [HttpGet("{id}", Name = nameof(GetTitle))]
-        public IActionResult GetTitle(int id)
+        [HttpGet("{id}", Name = nameof(GetTitleById))]
+        public IActionResult GetTitleById(int id)
         {
             var title = _dataService.GetTitleById(id);
 
