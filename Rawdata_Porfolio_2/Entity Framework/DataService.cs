@@ -69,7 +69,10 @@ namespace Rawdata_Porfolio_2.Entity_Framework
         ////////////////////////////////////////////////////////////
 
         public bool CreateUser(int userID, string username, Byte[] password, string email, DateTime dob);
-        List<User> GetUser(int userID);
+
+        User GetUser(int userID);
+
+        // List<User> GetUser(int userID);
         public bool DeleteUser(int userID);
        //Waiting with this one till i get how to do bytea, since users should be able to change passwords.
        // public bool UpdateUser(int userID, string email, string username);
@@ -444,28 +447,47 @@ namespace Rawdata_Porfolio_2.Entity_Framework
             return true;
         }
 
-        public List<User> GetUser(int userId)
+        public User GetUser(int userId)
         {
             var cmd = new NpgsqlCommand("select * FROM public.user Where \"ID\" = @ID", connection.Connect());
             cmd.Parameters.AddWithValue("ID", userId);
             NpgsqlDataReader reader = cmd.ExecuteReader();
-            List<User> result = new List<User>();
+          
+            User row = new User();
             while (reader.Read())
             {
-                User row = new User()
-                {
-                    Username = reader["username"].ToString(),
-                    //Not sure how to work with bytea
-                    //Password = reader["password"].,
-                    Email = reader["email"].ToString(),
-                    DateOfBirth = (DateTime)reader["dob"],
-                    Created = (DateTime)reader["created"],
-                };
-                result.Add(row);
+                row.Username = reader["username"].ToString();
+                //Not sure how to work with bytea
+                //Password = reader["password"].,
+                row.Email = reader["email"].ToString();
+                row.DateOfBirth = (DateTime)reader["dob"];
+                row.Created = (DateTime)reader["created"];
             }
-            return result;
+            return row;
         }
-        
+
+        //public List<User> GetUser(int userId)
+        //{
+        //    var cmd = new NpgsqlCommand("select * FROM public.user Where \"ID\" = @ID", connection.Connect());
+        //    cmd.Parameters.AddWithValue("ID", userId);
+        //    NpgsqlDataReader reader = cmd.ExecuteReader();
+        //    List<User> result = new List<User>();
+        //    while (reader.Read())
+        //    {
+        //        User row = new User()
+        //        {
+        //            Username = reader["username"].ToString(),
+        //            //Not sure how to work with bytea
+        //            //Password = reader["password"].,
+        //            Email = reader["email"].ToString(),
+        //            DateOfBirth = (DateTime)reader["dob"],
+        //            Created = (DateTime)reader["created"],
+        //        };
+        //        result.Add(row);
+        //    }
+        //    return result;
+        //}
+
         public bool DeleteUser(int userId)
         {
             using (var cmd = new NpgsqlCommand("call update_user('d', @ID)", connection.Connect()))

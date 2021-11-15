@@ -1,5 +1,4 @@
-﻿
-using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -13,7 +12,7 @@ using Webservice.ViewModels;
 namespace Webservice.Controllers
 {
     [ApiController]
-    [Route("api/bookmarks")] //??? dont remember
+    [Route("api/user/bookmarks")] //??? dont remember
     public class BookmarkController : Controller
     {
         IDataService _dataService;
@@ -29,9 +28,7 @@ namespace Webservice.Controllers
         //                      TitleBookmarks                    //
         ////////////////////////////////////////////////////////////
 
-        [HttpGet("user/{userID}", Name = nameof(GetBookmarkTitlesForUser))]
-        [ApiExplorerSettings(IgnoreApi = true)]
-
+        [HttpGet("titles")]
         public IActionResult GetBookmarkTitlesForUser(int userID)
         {
             var titleBMs = _dataService.GetTitleBMsByUserID(userID);
@@ -45,11 +42,10 @@ namespace Webservice.Controllers
         }
 
         [HttpPost]
-        [ApiExplorerSettings(IgnoreApi = true)]
         public IActionResult CreateBookmarkTitle(int userID, int titleID, string note)
         {
             // checks
-            if (_dataService.GetUser(userID) == null)
+            if (_dataService.GetUser(userID).Username == null)
             {
                 return NotFound("No user found");
             }
@@ -57,22 +53,10 @@ namespace Webservice.Controllers
             if (_dataService.GetTitleById(titleID) == null)
             {
                 return NotFound("No title Found");
+
             }
-
-            //Bookmarks_Title bookmark = new Bookmarks_Title();
-
-            //bookmark.User_Id = userID;
-            //bookmark.Title_Id = titleID;
-            //bookmark.Note = note;
-            //    and then having dataservice do this:
-            //                                          public void CreateBookmarkTitle(BookmarkTitle bookmarkTitle)
-            //                                          {
-            //                                          context.BookmarkTitles.Add(bookmarkTitle);
-            //                                          }
-
-
+            
             _dataService.CreateTitleBM(userID, titleID, note);
-
 
             //  ending needs change
 
@@ -83,7 +67,7 @@ namespace Webservice.Controllers
         {
             return new BookmarkTitleViewModel
             {
-                // Url = _linkGenerator.GetUriByName(HttpContext, nameof(GetBookmarkTitlesForUser), new { bookmarkTitle.Title_Id }),
+               // Url = _linkGenerator.GetUriByName(HttpContext, nameof(GetBookmarkTitlesForUser), new { bookmarkTitle.Title_Id }),
                 UserID = bookmarkTitle.User_Id,
                 TitleName = bookmarkTitle.Name
             };
@@ -93,46 +77,46 @@ namespace Webservice.Controllers
         //                  PersonalityBookmarks                  //
         ////////////////////////////////////////////////////////////
 
-        [HttpPost]
-        [ApiExplorerSettings(IgnoreApi = true)]
+        //[HttpPost]
+        //[ApiExplorerSettings(IgnoreApi = true)]
 
-        public IActionResult CreateBookmarkPersonality(int userID, int personalityID, string note)
-        {
+        //public IActionResult CreateBookmarkPersonality(int userID, int personalityID, string note)
+        //{
 
-            // checks
-            if (_dataService.GetUser(userID) == null)
-            {
-                return NotFound("No user found");
-            }
+        //    // checks
+        //    if (_dataService.GetUser(userID) == null)
+        //    {
+        //        return NotFound("No user found");
+        //    }
 
-            if (_dataService.GetTitleById(personalityID) == null)
-            {
-                return NotFound("No personality Found");
-            }
+        //    if (_dataService.GetTitleById(personalityID) == null)
+        //    {
+        //        return NotFound("No personality Found");
+        //    }
 
-            Bookmarks_Personality bookmark = new Bookmarks_Personality();
-            bookmark.User_Id = userID;
-            bookmark.Personality_Id = personalityID;
-            bookmark.Note = note;
-
-
-            //    not sure how else to end it, this is how i would end it
-            //    and then having dataservice do this:
-            //                                          public void CreateBookmarkTitle(BookmarkTitle bookmarkTitle)
-            //                                          {
-            //                                          context.BookmarkTitles.Add(bookmarkTitle);
-            //                                          }
+        //    Bookmarks_Personality bookmark = new Bookmarks_Personality();
+        //    bookmark.User_Id = userID;
+        //    bookmark.Personality_Id = personalityID;
+        //    bookmark.Note = note;
 
 
+        //    //    not sure how else to end it, this is how i would end it
+        //    //    and then having dataservice do this:
+        //    //                                          public void CreateBookmarkTitle(BookmarkTitle bookmarkTitle)
+        //    //                                          {
+        //    //                                          context.BookmarkTitles.Add(bookmarkTitle);
+        //    //                                          }
 
 
-            //   _dataService.CreatePersonalityBM(bookmark);
 
 
-            //  ending needs change
+        //    //   _dataService.CreatePersonalityBM(bookmark);
 
-            return null;
-        }
+
+        //    //  ending needs change
+
+        //    return null;
+        //}
 
 
 
