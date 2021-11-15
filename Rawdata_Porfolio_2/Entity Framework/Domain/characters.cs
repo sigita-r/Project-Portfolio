@@ -8,7 +8,7 @@ namespace Rawdata_Porfolio_2.Pages.Entity_Framework.Domain
 {
     public class Character
     {
-        
+        public string Name { get; set; }
         public int Personality_Id { get; set; }
         public Personality Personality { get; set; }
         public int Title_Id { get; set; }
