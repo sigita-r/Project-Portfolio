@@ -57,7 +57,7 @@ namespace Rawdata_Porfolio_2.Entity_Framework
 
         public bool CreateTitleBM(int userID, int titleID, string note);
 
-        public List<Bookmarks_Title> GetTitleBMByUserID(int userID);
+        public List<Bookmarks_Title> GetTitleBMsByUserID(int userID);
 
         public bool DeleteTitleBM(int userID, int titleID);
 
@@ -378,11 +378,10 @@ namespace Rawdata_Porfolio_2.Entity_Framework
                 cmd.Parameters.AddWithValue("note", note);
                 NpgsqlDataReader reader = cmd.ExecuteReader();
             }
-            connection.Connect().Close();
             return true;
         }
 
-        public List<Bookmarks_Title> GetTitleBMByUserID(int userID)
+        public List<Bookmarks_Title> GetTitleBMsByUserID(int userID)
         {
             var cmd = new NpgsqlCommand("select * FROM select_user_bookmarks('t', @ID)", connection.Connect());
             cmd.Parameters.AddWithValue("ID", userID);

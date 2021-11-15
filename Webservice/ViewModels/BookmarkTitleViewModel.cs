@@ -12,6 +12,8 @@ namespace Webservice.ViewModels
 
         public string Username { get; set; }
 
+        public int UserID { get; set; }
+
         public string TitleName { get; set; }
         public string TitleNote { get; set; }
     }
