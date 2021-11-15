@@ -27,9 +27,11 @@ namespace Rawdata_Porfolio_2
                  Console.WriteLine(bt.Name);
              }*/
             //  Console.WriteLine(ds.ReadCharacter(1));
-            /* I cant make this work, idk why
-             byte[] passExample = new byte[] { 1, 2, 3 };
-             Console.WriteLine(ds.CreateUser(1, "test", passExample, "mail@mail.com", DateTime.Parse("15/11/2021")));*/
+
+            Byte[] passExample = new Byte[] { 1, 2, 3 };
+             Console.WriteLine(ds.CreateUser(1, "test", passExample, "mail@mail.com", DateTime.Parse("15/11/2021")));
+
+
             /* Console.WriteLine(ds.GetKnownCharactersFromTitleById(1).Count);
 
              Console.WriteLine(ds.GetCharactersFromTitleById(1).Count);*/
@@ -47,6 +49,12 @@ namespace Rawdata_Porfolio_2
 
             //Console.WriteLine(ds.UpdateRating(1,1,4));
             //Console.WriteLine(ds.DeleteRating(1,1));
+
+
+            //Console.WriteLine(ds.DeleteSQ(1));
+           // Console.WriteLine(ds.GetSQ(1));
+
+
             CreateHostBuilder(args).Build().Run();
         }
 

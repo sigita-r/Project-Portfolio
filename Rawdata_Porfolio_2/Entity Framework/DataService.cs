@@ -68,7 +68,7 @@ namespace Rawdata_Porfolio_2.Entity_Framework
         //                          User                          //
         ////////////////////////////////////////////////////////////
 
-        public bool CreateUser(int userID, string username, byte [] password, string email, DateTime dob);
+        public bool CreateUser(int userID, string username, Byte[] password, string email, DateTime dob);
         List<User> GetUser(int userID);
         public bool DeleteUser(int userID);
        //Waiting with this one till i get how to do bytea, since users should be able to change passwords.
@@ -87,9 +87,9 @@ namespace Rawdata_Porfolio_2.Entity_Framework
         //                          SEARCH                        //
         ////////////////////////////////////////////////////////////
 
-        //public bool CreateSQ();
-        //Search_Queries GetSQ();
-        //public bool DeleteSQ();
+        //public bool CreateSQ(int userID, string query);
+        List<Search_Queries> GetSQ(int userID);
+        public bool DeleteSQ(int queryID);
 
 
         ////////////////////////////////////////////////////////////
@@ -429,7 +429,7 @@ namespace Rawdata_Porfolio_2.Entity_Framework
         //                          User                          //
         ////////////////////////////////////////////////////////////
  
-        public bool CreateUser(int userId, string username, byte[] password, string email, DateTime dob)
+        public bool CreateUser(int userId, string username, Byte[] password, string email, DateTime dob)
         {
              using (var cmd = new NpgsqlCommand("call update_user('n', @ID, @NAME, @PASS, @MAIL, @DOB)", connection.Connect()))
             {
@@ -524,10 +524,52 @@ namespace Rawdata_Porfolio_2.Entity_Framework
         ////////////////////////////////////////////////////////////
         //                          SEARCH                        //
         ////////////////////////////////////////////////////////////
+/* I shouldnt have made this. We insert the SQ with structured_string_search() in SQL
+        public bool CreateSQ(int userID, string query)
+        {
+            using (var cmd = new NpgsqlCommand("call update_search_queries(@UID, @QID, @QUERY, @DEL)", connection.Connect()))
+            {
+                cmd.Parameters.AddWithValue("UID", userID);
+                cmd.Parameters.AddWithValue("QID", int.MinValue);
+                cmd.Parameters.AddWithValue("QUERY", query);
+                cmd.Parameters.AddWithValue("DEL", false);
+                NpgsqlDataReader reader = cmd.ExecuteReader();
 
-        //Search_Queries CreateSQ() { }
-        //Search_Queries ReadSQ() { }
-        //Search_Queries DeleteSQ() { }
+            }
+            return true;
+        }
+        */
+        public List<Search_Queries> GetSQ(int userID)
+        {
+            var cmd = new NpgsqlCommand("select * from search_queries where \"user_ID\" = @UID ORDER BY timestamp DESC;", connection.Connect());
+            cmd.Parameters.AddWithValue("UID", userID);
+            NpgsqlDataReader reader = cmd.ExecuteReader();
+            List<Search_Queries> result = new List<Search_Queries>();
+            while (reader.Read())
+            {
+                Search_Queries row = new Search_Queries()
+                {
+                    Query = reader["query"].ToString(), // we have to do some seperating the string up some time, should we do it now?
+                    Timestamp = (DateTime)reader["timestamp"],
+
+                };
+                result.Add(row);
+            }
+            return result;
+        }
+        public bool DeleteSQ(int queryID)
+        {
+            using (var cmd = new NpgsqlCommand("call update_search_queries(@UID, @QID, @QUERY, @DEL)", connection.Connect()))
+            {
+                cmd.Parameters.AddWithValue("UID", int.MinValue);
+                cmd.Parameters.AddWithValue("QID", queryID);
+                cmd.Parameters.AddWithValue("QUERY", "");
+                cmd.Parameters.AddWithValue("DEL", true);
+                NpgsqlDataReader reader = cmd.ExecuteReader();
+
+            }
+            return true;
+        }
 
         ////////////////////////////////////////////////////////////
         //                          OTHER                         //
