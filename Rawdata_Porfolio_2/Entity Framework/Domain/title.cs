@@ -8,8 +8,6 @@ namespace Rawdata_Porfolio_2.Pages.Entity_Framework.Domain
 {
     public class Title
     {
-
-        
         [Key]
         public int Id { get; set; }
         public string Type { get; set; }
