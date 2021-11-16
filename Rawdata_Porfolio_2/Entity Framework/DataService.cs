@@ -447,7 +447,7 @@ namespace Rawdata_Porfolio_2.Entity_Framework
         public void CreateUser(string username, byte [] password, string email, DateTime dob)
         {
 
-            var ctx = new OurMDB_Context();
+         //   var ctx = new OurMDB_Context();
             var user = new User();
             user.Id = ctx.Users.Max(x => x.Id)+1;
             user.Username = username;
@@ -485,7 +485,7 @@ namespace Rawdata_Porfolio_2.Entity_Framework
         public void UpdateUser(int userID, string email, string username, Byte[] password, DateTime dob)
         {
 
-            var ctx = new OurMDB_Context();
+          //  var ctx = new OurMDB_Context();
             var user = ctx.Users.First(x => x.Id == userID);
             user.Username = username;
             user.Email = email;
