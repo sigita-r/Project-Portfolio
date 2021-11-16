@@ -59,8 +59,8 @@ namespace Rawdata_Porfolio_2
 
             //Console.WriteLine(ds.DeleteSQ(1));
             // Console.WriteLine(ds.GetSQ(1));
-            ds.GetEpisode(1);
-
+            //Console.WriteLine(ds.GetRole(212920, 41572));
+           // ds.ActorSearch(2, "Fred");
             CreateHostBuilder(args).Build().Run();
         }
 
