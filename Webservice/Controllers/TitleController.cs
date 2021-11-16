@@ -62,7 +62,23 @@ namespace Webservice.Controllers
 
             return Ok(titles.Select(x => GetTitleViewModel(x)));
         }
-        
+
+
+
+        private object CreateResultModel(QueryString queryString, int total, IEnumerable<TitleViewModel> model)
+        {
+            return new
+            {
+                total,
+                prev = CreateNextPageLink(queryString),
+                cur = CreateCurrentPageLink(queryString),
+                next = CreateNextPageLink(queryString, total),
+                items = model
+            };
+        }
+
+
+
         private TitleViewModel GetTitleViewModel(Title title)
         {
             return new TitleViewModel
