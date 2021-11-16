@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace DataServiceLib
+namespace Rawdata_Porfolio_2
 {
     public class QueryString
     {

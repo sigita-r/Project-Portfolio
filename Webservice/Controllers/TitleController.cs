@@ -77,7 +77,35 @@ namespace Webservice.Controllers
             };
         }
 
+        private string CreateNextPageLink(QueryString queryString, int total)
+        {
+            var lastPage = GetLastPage(queryString.PageSize, total);
+            return queryString.Page >= lastPage ? null : GetTitlesUrl(queryString.Page + 1, queryString.PageSize, queryString.OrderBy);
+        }
 
+
+        private string CreateCurrentPageLink(QueryString queryString)
+        {
+            return GetTitlesUrl(queryString.Page, queryString.PageSize, queryString.OrderBy);
+        }
+
+        private string CreateNextPageLink(QueryString queryString)
+        {
+            return queryString.Page <= 0 ? null : GetTitlesUrl(queryString.Page - 1, queryString.PageSize, queryString.OrderBy);
+        }
+
+        private static int GetLastPage(int pageSize, int total)
+        {
+            return (int)Math.Ceiling(total / (double)pageSize) - 1;
+        }
+
+        private string GetTitlesUrl(int page, int pageSize, string orderBy)
+        {
+            return _linkGenerator.GetUriByName(
+                HttpContext,
+                nameof(GetTitles),
+                new { page, pageSize, orderBy });
+        }
 
         private TitleViewModel GetTitleViewModel(Title title)
         {
