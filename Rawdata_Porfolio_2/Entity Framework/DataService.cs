@@ -48,46 +48,41 @@ namespace Rawdata_Porfolio_2.Entity_Framework
         //                       BOOKMARKS                        //
         ////////////////////////////////////////////////////////////
 
-        public bool CreatePersonalityBM(int userID, int personalityID, string note);
+        public void CreatePersonalityBM(int userID, int personalityID, string note);
 
         public List<Bookmarks_Personality> GetPersonalityBMsByUserID(int userID);
 
-        public bool DeletePersonalityBM(int userID, int personalityID);
+        public void DeletePersonalityBM(int userID, int personalityID);
 
-        public bool UpdatePersonalityBM(int userID, int personalityID, string note);
+        public void UpdatePersonalityBM(int userID, int personalityID, string note);
 
-        public bool CreateTitleBM(int userID, int titleID, string note);
+        public void CreateTitleBM(int userID, int titleID, string note);
 
         public List<Bookmarks_Title> GetTitleBMsByUserID(int userID);
 
-        public bool DeleteTitleBM(int userID, int titleID);
+        public void DeleteTitleBM(int userID, int titleID);
 
-        public bool UpdateTitleBM(int userID, int titleID, string note);
+        public void UpdateTitleBM(int userID, int titleID, string note);
 
 
         ////////////////////////////////////////////////////////////
         //                          User                          //
         ////////////////////////////////////////////////////////////
 
-        public bool CreateUser(/*int userID,*/ string username, byte [] password, string email, DateTime dob);
-       
-        // 
-       //  List<User> GetUser(int userID);
-        
+        public void CreateUser(string username, byte [] password, string email, DateTime dob);
         User GetUser(int userID);
-
-        public bool DeleteUser(int userID);
+        public void DeleteUser(int userID);
        //Waiting with this one till i get how to do bytea, since users should be able to change passwords.
-       // public bool UpdateUser(int userID, string email, string username);
+       public void UpdateUser(int userID, string email, string username, Byte[] password, DateTime dob);
 
         ////////////////////////////////////////////////////////////
         //                         RATINGS                        //
         ////////////////////////////////////////////////////////////
 
-        public bool CreateRating(int user_ID, int title_ID, Int16 rating);
-        //Rating GetRating();
-        public bool UpdateRating(int user_ID, int title_ID, Int16 rating);
-        public bool DeleteRating(int user_ID, int title_ID);
+        public void CreateRating(int user_ID, int title_ID, Int16 rating);
+        List<Rating> GetRating(int userID);
+        public void UpdateRating(int user_ID, int title_ID, Int16 rating);
+        public void DeleteRating(int user_ID, int title_ID);
 
         ////////////////////////////////////////////////////////////
         //                          SEARCH                        //
@@ -95,8 +90,9 @@ namespace Rawdata_Porfolio_2.Entity_Framework
 
        
         List<Search_Queries> GetSQ(int userID);
-        public bool DeleteSQ(int queryID);
+        public void DeleteSQ(int queryID);
 
+        
 
         ////////////////////////////////////////////////////////////
         //                          OTHER                         //
@@ -196,7 +192,7 @@ namespace Rawdata_Porfolio_2.Entity_Framework
             }
         }
 
-        /*
+     /*
        public List<Episode> ReadEpisode(int titleID)
        {
            using (var cmd = new NpgsqlCommand("SELECT name, ep_number, season FROM public.title, public.title_localization, public.episode WHERE title.type = 'tvEpisode' AND title.\"ID\" = @TID AND title.\"ID\" = title_localization.\"title_ID\" AND title.\"ID\" = episode.\"title_ID\" AND primary_title = true", connection.Connect()))
@@ -222,7 +218,7 @@ namespace Rawdata_Porfolio_2.Entity_Framework
                return result;
            }
        }
-       */
+     */
 
         public List<Title_Genre> GetTitleGenre(int title_id)
         {
@@ -239,9 +235,10 @@ namespace Rawdata_Porfolio_2.Entity_Framework
                     };
                     result.Add(row);
                 }
+                connection.Connect().Close();
                 return result;
             }
-
+         
         }
          
         //waiting with this till db is fixed up
@@ -266,8 +263,11 @@ namespace Rawdata_Porfolio_2.Entity_Framework
                     };
                     result.Add(row);
                 }
+                connection.Connect().Close();
                 return result;
+                
             }
+           
         }
         
         ////////////////////////////////////////////////////////////
@@ -294,11 +294,14 @@ namespace Rawdata_Porfolio_2.Entity_Framework
                     };
                     result.Add(row);
                 }
+                connection.Connect().Close();
                 return result;
             }
+     
         }
 
-        public List<Personality_Profession> GetPersonalityProfession(int personality_Id) {
+        public List<Personality_Profession> GetPersonalityProfession(int personality_Id) 
+        {
             using (var cmd = new NpgsqlCommand("SELECT profession FROM public.personality_professions WHERE \"personality_ID\" = @PID", connection.Connect()))
             {
                 cmd.Parameters.AddWithValue("PID", personality_Id);
@@ -312,9 +315,9 @@ namespace Rawdata_Porfolio_2.Entity_Framework
                     };
                     result.Add(row);
                 }
+                connection.Connect().Close();   
                 return result;
             }
-
         }
 
 
@@ -323,7 +326,7 @@ namespace Rawdata_Porfolio_2.Entity_Framework
         //                       BOOKMARKS                        //
         ////////////////////////////////////////////////////////////
 
-        public bool CreatePersonalityBM(int userID, int personalityID, string note)
+        public void CreatePersonalityBM(int userID, int personalityID, string note)
         {
             using (var cmd = new NpgsqlCommand("call update_bookmark('n', 'p', @ID, @PID, @note)", connection.Connect()))
             {
@@ -333,7 +336,6 @@ namespace Rawdata_Porfolio_2.Entity_Framework
                 NpgsqlDataReader reader = cmd.ExecuteReader();
             }
             connection.Connect().Close();
-            return true;
         }
 
         public List<Bookmarks_Personality> GetPersonalityBMsByUserID(int userID)
@@ -357,7 +359,7 @@ namespace Rawdata_Porfolio_2.Entity_Framework
             return result;
         }
 
-        public bool DeletePersonalityBM(int UserId, int PersonalityId)
+        public void DeletePersonalityBM(int UserId, int PersonalityId)
         {
             using (var cmd = new NpgsqlCommand("call update_bookmark('d','p', @ID, @PID)", connection.Connect()))
             {
@@ -365,10 +367,10 @@ namespace Rawdata_Porfolio_2.Entity_Framework
                 cmd.Parameters.AddWithValue("PID", PersonalityId);
                 NpgsqlDataReader reader = cmd.ExecuteReader();
             }
-            return true;
+            connection.Connect().Close();
         }
 
-        public bool UpdatePersonalityBM(int UserId, int PersonalityId, string note)
+        public void UpdatePersonalityBM(int UserId, int PersonalityId, string note)
         {
             using (var cmd = new NpgsqlCommand("call update_bookmark('u','p', @ID, @PID, @NOTE)", connection.Connect()))
             {
@@ -378,10 +380,10 @@ namespace Rawdata_Porfolio_2.Entity_Framework
 
                 NpgsqlDataReader reader = cmd.ExecuteReader();
             }
-            return true;
+            connection.Connect().Close();
         }
 
-        public bool CreateTitleBM(int userID, int titleID, string note)
+        public void CreateTitleBM(int userID, int titleID, string note)
         {
             using (var cmd = new NpgsqlCommand("call update_bookmark('n', 't', @ID, @PID, @note)", connection.Connect()))
             {
@@ -390,7 +392,7 @@ namespace Rawdata_Porfolio_2.Entity_Framework
                 cmd.Parameters.AddWithValue("note", note);
                 NpgsqlDataReader reader = cmd.ExecuteReader();
             }
-            return true;
+            connection.Connect().Close();
         }
 
         public List<Bookmarks_Title> GetTitleBMsByUserID(int userID)
@@ -409,10 +411,11 @@ namespace Rawdata_Porfolio_2.Entity_Framework
                 };
                 result.Add(row);
             }
+            connection.Connect().Close();
             return result;
         }
 
-        public bool DeleteTitleBM(int userID, int titleID)
+        public void DeleteTitleBM(int userID, int titleID)
         {
             using (var cmd = new NpgsqlCommand("call update_bookmark('d','t', @ID, @PID)", connection.Connect()))
             {
@@ -420,10 +423,11 @@ namespace Rawdata_Porfolio_2.Entity_Framework
                 cmd.Parameters.AddWithValue("PID", titleID);
                 NpgsqlDataReader reader = cmd.ExecuteReader();
             }
-            return true;
+            connection.Connect().Close();
+
         }
 
-        public bool UpdateTitleBM(int userID, int titleID, string note)
+        public void UpdateTitleBM(int userID, int titleID, string note)
         {
             using (var cmd = new NpgsqlCommand("call update_bookmark('u','t', @ID, @TID, @NOTE)", connection.Connect()))
             {
@@ -433,25 +437,27 @@ namespace Rawdata_Porfolio_2.Entity_Framework
 
                 NpgsqlDataReader reader = cmd.ExecuteReader();
             }
-            return true;
+            connection.Connect().Close();
         }
 
         ////////////////////////////////////////////////////////////
         //                          User                          //
         ////////////////////////////////////////////////////////////
  
-        public bool CreateUser(/*int userId,*/ string username, byte [] password, string email, DateTime dob)
+        public void CreateUser(string username, byte [] password, string email, DateTime dob)
         {
-             using (var cmd = new NpgsqlCommand("call update_user('n', @ID, @NAME, @PASS, @MAIL, @DOB)", connection.Connect()))
-            {
-              //  cmd.Parameters.AddWithValue("ID", userId);
-                cmd.Parameters.AddWithValue("NAME", username);
-                cmd.Parameters.AddWithValue("PASS", password);
-                cmd.Parameters.AddWithValue("MAIL", email);
-                cmd.Parameters.AddWithValue("DOB", dob);
-                NpgsqlDataReader reader = cmd.ExecuteReader();
-            }
-            return true;
+
+            var ctx = new OurMDB_Context();
+            var user = new User();
+            user.Id = ctx.Users.Max(x => x.Id)+1;
+            user.Username = username;
+            user.Password = password;
+            user.Email = email;
+            user.DateOfBirth = dob;
+            ctx.Add(user);
+            ctx.SaveChanges();
+            
+            
         }
 
         public User GetUser(int userId)
@@ -476,30 +482,30 @@ namespace Rawdata_Porfolio_2.Entity_Framework
             return ctx.Users.Find(userId);
         }
 
-        //// This is an old version of a method, that im not sure we need
-        //public List<User> GetUser(int userId)
-        //{
-        //    var cmd = new NpgsqlCommand("select * FROM public.user Where \"ID\" = @ID", connection.Connect());
-        //    cmd.Parameters.AddWithValue("ID", userId);
-        //    NpgsqlDataReader reader = cmd.ExecuteReader();
-        //    List<User> result = new List<User>();
-        //    while (reader.Read())
-        //    {
-        //        User row = new User()
-        //        {
-        //            Username = reader["username"].ToString(),
-        //            //Not sure how to work with bytea
-        //            //Password = reader["password"].,
-        //            Email = reader["email"].ToString(),
-        //            DateOfBirth = (DateTime)reader["dob"],
-        //            Created = (DateTime)reader["created"],
-        //        };
-        //        result.Add(row);
-        //    }
-        //    return result;
-        //}
+        public void UpdateUser(int userID, string email, string username, Byte[] password, DateTime dob)
+        {
 
-        public bool DeleteUser(int userId)
+            var ctx = new OurMDB_Context();
+            var user = ctx.Users.First(x => x.Id == userID);
+            user.Username = username;
+            user.Email = email;
+            user.Password = password;
+            user.DateOfBirth = dob;
+            ctx.SaveChanges();
+
+
+
+            /*
+            using var cmd = new NpgsqlCommand("call update_user('u', @ID, @USERNAME, @PASS, @EMAIL, @DOB)", connection.Connect());
+            cmd.Parameters.AddWithValue("ID", userID);
+            cmd.Parameters.AddWithValue("USERNAME", username);
+            cmd.Parameters.AddWithValue("PASS", password);
+            cmd.Parameters.AddWithValue("EMAIL", email);
+            cmd.Parameters.AddWithValue("DOB", dob);
+            NpgsqlDataReader reader = cmd.ExecuteReader();
+            */
+        }
+        public void DeleteUser(int userId)
         {
             using (var cmd = new NpgsqlCommand("call update_user('d', @ID)", connection.Connect()))
             {
@@ -507,13 +513,13 @@ namespace Rawdata_Porfolio_2.Entity_Framework
                 NpgsqlDataReader reader = cmd.ExecuteReader();
 
             }
-            return true;
+            connection.Connect().Close();
         }
         ////////////////////////////////////////////////////////////
         //                         RATINGS                        //
         ////////////////////////////////////////////////////////////
 
-        public bool CreateRating(int user_ID, int title_ID, Int16 rating)
+        public void CreateRating(int user_ID, int title_ID, Int16 rating)
         {
             using (var cmd = new NpgsqlCommand("call update_rating(@UID, @TID, @RATING, @DEL)", connection.Connect()))
             {
@@ -524,11 +530,31 @@ namespace Rawdata_Porfolio_2.Entity_Framework
                 NpgsqlDataReader reader = cmd.ExecuteReader();
             }
             connection.Connect().Close();
-            return true;
-        }
-        //List<Rating> ReadRating() { }
 
-        public bool UpdateRating(int user_ID, int title_ID, Int16 rating)
+
+        }
+        public List<Rating> GetRating(int userID)
+        {
+            var cmd = new NpgsqlCommand("", connection.Connect());
+            cmd.Parameters.AddWithValue("UID", userID);
+            NpgsqlDataReader reader = cmd.ExecuteReader();
+            List<Rating> result = new List<Rating>();
+            while (reader.Read())
+            {
+                Rating row = new Rating()
+                {
+                    Title_Id = (int)reader["title_ID"],
+                    RatingOfTitle= (int)reader["rating"],
+                    Timestamp = (DateTime)reader["timestamp"],
+
+                };
+                result.Add(row);
+            }
+            connection.Connect().Close();
+            return result;
+        }
+
+        public void UpdateRating(int user_ID, int title_ID, Int16 rating)
         {
             using (var cmd = new NpgsqlCommand("call update_rating(@UID, @TID, @RATING, @DEL)", connection.Connect()))
             {
@@ -539,9 +565,9 @@ namespace Rawdata_Porfolio_2.Entity_Framework
                 NpgsqlDataReader reader = cmd.ExecuteReader();
             }
             connection.Connect().Close();
-            return true;
+            
         }
-        public bool DeleteRating(int user_ID, int title_ID)
+        public void DeleteRating(int user_ID, int title_ID)
         {
             using (var cmd = new NpgsqlCommand("call update_rating(@UID, @TID, @RATING, @DEL)", connection.Connect()))
             {
@@ -552,7 +578,6 @@ namespace Rawdata_Porfolio_2.Entity_Framework
                 NpgsqlDataReader reader = cmd.ExecuteReader();
             }
             connection.Connect().Close();
-            return true;
         }
 
         ////////////////////////////////////////////////////////////
@@ -574,9 +599,10 @@ namespace Rawdata_Porfolio_2.Entity_Framework
                 };
                 result.Add(row);
             }
+            connection.Connect().Close();
             return result;
         }
-        public bool DeleteSQ(int queryID)
+        public void DeleteSQ(int queryID)
         {
             using (var cmd = new NpgsqlCommand("call update_search_queries(@UID, @QID, @QUERY, @DEL)", connection.Connect()))
             {
@@ -587,7 +613,7 @@ namespace Rawdata_Porfolio_2.Entity_Framework
                 NpgsqlDataReader reader = cmd.ExecuteReader();
 
             }
-            return true;
+            connection.Connect().Close();
         }
 
         ////////////////////////////////////////////////////////////

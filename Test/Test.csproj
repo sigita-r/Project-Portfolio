@@ -9,4 +9,8 @@
     <PackageReference Include="xunit.extensibility.core" Version="2.4.1" />
   </ItemGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\Rawdata_Porfolio_2\Rawdata_Porfolio_2.csproj" />
+  </ItemGroup>
+
 </Project>
