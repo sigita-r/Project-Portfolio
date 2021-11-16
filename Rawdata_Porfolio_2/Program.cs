@@ -31,18 +31,18 @@ namespace Rawdata_Porfolio_2
             //  Console.WriteLine(ds.ReadCharacter(1));
 
 
-           /* string plainData = "password";
-            var hashedData = ComputeSha256Hash(plainData);
-            
-            ds.CreateUser("test", hashedData, "mail@mail.com", DateTime.Today);*/
+            string plainData = "password";
+             var hashedData = ComputeSha256Hash(plainData);
+
+            // ds.CreateUser("test", hashedData, "mail@mail.com", DateTime.Today);
 
 
             /* Console.WriteLine(ds.GetKnownCharactersFromTitleById(1).Count);
 
              Console.WriteLine(ds.GetCharactersFromTitleById(1).Count);*/
 
-            
-            //Console.WriteLine(ds.GetUser(1));
+           // ds.UpdateUser(2, "newmail@mail.com", "newname", hashedData, DateTime.Today);
+            //Console.WriteLine(ds.GetUser(2));
             //Console.WriteLine(ds.DeleteUser(3));
             /* Console.WriteLine(ds.GetTitleGenre(1));
 

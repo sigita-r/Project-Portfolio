@@ -73,7 +73,7 @@ namespace Rawdata_Porfolio_2.Entity_Framework
         User GetUser(int userID);
         public void DeleteUser(int userID);
        //Waiting with this one till i get how to do bytea, since users should be able to change passwords.
-       // public bool UpdateUser(int userID, string email, string username);
+       public void UpdateUser(int userID, string email, string username, Byte[] password, DateTime dob);
 
         ////////////////////////////////////////////////////////////
         //                         RATINGS                        //
@@ -445,17 +445,7 @@ namespace Rawdata_Porfolio_2.Entity_Framework
         ////////////////////////////////////////////////////////////
  
         public void CreateUser(string username, byte [] password, string email, DateTime dob)
-        {/*
-             using (var cmd = new NpgsqlCommand("call update_user('n', @ID, @NAME, @PASS, @MAIL, @DOB)", connection.Connect()))
-            {
-              //  cmd.Parameters.AddWithValue("ID", userId);
-                cmd.Parameters.AddWithValue("NAME", username);
-                cmd.Parameters.AddWithValue("PASS", password);
-                cmd.Parameters.AddWithValue("MAIL", email);
-                cmd.Parameters.AddWithValue("DOB", dob);
-                NpgsqlDataReader reader = cmd.ExecuteReader();
-            }
-            connection.Connect().Close();*/
+        {
 
             var ctx = new OurMDB_Context();
             var user = new User();
@@ -466,6 +456,7 @@ namespace Rawdata_Porfolio_2.Entity_Framework
             user.DateOfBirth = dob;
             ctx.Add(user);
             ctx.SaveChanges();
+            
             
         }
 
@@ -482,7 +473,7 @@ namespace Rawdata_Porfolio_2.Entity_Framework
             while (reader.Read())
             {
                 user.Username = reader["username"].ToString();
-                //user.Password = (Byte[])reader["password"];
+                //user.Password = (Byte[])reader["password"]; // Patrik and i dont think user should be able to see their password after creating account.
                 user.Email = reader["email"].ToString();
                 user.DateOfBirth = (DateTime)reader["dob"];
                 user.Created = (DateTime)reader["created"];
@@ -490,29 +481,29 @@ namespace Rawdata_Porfolio_2.Entity_Framework
             return user;
         }
 
-        //// This is an old version of a method, that im not sure we need
-        //public List<User> GetUser(int userId)
-        //{
-        //    var cmd = new NpgsqlCommand("select * FROM public.user Where \"ID\" = @ID", connection.Connect());
-        //    cmd.Parameters.AddWithValue("ID", userId);
-        //    NpgsqlDataReader reader = cmd.ExecuteReader();
-        //    List<User> result = new List<User>();
-        //    while (reader.Read())
-        //    {
-        //        User row = new User()
-        //        {
-        //            Username = reader["username"].ToString(),
-        //            //Not sure how to work with bytea
-        //            //Password = reader["password"].,
-        //            Email = reader["email"].ToString(),
-        //            DateOfBirth = (DateTime)reader["dob"],
-        //            Created = (DateTime)reader["created"],
-        //        };
-        //        result.Add(row);
-        //    }
-        //    return result;
-        //}
+        public void UpdateUser(int userID, string email, string username, Byte[] password, DateTime dob)
+        {
 
+            var ctx = new OurMDB_Context();
+            var user = ctx.Users.First(x => x.Id == userID);
+            user.Username = username;
+            user.Email = email;
+            user.Password = password;
+            user.DateOfBirth = dob;
+            ctx.SaveChanges();
+
+
+
+            /*
+            using var cmd = new NpgsqlCommand("call update_user('u', @ID, @USERNAME, @PASS, @EMAIL, @DOB)", connection.Connect());
+            cmd.Parameters.AddWithValue("ID", userID);
+            cmd.Parameters.AddWithValue("USERNAME", username);
+            cmd.Parameters.AddWithValue("PASS", password);
+            cmd.Parameters.AddWithValue("EMAIL", email);
+            cmd.Parameters.AddWithValue("DOB", dob);
+            NpgsqlDataReader reader = cmd.ExecuteReader();
+            */
+        }
         public void DeleteUser(int userId)
         {
             using (var cmd = new NpgsqlCommand("call update_user('d', @ID)", connection.Connect()))
