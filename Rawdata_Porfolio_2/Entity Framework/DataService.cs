@@ -447,7 +447,6 @@ namespace Rawdata_Porfolio_2.Entity_Framework
         public void CreateUser(string username, byte [] password, string email, DateTime dob)
         {
 
-         //   var ctx = new OurMDB_Context();
             var user = new User();
             user.Id = ctx.Users.Max(x => x.Id)+1;
             user.Username = username;
@@ -462,30 +461,12 @@ namespace Rawdata_Porfolio_2.Entity_Framework
 
         public User GetUser(int userId)
         {
-            // var cmd = new NpgsqlCommand("select * FROM public.user Where \"ID\" = @ID", connection.Connect());
-            // cmd.Parameters.AddWithValue("@ID", userId);
-
-            //// SqlParameter paramDanId = new SqlParameter("@ID", userId);
-
-            // NpgsqlDataReader reader = cmd.ExecuteReader();
-
-            // User user = new User();
-            // while (reader.Read())
-            // {
-            //     user.Username = reader["username"].ToString();
-            //     user.Password = reader["password"].ToString();
-            //     user.Email = reader["email"].ToString();
-            //     user.DateOfBirth = (DateTime)reader["dob"];
-            //     user.Created = (DateTime)reader["created"];
-            // }
-
             return ctx.Users.Find(userId);
         }
 
         public void UpdateUser(int userID, string email, string username, Byte[] password, DateTime dob)
         {
 
-          //  var ctx = new OurMDB_Context();
             var user = ctx.Users.First(x => x.Id == userID);
             user.Username = username;
             user.Email = email;
