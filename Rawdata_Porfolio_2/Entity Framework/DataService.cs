@@ -70,7 +70,7 @@ namespace Rawdata_Porfolio_2.Entity_Framework
         ////////////////////////////////////////////////////////////
 
         public bool CreateUser(int userID, string username, byte [] password, string email, DateTime dob);
-        List<User> GetUser(int userID);
+     //   List<User> GetUser(int userID);
         public bool DeleteUser(int userID);
        //Waiting with this one till i get how to do bytea, since users should be able to change passwords.
        // public bool UpdateUser(int userID, string email, string username);
@@ -448,7 +448,7 @@ namespace Rawdata_Porfolio_2.Entity_Framework
             }
             return true;
         }
-
+/*
         public User GetUser(int userId)
         {
             var cmd = new NpgsqlCommand("select * FROM public.user Where \"ID\" = @ID", connection.Connect());
@@ -470,7 +470,7 @@ namespace Rawdata_Porfolio_2.Entity_Framework
             }
             return user;
         }
-
+*/
         //public List<User> GetUser(int userId)
         //{
         //    var cmd = new NpgsqlCommand("select * FROM public.user Where \"ID\" = @ID", connection.Connect());
