@@ -21,7 +21,8 @@ namespace Rawdata_Porfolio_2.Entity_Framework
         IEnumerable<Title> GetTitles();
 
         Title GetTitleById(int Id);
-        List<Character> GetKnownCharactersFromTitleById(int personality_Id);
+
+        List<Character> GetKnownCharactersFromPersonalityById(int personality_Id);
 
          public List<Character> GetCharactersFromTitleById(int title_Id);
 
@@ -169,7 +170,7 @@ namespace Rawdata_Porfolio_2.Entity_Framework
             }
         }
 
-        public List<Character> GetKnownCharactersFromTitleById(int title_Id)
+        public List<Character> GetKnownCharactersFromPersonalityById(int title_Id)
         {
 
             using (var cmd = new NpgsqlCommand("SELECT DISTINCT personality.\"ID\", personality.\"name\", " +
@@ -603,6 +604,10 @@ namespace Rawdata_Porfolio_2.Entity_Framework
             connection.Connect().Close();
             return result;
         }
+
+
+        // this dont seem to make sense - from sigita and mads, where is the userid, we need a userid to know from who the
+        // search should be deleted, which it doesnt take
         public void DeleteSQ(int queryID)
         {
             using (var cmd = new NpgsqlCommand("call update_search_queries(@UID, @QID, @QUERY, @DEL)", connection.Connect()))
