@@ -21,7 +21,8 @@ namespace Rawdata_Porfolio_2.Entity_Framework
         IEnumerable<Title> GetTitles();
 
         Title GetTitleById(int Id);
-        List<Character> GetKnownCharactersFromTitleById(int personality_Id);
+
+        List<Character> GetKnownCharactersFromPersonalityById(int personality_Id);
 
          public List<Character> GetCharactersFromTitleById(int title_Id);
 
@@ -147,7 +148,7 @@ namespace Rawdata_Porfolio_2.Entity_Framework
         public List<Character> GetCharactersFromTitleById(int title_Id)
         {
             
-            using (var cmd = new NpgsqlCommand("SELECT DISTINCT personality.\"name\", " +
+            using (var cmd = new NpgsqlCommand("SELECT DISTINCT personality.\"ID\", personality.\"name\", " +
                 "\"character\" FROM public.title_localization, public.characters left join personality on characters.\"personality_ID\" = personality.\"ID\" " +
                 "WHERE characters.\"title_ID\" = @TID AND title_localization.primary_title = true ", connection.Connect()))
             {
@@ -160,6 +161,7 @@ namespace Rawdata_Porfolio_2.Entity_Framework
                     {
                         CharacterOfPersonality = reader["character"].ToString(),
                         Name = reader["name"].ToString(),
+                        Personality_Id = (int)reader["ID"],
 
                     };
                     result.Add(row);
@@ -169,10 +171,10 @@ namespace Rawdata_Porfolio_2.Entity_Framework
             }
         }
 
-        public List<Character> GetKnownCharactersFromTitleById(int title_Id)
+        public List<Character> GetKnownCharactersFromPersonalityById(int title_Id)
         {
 
-            using (var cmd = new NpgsqlCommand("SELECT DISTINCT personality.\"name\", " +
+            using (var cmd = new NpgsqlCommand("SELECT DISTINCT personality.\"ID\", personality.\"name\", " +
                 "\"character\" FROM public.title_localization, public.characters left join personality on characters.\"personality_ID\" = personality.\"ID\" " +
                 "WHERE characters.\"title_ID\" = @TID AND title_localization.primary_title = true AND known_for = true ", connection.Connect()))
             {
@@ -185,6 +187,7 @@ namespace Rawdata_Porfolio_2.Entity_Framework
                     {
                         CharacterOfPersonality = reader["character"].ToString(),
                         Name = reader["name"].ToString(),
+                        Personality_Id = (int)reader["ID"],
 
                     };
                     result.Add(row);
@@ -197,7 +200,7 @@ namespace Rawdata_Porfolio_2.Entity_Framework
      
        public List<Episode> GetEpisode(int titleID)
        {
-           using (var cmd = new NpgsqlCommand("SELECT title_localization.name, episode.ep_number, episode.season FROM public.title_localization, public.episode WHERE \"episode.ID\" = 2256 AND \"title_localization.title_ID\" = 2256 AND title_localization.primary_title = true", connection.Connect()))
+           using (var cmd = new NpgsqlCommand("SELECT title_localization.name, episode.ep_number, episode.season FROM public.title_localization, public.episode WHERE episode.\"ID\" = @TID AND title_localization.\"title_ID\" = @TID AND title_localization.primary_title = true", connection.Connect()))
            {
                 cmd.Parameters.AddWithValue("TID", titleID);
                NpgsqlDataReader reader = cmd.ExecuteReader();
@@ -218,7 +221,7 @@ namespace Rawdata_Porfolio_2.Entity_Framework
 
         public List<Episode> GetAllEpisodes(int titleID)
         {
-            using (var cmd = new NpgsqlCommand("", connection.Connect()))
+            using (var cmd = new NpgsqlCommand("SELECT title_localization.name, episode.\"ID\", episode.ep_number, episode.season FROM public.title_localization, public.episode WHERE episode.\"parent_ID\" = @TID AND title_localization.\"title_ID\" = episode.\"ID\" AND title_localization.primary_title = true", connection.Connect()))
             {
                 cmd.Parameters.AddWithValue("TID", titleID);
                 NpgsqlDataReader reader = cmd.ExecuteReader();
@@ -230,6 +233,7 @@ namespace Rawdata_Porfolio_2.Entity_Framework
                         Name = reader["name"].ToString(),
                         Ep_Number = (int)reader["ep_number"],
                         Season = (int)reader["season"],
+                        Id = (int)reader["ID"],
                     };
                     result.Add(row);
                 }
@@ -466,7 +470,7 @@ namespace Rawdata_Porfolio_2.Entity_Framework
 
 
             var user = new User();
-            user.Id = ctx.Users.Max(x => x.Id)+1;
+            user.Id = ctx.Users.Max(x => x.Id)+1;   // Since the ID column is a serial type (meaning that the value is auto-incremented on each new entry), do we even need this line?
             user.Username = username;
             user.Password = password;
             user.Email = email;
@@ -621,6 +625,10 @@ namespace Rawdata_Porfolio_2.Entity_Framework
             connection.Connect().Close();
             return result;
         }
+
+
+        // this dont seem to make sense - from sigita and mads, where is the userid, we need a userid to know from who the
+        // search should be deleted, which it doesnt take
         public void DeleteSQ(int queryID)
         {
             using (var cmd = new NpgsqlCommand("call update_search_queries(@UID, @QID, @QUERY, @DEL)", connection.Connect()))
