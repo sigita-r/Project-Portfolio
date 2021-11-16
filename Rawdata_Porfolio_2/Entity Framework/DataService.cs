@@ -456,23 +456,24 @@ namespace Rawdata_Porfolio_2.Entity_Framework
 
         public User GetUser(int userId)
         {
-            var cmd = new NpgsqlCommand("select * FROM public.user Where \"ID\" = @ID", connection.Connect());
-            cmd.Parameters.AddWithValue("@ID", userId);
+            // var cmd = new NpgsqlCommand("select * FROM public.user Where \"ID\" = @ID", connection.Connect());
+            // cmd.Parameters.AddWithValue("@ID", userId);
 
-           // SqlParameter paramDanId = new SqlParameter("@ID", userId);
+            //// SqlParameter paramDanId = new SqlParameter("@ID", userId);
 
-            NpgsqlDataReader reader = cmd.ExecuteReader();
+            // NpgsqlDataReader reader = cmd.ExecuteReader();
 
-            User user = new User();
-            while (reader.Read())
-            {
-                user.Username = reader["username"].ToString();
-                user.Password = reader["password"].ToString();
-                user.Email = reader["email"].ToString();
-                user.DateOfBirth = (DateTime)reader["dob"];
-                user.Created = (DateTime)reader["created"];
-            }
-            return user;
+            // User user = new User();
+            // while (reader.Read())
+            // {
+            //     user.Username = reader["username"].ToString();
+            //     user.Password = reader["password"].ToString();
+            //     user.Email = reader["email"].ToString();
+            //     user.DateOfBirth = (DateTime)reader["dob"];
+            //     user.Created = (DateTime)reader["created"];
+            // }
+
+            return ctx.Users.Find(userId);
         }
 
         //// This is an old version of a method, that im not sure we need

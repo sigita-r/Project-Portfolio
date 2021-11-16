@@ -25,7 +25,10 @@ namespace Webservice.Controllers
             _linkGenerator = linkGenerator;
         }
 
-        [HttpGet("{id}", Name = nameof(GetUser))]
+        // works in a bad way, cant get it to work correctly
+     //   [HttpGet("{id}", Name = nameof(GetUser))]
+        [HttpGet("id", Name = nameof(GetUser))]
+
         public IActionResult GetUser(int ID)
         {
             var user = _dataService.GetUser(ID);
@@ -62,7 +65,7 @@ namespace Webservice.Controllers
         {
             return new UserViewModel
             {
-                Url = _linkGenerator.GetUriByName(HttpContext, nameof(GetUser), new { user.Id }),
+               // Url = _linkGenerator.GetUriByName(HttpContext, nameof(GetUser), new { user.Id }),
                 Username = user.Username,
                 Email = user.Email,
                 DateOfBirth = user.DateOfBirth

@@ -7,12 +7,12 @@ namespace Webservice.ViewModels
 {
     public class UserViewModel
     {
-        public string Url { get; set; }
+        public string? Url { get; set; }
 
 
-        public string Username { get; set; }
-        public string Email { get; set; }
-        public DateTime DateOfBirth { get; set; }
+        public string? Username { get; set; }
+        public string? Email { get; set; }
+        public DateTime? DateOfBirth { get; set; }
         
 
         // bookmarks ??

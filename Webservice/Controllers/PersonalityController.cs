@@ -34,7 +34,7 @@ namespace Webservice.Controllers
             return Ok(GetPersonalityViewModel(personality));
         }
 
-
+        /*
         [HttpGet("{id}", Name = nameof(GetCharactersFromPersonality))]
         [ApiExplorerSettings(IgnoreApi = true)]
         public IActionResult GetCharactersFromPersonality(int id)
@@ -46,6 +46,7 @@ namespace Webservice.Controllers
             }
             return Ok(characters);
         }
+        */
 
         private PersonalityViewModel GetPersonalityViewModel(Personality personality)
         {
