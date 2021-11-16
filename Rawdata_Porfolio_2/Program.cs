@@ -31,10 +31,10 @@ namespace Rawdata_Porfolio_2
             //  Console.WriteLine(ds.ReadCharacter(1));
 
 
-            string plainData = "password";
+           /* string plainData = "password";
             var hashedData = ComputeSha256Hash(plainData);
             
-            //Console.WriteLine(ds.CreateUser(1,"test", hashedData, "mail@mail.com", DateTime.Today));
+            ds.CreateUser("test", hashedData, "mail@mail.com", DateTime.Today);*/
 
 
             /* Console.WriteLine(ds.GetKnownCharactersFromTitleById(1).Count);

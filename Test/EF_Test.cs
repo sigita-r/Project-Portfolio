@@ -1,14 +1,17 @@
 ﻿using System;
 using Xunit;
+using Rawdata_Porfolio_2.Pages.Entity_Framework.Domain;
+
 
 namespace Test
 {
     class EF_Test
     {
        [Fact] 
-       public void x()
+       public void GetUser()
         {
-                
+            var user = new User();
+         
         }
     }
 }
