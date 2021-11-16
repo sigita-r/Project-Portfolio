@@ -79,6 +79,7 @@ namespace Rawdata_Porfolio_2.Entity_Framework
         //                         RATINGS                        //
         ////////////////////////////////////////////////////////////
 
+        public List<Title> GetAvgRatingFromTitleId(int title_ID);
         public void CreateRating(int user_ID, int title_ID, Int16 rating);
         List<Rating> GetRating(int userID);
         public void UpdateRating(int user_ID, int title_ID, Int16 rating);
@@ -88,7 +89,7 @@ namespace Rawdata_Porfolio_2.Entity_Framework
         //                          SEARCH                        //
         ////////////////////////////////////////////////////////////
 
-       
+        List<Personality> ActorSearch(int user_Id, string query); 
         List<Search_Queries> GetSQ(int userID);
         public void DeleteSQ(int queryID);
 
@@ -533,7 +534,7 @@ namespace Rawdata_Porfolio_2.Entity_Framework
         }
         public List<Rating> GetRating(int userID)
         {
-            var cmd = new NpgsqlCommand("", connection.Connect());
+            var cmd = new NpgsqlCommand("select rating from ratings where \"user_ID\" @UID", connection.Connect());
             cmd.Parameters.AddWithValue("UID", userID);
             NpgsqlDataReader reader = cmd.ExecuteReader();
             List<Rating> result = new List<Rating>();
@@ -578,6 +579,26 @@ namespace Rawdata_Porfolio_2.Entity_Framework
             connection.Connect().Close();
         }
 
+        public List<Title> GetAvgRatingFromTitleId(int title_ID)
+        {
+            var cmd = new NpgsqlCommand("select avg_rating from title where \"title_ID\" = @TID", connection.Connect());
+            cmd.Parameters.AddWithValue("TID", title_ID);
+            NpgsqlDataReader reader = cmd.ExecuteReader();
+            List<Title> result = new List<Title>();
+            while (reader.Read())
+            {
+                Title row = new Title()
+                {
+                    Id = (int)reader["title_ID"],
+                    AvgRating = (int)reader["avg_rating"],
+                 
+
+                };
+                result.Add(row);
+            }
+            connection.Connect().Close();
+            return result;
+        }
         ////////////////////////////////////////////////////////////
         //                          SEARCH                        //
         ////////////////////////////////////////////////////////////
@@ -614,6 +635,29 @@ namespace Rawdata_Porfolio_2.Entity_Framework
             connection.Connect().Close();
         }
 
+        public List<Personality> ActorSearch(int user_Id, string query)
+        {
+            var cmd = new NpgsqlCommand("select * from actor_search(@UID, @QUERY);", connection.Connect());
+            cmd.Parameters.AddWithValue("UID", user_Id);
+            cmd.Parameters.AddWithValue("QUERY", query);
+            NpgsqlDataReader reader = cmd.ExecuteReader();
+            List<Personality> result = new List<Personality>();
+            while (reader.Read())
+            {
+                Personality row = new Personality()
+                {
+                    Id = (int)reader["ID"],
+                    Name = reader["name"].ToString(),
+                    Year_Birth = (int)reader["year_birth"],
+                    Year_Death = (int)reader["year_death"],
+                };
+                result.Add(row);
+            }
+            connection.Connect().Close();
+            return result;
+        }
+
+
         ////////////////////////////////////////////////////////////
         //                          OTHER                         //
         ////////////////////////////////////////////////////////////
@@ -640,8 +684,9 @@ namespace Rawdata_Porfolio_2.Entity_Framework
 
            public List<Role> GetRole(int titleID, int personalityID)
         {
-            var cmd = new NpgsqlCommand("", connection.Connect());
-            cmd.Parameters.AddWithValue("");
+            var cmd = new NpgsqlCommand("select role from roles where \"title_ID\" = @TID AND \"personality_ID\" = @PID", connection.Connect());
+            cmd.Parameters.AddWithValue("TID", titleID);
+            cmd.Parameters.AddWithValue("PID", personalityID);
             NpgsqlDataReader reader = cmd.ExecuteReader();
             List<Role> result = new List<Role>();
             while (reader.Read())
