@@ -10,6 +10,7 @@ using Rawdata_Porfolio_2.Entity_Framework;
 using System.Security.Cryptography;
 using System.Text;
 using Rawdata_Porfolio_2.Pages.Entity_Framework.Domain;
+using Rawdata_Porfolio_2.Entity_Framework.Domain;
 
 namespace Rawdata_Porfolio_2
 {
@@ -60,7 +61,14 @@ namespace Rawdata_Porfolio_2
             //Console.WriteLine(ds.DeleteSQ(1));
             // Console.WriteLine(ds.GetSQ(1));
             //Console.WriteLine(ds.GetRole(212920, 41572));
-           // ds.ActorSearch(2, "Fred");
+           // Console.WriteLine( ds.ActorSearch(2, "Fred"));
+
+           
+            foreach (Search_results sr in ds.StringSearch(2, "batman"))
+            {
+                Console.WriteLine(sr.Title_Name + sr.Title_ID);
+            }
+
             CreateHostBuilder(args).Build().Run();
         }
 

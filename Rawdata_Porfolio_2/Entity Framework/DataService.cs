@@ -8,6 +8,7 @@ using System.IO;
 using Rawdata_Porfolio_2.Pages.Entity_Framework;
 using System.Reflection;
 using System.Text;
+using Rawdata_Porfolio_2.Entity_Framework.Domain;
 
 namespace Rawdata_Porfolio_2.Entity_Framework
 {
@@ -90,9 +91,10 @@ namespace Rawdata_Porfolio_2.Entity_Framework
         //                          SEARCH                        //
         ////////////////////////////////////////////////////////////
 
-        List<Personality> ActorSearch(int user_Id, string query); 
+        List<Search_results> ActorSearch(int user_Id, string query); 
         List<Search_Queries> GetSQ(int userID);
         public void DeleteSQ(int queryID);
+        List<Search_results> StringSearch(int userId, string query);
 
 
 
@@ -643,21 +645,19 @@ namespace Rawdata_Porfolio_2.Entity_Framework
             connection.Connect().Close();
         }
 
-        public List<Personality> ActorSearch(int user_Id, string query)
+        public List<Search_results> ActorSearch(int user_Id, string query)
         {
             var cmd = new NpgsqlCommand("select * from actor_search(@UID, @QUERY);", connection.Connect());
             cmd.Parameters.AddWithValue("UID", user_Id);
             cmd.Parameters.AddWithValue("QUERY", query);
             NpgsqlDataReader reader = cmd.ExecuteReader();
-            List<Personality> result = new List<Personality>();
+            List<Search_results> result = new List<Search_results>();
             while (reader.Read())
             {
-                Personality row = new Personality()
+                Search_results row = new Search_results()
                 {
-                    Id = (int)reader["ID"],
-                    Name = reader["name"].ToString(),
-                    Year_Birth = (int)reader["year_birth"],
-                    Year_Death = (int)reader["year_death"],
+                    Personality_ID = (int)reader["personality_ID"],
+                    Character_Name = reader["personality_name"].ToString(),
                 };
                 result.Add(row);
             }
@@ -665,7 +665,25 @@ namespace Rawdata_Porfolio_2.Entity_Framework
             return result;
         }
 
-
+        public List<Search_results> StringSearch(int userId, string query)
+        {
+            var cmd = new NpgsqlCommand("select * from string_search(@UID, @QUERY);", connection.Connect());
+            cmd.Parameters.AddWithValue("UID", userId);
+            cmd.Parameters.AddWithValue("QUERY", query);
+            NpgsqlDataReader reader = cmd.ExecuteReader();
+            List<Search_results> result = new List<Search_results>();
+            while (reader.Read())
+            {
+                Search_results row = new Search_results()
+                {
+                    Title_ID = (Int64)reader["title_ID"],
+                    Title_Name = reader["title_name"].ToString(),
+                };
+                result.Add(row);
+            }
+            connection.Connect().Close();
+            return result;
+        }
         ////////////////////////////////////////////////////////////
         //                          OTHER                         //
         ////////////////////////////////////////////////////////////
