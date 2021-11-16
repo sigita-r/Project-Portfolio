@@ -71,7 +71,7 @@ namespace Rawdata_Porfolio_2.Entity_Framework
 
             modelBuilder.Entity<Episode>().ToTable("episode");
             modelBuilder.Entity<Episode>().Property(x => x.Id).HasColumnName("ID");
-            modelBuilder.Entity<Episode>().Property(x => x.Title_Id).HasColumnName("title_ID");
+            modelBuilder.Entity<Episode>().Property(x => x.Parent_Id).HasColumnName("parent_ID");
             modelBuilder.Entity<Episode>().Property(x => x.Season).HasColumnName("season");
             modelBuilder.Entity<Episode>().Property(x => x.Ep_Number).HasColumnName("ep_number");
 

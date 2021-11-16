@@ -7,6 +7,7 @@ using Npgsql;
 using System.IO;
 using Rawdata_Porfolio_2.Pages.Entity_Framework;
 using System.Reflection;
+using System.Text;
 
 namespace Rawdata_Porfolio_2.Entity_Framework
 {
@@ -28,7 +29,7 @@ namespace Rawdata_Porfolio_2.Entity_Framework
 
         public List<Title_Genre> GetTitleGenre(int title_Id);
 
-        //public List<Title_Localization> GetTitleLocalization();
+        public List<Title_Localization> GetTitleLocalization(int title_id);
 
 
         ////////////////////////////////////////////////////////////
@@ -68,7 +69,7 @@ namespace Rawdata_Porfolio_2.Entity_Framework
         //                          User                          //
         ////////////////////////////////////////////////////////////
 
-        public bool CreateUser(int userID, string username, Byte[] password, string email, DateTime dob);
+        public bool CreateUser(int userID, string username, byte [] password, string email, DateTime dob);
         List<User> GetUser(int userID);
         public bool DeleteUser(int userID);
        //Waiting with this one till i get how to do bytea, since users should be able to change passwords.
@@ -87,7 +88,7 @@ namespace Rawdata_Porfolio_2.Entity_Framework
         //                          SEARCH                        //
         ////////////////////////////////////////////////////////////
 
-        //public bool CreateSQ(int userID, string query);
+       
         List<Search_Queries> GetSQ(int userID);
         public bool DeleteSQ(int queryID);
 
@@ -239,9 +240,9 @@ namespace Rawdata_Porfolio_2.Entity_Framework
         }
          
         //waiting with this till db is fixed up
-        /*public List<Title_Localization> GetTitleLocalization()
+        public List<Title_Localization> GetTitleLocalization(int title_id)
         {
-            using (var cmd = new NpgsqlCommand("", connection.Connect()))
+            using (var cmd = new NpgsqlCommand("SELECT * FROM title_localization WHERE @TID = \"title_ID\"", connection.Connect()))
             {
                 cmd.Parameters.AddWithValue("TID", title_id);
                 NpgsqlDataReader reader = cmd.ExecuteReader();
@@ -250,14 +251,20 @@ namespace Rawdata_Porfolio_2.Entity_Framework
                 {
                     Title_Localization row = new Title_Localization()
                     {
-                        
+                        Id = (int)reader["ID"],
+                        Name = reader["ID"].ToString(),
+                        Language = reader["langauge"].ToString(),
+                        Region = reader["region"].ToString(),
+                        Type = reader["type"].ToString(),
+                        Attribute = reader["attribute"].ToString(),
+                        PrimaryTitle = (bool)reader["primary_title"],
                     };
                     result.Add(row);
                 }
                 return result;
             }
         }
-        */
+        
         ////////////////////////////////////////////////////////////
         //                      PERSONALITY                       //
         ////////////////////////////////////////////////////////////
@@ -425,12 +432,11 @@ namespace Rawdata_Porfolio_2.Entity_Framework
             return true;
         }
 
-
         ////////////////////////////////////////////////////////////
         //                          User                          //
         ////////////////////////////////////////////////////////////
  
-        public bool CreateUser(int userId, string username, Byte[] password, string email, DateTime dob)
+        public bool CreateUser(int userId, string username, byte [] password, string email, DateTime dob)
         {
              using (var cmd = new NpgsqlCommand("call update_user('n', @ID, @NAME, @PASS, @MAIL, @DOB)", connection.Connect()))
             {
@@ -440,7 +446,6 @@ namespace Rawdata_Porfolio_2.Entity_Framework
                 cmd.Parameters.AddWithValue("MAIL", email);
                 cmd.Parameters.AddWithValue("DOB", dob);
                 NpgsqlDataReader reader = cmd.ExecuteReader();
-
             }
             return true;
         }
@@ -455,9 +460,8 @@ namespace Rawdata_Porfolio_2.Entity_Framework
             {
                 User row = new User()
                 {
-                    Username = reader["username"].ToString(),
-                    //Not sure how to work with bytea
-                    //Password = reader["password"].,
+                    Username = reader["username"].ToString(),                
+                    Password = reader["password"].ToString(),
                     Email = reader["email"].ToString(),
                     DateOfBirth = (DateTime)reader["dob"],
                     Created = (DateTime)reader["created"],
@@ -494,7 +498,8 @@ namespace Rawdata_Porfolio_2.Entity_Framework
             connection.Connect().Close();
             return true;
         }
-        //Rating ReadRating() { }
+        //List<Rating> ReadRating() { }
+
         public bool UpdateRating(int user_ID, int title_ID, Int16 rating)
         {
             using (var cmd = new NpgsqlCommand("call update_rating(@UID, @TID, @RATING, @DEL)", connection.Connect()))
@@ -525,21 +530,6 @@ namespace Rawdata_Porfolio_2.Entity_Framework
         ////////////////////////////////////////////////////////////
         //                          SEARCH                        //
         ////////////////////////////////////////////////////////////
-/* I shouldnt have made this. We insert the SQ with structured_string_search() in SQL
-        public bool CreateSQ(int userID, string query)
-        {
-            using (var cmd = new NpgsqlCommand("call update_search_queries(@UID, @QID, @QUERY, @DEL)", connection.Connect()))
-            {
-                cmd.Parameters.AddWithValue("UID", userID);
-                cmd.Parameters.AddWithValue("QID", int.MinValue);
-                cmd.Parameters.AddWithValue("QUERY", query);
-                cmd.Parameters.AddWithValue("DEL", false);
-                NpgsqlDataReader reader = cmd.ExecuteReader();
-
-            }
-            return true;
-        }
-        */
         public List<Search_Queries> GetSQ(int userID)
         {
             var cmd = new NpgsqlCommand("select * from search_queries where \"user_ID\" = @UID ORDER BY timestamp DESC;", connection.Connect());

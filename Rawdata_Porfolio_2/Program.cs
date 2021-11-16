@@ -7,6 +7,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Rawdata_Porfolio_2.Entity_Framework;
+using System.Security.Cryptography;
+using System.Text;
 using Rawdata_Porfolio_2.Pages.Entity_Framework.Domain;
 
 namespace Rawdata_Porfolio_2
@@ -28,14 +30,18 @@ namespace Rawdata_Porfolio_2
              }*/
             //  Console.WriteLine(ds.ReadCharacter(1));
 
-            Byte[] passExample = new Byte[] { 1, 2, 3 };
-             Console.WriteLine(ds.CreateUser(1, "test", passExample, "mail@mail.com", DateTime.Parse("15/11/2021")));
+
+            string plainData = "password";
+            var hashedData = ComputeSha256Hash(plainData);
+            
+            //Console.WriteLine(ds.CreateUser(1,"test", hashedData, "mail@mail.com", DateTime.Today));
 
 
             /* Console.WriteLine(ds.GetKnownCharactersFromTitleById(1).Count);
 
              Console.WriteLine(ds.GetCharactersFromTitleById(1).Count);*/
 
+            
             //Console.WriteLine(ds.GetUser(1));
             //Console.WriteLine(ds.DeleteUser(3));
             /* Console.WriteLine(ds.GetTitleGenre(1));
@@ -65,5 +71,17 @@ namespace Rawdata_Porfolio_2
                     webBuilder.UseStartup<Startup>();
                 });
 
+        static byte[] ComputeSha256Hash(string rawData)
+        {
+            // Create a SHA256   
+            using (SHA256 sha256Hash = SHA256.Create())
+            {
+                // ComputeHash - returns byte array  
+                byte[] bytes = sha256Hash.ComputeHash(Encoding.UTF8.GetBytes(rawData));
+
+                // Convert byte array to a string   
+                return bytes;
+            }
+        }
     }
 }
