@@ -69,7 +69,7 @@ namespace Rawdata_Porfolio_2.Entity_Framework
         //                          User                          //
         ////////////////////////////////////////////////////////////
 
-        public void CreateUser(string username, byte [] password, string email, DateTime dob);
+        public void CreateUser(int userID, string username, byte [] password, string email, DateTime dob);
      //   List<User> GetUser(int userID);
         public void DeleteUser(int userID);
        //Waiting with this one till i get how to do bytea, since users should be able to change passwords.
@@ -468,29 +468,29 @@ namespace Rawdata_Porfolio_2.Entity_Framework
             ctx.SaveChanges();
             
         }
-/*
+
         public User GetUser(int userId)
         {
             var cmd = new NpgsqlCommand("select * FROM public.user Where \"ID\" = @ID", connection.Connect());
-            cmd.Parameters.AddWithValue("ID", userId);
+            cmd.Parameters.AddWithValue("@ID", userId);
+
+           // SqlParameter paramDanId = new SqlParameter("@ID", userId);
+
             NpgsqlDataReader reader = cmd.ExecuteReader();
-          
+
             User user = new User();
             while (reader.Read())
             {
-                User row = new User()
-                {
-                    Username = reader["username"].ToString(),                
-                    Password = reader["password"].ToString(),
-                    Email = reader["email"].ToString(),
-                    DateOfBirth = (DateTime)reader["dob"],
-                    Created = (DateTime)reader["created"],
-                };
-                result.Add(row);
+                user.Username = reader["username"].ToString();
+                user.Password = reader["password"].ToString();
+                user.Email = reader["email"].ToString();
+                user.DateOfBirth = (DateTime)reader["dob"];
+                user.Created = (DateTime)reader["created"];
             }
             return user;
         }
-*/
+
+        //// This is an old version of a method, that im not sure we need
         //public List<User> GetUser(int userId)
         //{
         //    var cmd = new NpgsqlCommand("select * FROM public.user Where \"ID\" = @ID", connection.Connect());

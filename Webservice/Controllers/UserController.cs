@@ -41,7 +41,7 @@ namespace Webservice.Controllers
 
 
         [HttpPost]
-        public IActionResult CreateUser(string userName, string password, string email, DateTime dob)
+        public IActionResult CreateUser(/*int id,*/ string userName, string password, string email, DateTime dob)
         {
             // checks
 
@@ -49,7 +49,7 @@ namespace Webservice.Controllers
             byte[] pwBytes = Encoding.ASCII.GetBytes(password);
 
 
-            _dataService.CreateUser(userName, pwBytes, email, dob);
+            _dataService.CreateUser(/*id,*/ userName, pwBytes, email, dob);
 
             //  ending may need change, this is just something i tried
             // Bookmarks_Title bookmark = new Bookmarks_Title();
@@ -62,7 +62,7 @@ namespace Webservice.Controllers
         {
             return new UserViewModel
             {
-             //   Url = _linkGenerator.GetUriByName(HttpContext, nameof(GetUser), new { user.Id }),
+                Url = _linkGenerator.GetUriByName(HttpContext, nameof(GetUser), new { user.Id }),
                 Username = user.Username,
                 Email = user.Email,
                 DateOfBirth = user.DateOfBirth
