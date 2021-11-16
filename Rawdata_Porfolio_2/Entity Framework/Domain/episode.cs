@@ -10,6 +10,7 @@ namespace Rawdata_Porfolio_2.Pages.Entity_Framework.Domain
     {
         [Key]
         public int Id { get; set; }
+        public string Name { get; set; }
         public int Parent_Id { get; set; }
         public Title Title { get; set; }
         public int Season { get; set; }

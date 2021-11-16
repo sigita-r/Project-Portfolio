@@ -41,7 +41,7 @@ namespace Rawdata_Porfolio_2
 
              Console.WriteLine(ds.GetCharactersFromTitleById(1).Count);*/
 
-           // ds.UpdateUser(2, "newmail@mail.com", "newname", hashedData, DateTime.Today);
+            // ds.UpdateUser(2, "newmail@mail.com", "newname", hashedData, DateTime.Today);
             //Console.WriteLine(ds.GetUser(2));
             //Console.WriteLine(ds.DeleteUser(3));
             /* Console.WriteLine(ds.GetTitleGenre(1));
@@ -58,8 +58,8 @@ namespace Rawdata_Porfolio_2
 
 
             //Console.WriteLine(ds.DeleteSQ(1));
-           // Console.WriteLine(ds.GetSQ(1));
-
+            // Console.WriteLine(ds.GetSQ(1));
+            ds.GetEpisode(1);
 
             CreateHostBuilder(args).Build().Run();
         }

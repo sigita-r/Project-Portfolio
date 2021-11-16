@@ -25,8 +25,8 @@ namespace Rawdata_Porfolio_2.Entity_Framework
 
          public List<Character> GetCharactersFromTitleById(int title_Id);
 
-        // public List<Episode> GetEpisode(int titleID);
-
+        public List<Episode> GetEpisode(int titleID);
+        public List<Episode> GetAllEpisodes(int titleID);
         public List<Title_Genre> GetTitleGenre(int title_Id);
 
         public List<Title_Localization> GetTitleLocalization(int title_id);
@@ -92,13 +92,14 @@ namespace Rawdata_Porfolio_2.Entity_Framework
         List<Search_Queries> GetSQ(int userID);
         public void DeleteSQ(int queryID);
 
-        
+
 
         ////////////////////////////////////////////////////////////
         //                          OTHER                         //
         ////////////////////////////////////////////////////////////
 
-        //  Role GetRole();
+
+        List<Role> GetRole(int titleID, int personalityID);
 
         // Wi GettWi();
 
@@ -145,7 +146,7 @@ namespace Rawdata_Porfolio_2.Entity_Framework
         public List<Character> GetCharactersFromTitleById(int title_Id)
         {
             
-            using (var cmd = new NpgsqlCommand("SELECT DISTINCT primary_title, personality.\"name\", " +
+            using (var cmd = new NpgsqlCommand("SELECT DISTINCT personality.\"name\", " +
                 "\"character\" FROM public.title_localization, public.characters left join personality on characters.\"personality_ID\" = personality.\"ID\" " +
                 "WHERE characters.\"title_ID\" = @TID AND title_localization.primary_title = true ", connection.Connect()))
             {
@@ -170,7 +171,7 @@ namespace Rawdata_Porfolio_2.Entity_Framework
         public List<Character> GetKnownCharactersFromTitleById(int title_Id)
         {
 
-            using (var cmd = new NpgsqlCommand("SELECT DISTINCT primary_title, personality.\"name\", " +
+            using (var cmd = new NpgsqlCommand("SELECT DISTINCT personality.\"name\", " +
                 "\"character\" FROM public.title_localization, public.characters left join personality on characters.\"personality_ID\" = personality.\"ID\" " +
                 "WHERE characters.\"title_ID\" = @TID AND title_localization.primary_title = true AND known_for = true ", connection.Connect()))
             {
@@ -192,33 +193,48 @@ namespace Rawdata_Porfolio_2.Entity_Framework
             }
         }
 
-     /*
-       public List<Episode> ReadEpisode(int titleID)
+     
+       public List<Episode> GetEpisode(int titleID)
        {
-           using (var cmd = new NpgsqlCommand("SELECT name, ep_number, season FROM public.title, public.title_localization, public.episode WHERE title.type = 'tvEpisode' AND title.\"ID\" = @TID AND title.\"ID\" = title_localization.\"title_ID\" AND title.\"ID\" = episode.\"title_ID\" AND primary_title = true", connection.Connect()))
+           using (var cmd = new NpgsqlCommand("SELECT title_localization.name, episode.ep_number, episode.season FROM public.title_localization, public.episode WHERE \"episode.ID\" = 2256 AND \"title_localization.title_ID\" = 2256 AND title_localization.primary_title = true", connection.Connect()))
            {
-
-               cmd.Parameters.AddWithValue("TID", titleID);
-
-
+                cmd.Parameters.AddWithValue("TID", titleID);
                NpgsqlDataReader reader = cmd.ExecuteReader();
                List<Episode> result = new List<Episode>();
                while (reader.Read())
                {
-                   Episode row = new Episode()
-                   {
-                       Ep_Number = (int)reader["ep_number"],
-                       Season = (int)reader["season"],
-
-
+                    Episode row = new Episode()
+                    {
+                        Name = reader["name"].ToString(),
+                        Ep_Number = (int)reader["ep_number"],
+                        Season = (int)reader["season"],
                    };
                    result.Add(row);
-
                }
                return result;
            }
        }
-     */
+
+        public List<Episode> GetAllEpisodes(int titleID)
+        {
+            using (var cmd = new NpgsqlCommand("", connection.Connect()))
+            {
+                cmd.Parameters.AddWithValue("TID", titleID);
+                NpgsqlDataReader reader = cmd.ExecuteReader();
+                List<Episode> result = new List<Episode>();
+                while (reader.Read())
+                {
+                    Episode row = new Episode()
+                    {
+                        Name = reader["name"].ToString(),
+                        Ep_Number = (int)reader["ep_number"],
+                        Season = (int)reader["season"],
+                    };
+                    result.Add(row);
+                }
+                return result;
+            }
+        }
 
         public List<Title_Genre> GetTitleGenre(int title_id)
         {
@@ -241,7 +257,7 @@ namespace Rawdata_Porfolio_2.Entity_Framework
          
         }
          
-        //waiting with this till db is fixed up
+
         public List<Title_Localization> GetTitleLocalization(int title_id)
         {
             using (var cmd = new NpgsqlCommand("SELECT * FROM title_localization WHERE @TID = \"title_ID\"", connection.Connect()))
@@ -447,7 +463,7 @@ namespace Rawdata_Porfolio_2.Entity_Framework
         public void CreateUser(string username, byte [] password, string email, DateTime dob)
         {
 
-         //   var ctx = new OurMDB_Context();
+       
             var user = new User();
             user.Id = ctx.Users.Max(x => x.Id)+1;
             user.Username = username;
@@ -640,7 +656,23 @@ namespace Rawdata_Porfolio_2.Entity_Framework
         }
         */
 
-        //   Role ReadRole() { }
+           public List<Role> GetRole(int titleID, int personalityID)
+        {
+            var cmd = new NpgsqlCommand("", connection.Connect());
+            cmd.Parameters.AddWithValue("");
+            NpgsqlDataReader reader = cmd.ExecuteReader();
+            List<Role> result = new List<Role>();
+            while (reader.Read())
+            {
+                Role row = new Role()
+                {
+                    RoleOfPersonality = reader["role"].ToString(),
+                };
+                result.Add(row);
+            }
+            connection.Connect().Close();
+            return result;
+        }
 
         ////////////////////////////////////////////////////////////
     }
