@@ -29,7 +29,8 @@ namespace Rawdata_Porfolio_2
             //  Console.WriteLine(ds.ReadCharacter(1));
 
             Byte[] passExample = new Byte[] { 1, 2, 3 };
-             Console.WriteLine(ds.CreateUser(1, "test", passExample, "mail@mail.com", DateTime.Parse("15/11/2021")));
+            // added the /* */ because i changed the create user method
+             Console.WriteLine(ds.CreateUser(/*1, */ "test", passExample, "mail@mail.com", DateTime.Parse("15/11/2021")));
 
 
             /* Console.WriteLine(ds.GetKnownCharactersFromTitleById(1).Count);

@@ -49,7 +49,7 @@ namespace Rawdata_Porfolio_2.Entity_Framework
 
         public bool CreatePersonalityBM(int userID, int personalityID, string note);
 
-        public List<Bookmarks_Personality> GetPersonalityBMByUserID(int userID);
+        public List<Bookmarks_Personality> GetPersonalityBMsByUserID(int userID);
 
         public bool DeletePersonalityBM(int userID, int personalityID);
 
@@ -68,7 +68,7 @@ namespace Rawdata_Porfolio_2.Entity_Framework
         //                          User                          //
         ////////////////////////////////////////////////////////////
 
-        public bool CreateUser(int userID, string username, Byte[] password, string email, DateTime dob);
+        public bool CreateUser(/*int userID,*/ string username, Byte[] password, string email, DateTime dob);
 
         User GetUser(int userID);
 
@@ -327,7 +327,7 @@ namespace Rawdata_Porfolio_2.Entity_Framework
             return true;
         }
 
-        public List<Bookmarks_Personality> GetPersonalityBMByUserID(int userID)
+        public List<Bookmarks_Personality> GetPersonalityBMsByUserID(int userID)
         {
             var cmd = new NpgsqlCommand("select * FROM select_user_bookmarks('p', @ID)", connection.Connect());
 
@@ -432,11 +432,11 @@ namespace Rawdata_Porfolio_2.Entity_Framework
         //                          User                          //
         ////////////////////////////////////////////////////////////
  
-        public bool CreateUser(int userId, string username, Byte[] password, string email, DateTime dob)
+        public bool CreateUser(/*int userId,*/ string username, Byte[] password, string email, DateTime dob)
         {
              using (var cmd = new NpgsqlCommand("call update_user('n', @ID, @NAME, @PASS, @MAIL, @DOB)", connection.Connect()))
             {
-                cmd.Parameters.AddWithValue("ID", userId);
+              //  cmd.Parameters.AddWithValue("ID", userId);
                 cmd.Parameters.AddWithValue("NAME", username);
                 cmd.Parameters.AddWithValue("PASS", password);
                 cmd.Parameters.AddWithValue("MAIL", email);
@@ -453,17 +453,17 @@ namespace Rawdata_Porfolio_2.Entity_Framework
             cmd.Parameters.AddWithValue("ID", userId);
             NpgsqlDataReader reader = cmd.ExecuteReader();
           
-            User row = new User();
+            User user = new User();
             while (reader.Read())
             {
-                row.Username = reader["username"].ToString();
+                user.Username = reader["username"].ToString();
                 //Not sure how to work with bytea
                 //Password = reader["password"].,
-                row.Email = reader["email"].ToString();
-                row.DateOfBirth = (DateTime)reader["dob"];
-                row.Created = (DateTime)reader["created"];
+                user.Email = reader["email"].ToString();
+                user.DateOfBirth = (DateTime)reader["dob"];
+                user.Created = (DateTime)reader["created"];
             }
-            return row;
+            return user;
         }
 
         //public List<User> GetUser(int userId)

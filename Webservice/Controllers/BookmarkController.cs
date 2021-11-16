@@ -55,19 +55,21 @@ namespace Webservice.Controllers
                 return NotFound("No title Found");
 
             }
-            
+
             _dataService.CreateTitleBM(userID, titleID, note);
 
-            //  ending needs change
+            //  ending may need change, this is just something i tried
+            // Bookmarks_Title bookmark = new Bookmarks_Title();
 
-            return null;
+            // I dont know what else to put here, but it works and adds to database
+            return Created("", null);
         }
 
         private BookmarkTitleViewModel GetBookmarkTitleViewModel(Bookmarks_Title bookmarkTitle)
         {
             return new BookmarkTitleViewModel
             {
-               // Url = _linkGenerator.GetUriByName(HttpContext, nameof(GetBookmarkTitlesForUser), new { bookmarkTitle.Title_Id }),
+                // Url = _linkGenerator.GetUriByName(HttpContext, nameof(GetBookmarkTitlesForUser), new { bookmarkTitle.Title_Id }),
                 UserID = bookmarkTitle.User_Id,
                 TitleName = bookmarkTitle.Name
             };
@@ -77,49 +79,56 @@ namespace Webservice.Controllers
         //                  PersonalityBookmarks                  //
         ////////////////////////////////////////////////////////////
 
-        //[HttpPost]
-        //[ApiExplorerSettings(IgnoreApi = true)]
+        [HttpGet("personalities")]
+        public IActionResult GetBookmarkPersonalitiesForUser(int userID)
+        {
+            var personalityBMs = _dataService.GetPersonalityBMsByUserID(userID);
 
-        //public IActionResult CreateBookmarkPersonality(int userID, int personalityID, string note)
-        //{
+            if (personalityBMs.Count == 0)
+            {
+                return NotFound();
+            }
 
-        //    // checks
-        //    if (_dataService.GetUser(userID) == null)
-        //    {
-        //        return NotFound("No user found");
-        //    }
+            return Ok(personalityBMs.Select(x => GetBookmarkPersonalityViewModel(x)));
+        }
 
-        //    if (_dataService.GetTitleById(personalityID) == null)
-        //    {
-        //        return NotFound("No personality Found");
-        //    }
+        /*  -- not sure you can have 2 post in one controller
+        [HttpPost]
+        public IActionResult CreateBookmarkPersonality(int userID, int personalityID, string note)
+        {
+            // checks
+            if (_dataService.GetUser(userID).Username == null)
+            {
+                return NotFound("No user found");
+            }
 
-        //    Bookmarks_Personality bookmark = new Bookmarks_Personality();
-        //    bookmark.User_Id = userID;
-        //    bookmark.Personality_Id = personalityID;
-        //    bookmark.Note = note;
+            if (_dataService.GetPersonalityById(personalityID) == null)
+            {
+                return NotFound("No title Found");
 
+            }
 
-        //    //    not sure how else to end it, this is how i would end it
-        //    //    and then having dataservice do this:
-        //    //                                          public void CreateBookmarkTitle(BookmarkTitle bookmarkTitle)
-        //    //                                          {
-        //    //                                          context.BookmarkTitles.Add(bookmarkTitle);
-        //    //                                          }
+            _dataService.CreatePersonalityBM(userID, personalityID, note);
 
+            //  ending may need change, this is just something i tried
+            // Bookmarks_Title bookmark = new Bookmarks_Title();
 
+            // I dont know what else to put here, but it works and adds to database
+            Bookmarks_Personality x = new Bookmarks_Personality();
 
+            return Created("", GetBookmarkPersonalityViewModel(x));
+        }
+        */
 
-        //    //   _dataService.CreatePersonalityBM(bookmark);
-
-
-        //    //  ending needs change
-
-        //    return null;
-        //}
-
-
-
+        private BookmarkPersonalityViewModel GetBookmarkPersonalityViewModel(Bookmarks_Personality bookmarkPersonality)
+        {
+            return new BookmarkPersonalityViewModel
+            {
+                // Url = _linkGenerator.GetUriByName(HttpContext, nameof(GetBookmarkTitlesForUser), new { bookmarkTitle.Title_Id }),
+                UserID = bookmarkPersonality.User_Id,
+                PersonalityName = bookmarkPersonality.Name
+            };
+        }
 
         ////////////////////////////////////////////////////////////
 
@@ -153,7 +162,4 @@ namespace Webservice.Controllers
         //}
 
     }
-
-
-        //}
 }
