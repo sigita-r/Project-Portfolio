@@ -50,7 +50,7 @@ namespace Rawdata_Porfolio_2.Entity_Framework
 
         public bool CreatePersonalityBM(int userID, int personalityID, string note);
 
-        public List<Bookmarks_Personality> GetPersonalityBMByUserID(int userID);
+        public List<Bookmarks_Personality> GetPersonalityBMsByUserID(int userID);
 
         public bool DeletePersonalityBM(int userID, int personalityID);
 
@@ -58,7 +58,7 @@ namespace Rawdata_Porfolio_2.Entity_Framework
 
         public bool CreateTitleBM(int userID, int titleID, string note);
 
-        public List<Bookmarks_Title> GetTitleBMByUserID(int userID);
+        public List<Bookmarks_Title> GetTitleBMsByUserID(int userID);
 
         public bool DeleteTitleBM(int userID, int titleID);
 
@@ -331,7 +331,7 @@ namespace Rawdata_Porfolio_2.Entity_Framework
             return true;
         }
 
-        public List<Bookmarks_Personality> GetPersonalityBMByUserID(int userID)
+        public List<Bookmarks_Personality> GetPersonalityBMsByUserID(int userID)
         {
             var cmd = new NpgsqlCommand("select * FROM select_user_bookmarks('p', @ID)", connection.Connect());
 
@@ -385,11 +385,10 @@ namespace Rawdata_Porfolio_2.Entity_Framework
                 cmd.Parameters.AddWithValue("note", note);
                 NpgsqlDataReader reader = cmd.ExecuteReader();
             }
-            connection.Connect().Close();
             return true;
         }
 
-        public List<Bookmarks_Title> GetTitleBMByUserID(int userID)
+        public List<Bookmarks_Title> GetTitleBMsByUserID(int userID)
         {
             var cmd = new NpgsqlCommand("select * FROM select_user_bookmarks('t', @ID)", connection.Connect());
             cmd.Parameters.AddWithValue("ID", userID);
@@ -440,7 +439,7 @@ namespace Rawdata_Porfolio_2.Entity_Framework
         {
              using (var cmd = new NpgsqlCommand("call update_user('n', @ID, @NAME, @PASS, @MAIL, @DOB)", connection.Connect()))
             {
-                cmd.Parameters.AddWithValue("ID", userId);
+              //  cmd.Parameters.AddWithValue("ID", userId);
                 cmd.Parameters.AddWithValue("NAME", username);
                 cmd.Parameters.AddWithValue("PASS", password);
                 cmd.Parameters.AddWithValue("MAIL", email);
@@ -450,12 +449,13 @@ namespace Rawdata_Porfolio_2.Entity_Framework
             return true;
         }
 
-        public List<User> GetUser(int userId)
+        public User GetUser(int userId)
         {
             var cmd = new NpgsqlCommand("select * FROM public.user Where \"ID\" = @ID", connection.Connect());
             cmd.Parameters.AddWithValue("ID", userId);
             NpgsqlDataReader reader = cmd.ExecuteReader();
-            List<User> result = new List<User>();
+          
+            User user = new User();
             while (reader.Read())
             {
                 User row = new User()
@@ -468,9 +468,31 @@ namespace Rawdata_Porfolio_2.Entity_Framework
                 };
                 result.Add(row);
             }
-            return result;
+            return user;
         }
-        
+
+        //public List<User> GetUser(int userId)
+        //{
+        //    var cmd = new NpgsqlCommand("select * FROM public.user Where \"ID\" = @ID", connection.Connect());
+        //    cmd.Parameters.AddWithValue("ID", userId);
+        //    NpgsqlDataReader reader = cmd.ExecuteReader();
+        //    List<User> result = new List<User>();
+        //    while (reader.Read())
+        //    {
+        //        User row = new User()
+        //        {
+        //            Username = reader["username"].ToString(),
+        //            //Not sure how to work with bytea
+        //            //Password = reader["password"].,
+        //            Email = reader["email"].ToString(),
+        //            DateOfBirth = (DateTime)reader["dob"],
+        //            Created = (DateTime)reader["created"],
+        //        };
+        //        result.Add(row);
+        //    }
+        //    return result;
+        //}
+
         public bool DeleteUser(int userId)
         {
             using (var cmd = new NpgsqlCommand("call update_user('d', @ID)", connection.Connect()))

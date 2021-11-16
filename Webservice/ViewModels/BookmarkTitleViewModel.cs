@@ -7,10 +7,11 @@ namespace Webservice.ViewModels
 {
     public class BookmarkTitleViewModel
     {
-
         public string Url { get; set; }
 
         public string Username { get; set; }
+
+        public int UserID { get; set; }
 
         public string TitleName { get; set; }
         public string TitleNote { get; set; }
