@@ -69,7 +69,7 @@ namespace Rawdata_Porfolio_2.Entity_Framework
         //                          User                          //
         ////////////////////////////////////////////////////////////
 
-        public void CreateUser(int userID, string username, byte [] password, string email, DateTime dob);
+        public void CreateUser(string username, byte [] password, string email, DateTime dob);
      //   List<User> GetUser(int userID);
         public void DeleteUser(int userID);
        //Waiting with this one till i get how to do bytea, since users should be able to change passwords.
@@ -482,7 +482,7 @@ namespace Rawdata_Porfolio_2.Entity_Framework
             while (reader.Read())
             {
                 user.Username = reader["username"].ToString();
-                user.Password = reader["password"].ToString();
+                user.Password = (Byte[])reader["password"];
                 user.Email = reader["email"].ToString();
                 user.DateOfBirth = (DateTime)reader["dob"];
                 user.Created = (DateTime)reader["created"];
