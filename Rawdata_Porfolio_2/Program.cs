@@ -12,6 +12,7 @@ using System.Text;
 using Rawdata_Porfolio_2.Pages.Entity_Framework.Domain;
 using Rawdata_Porfolio_2.Entity_Framework.Domain;
 
+
 namespace Rawdata_Porfolio_2
 {
     public class Program
@@ -25,10 +26,13 @@ namespace Rawdata_Porfolio_2
             //Console.WriteLine(ds.UpdateTitleBM(1,1,"addition"));
 
             //Using the object which is returned by ReadTitleBM
-            /* foreach (Bookmarks_Title bt in ds.ReadTitleBM(1)) 
-             {
-                 Console.WriteLine(bt.Name);
-             }*/
+            /*    foreach (Bookmarks_Personality bp in ds.GetPersonalityBMsByUserID(2)) 
+                {
+                    Console.WriteLine(bp.Name);
+                }
+               var prog = ds.GetPersonalityBMsByUserID(2);
+               Console.WriteLine(prog.Count());*/
+
             //  Console.WriteLine(ds.ReadCharacter(1));
 
 
@@ -69,16 +73,23 @@ namespace Rawdata_Porfolio_2
                    Console.WriteLine(sr.Title_Name + sr.Title_ID);
                }*/
 
-            // ds.CreateUser("Check", ds.ComputeSha256Hash(p), "hsahmad@mail.dk", DateTime.Today);
+            //ds.CreateUser("Check", ds.ComputeSha256Hash(p), "hsahmad@mail.dk", DateTime.Today);
 
             /*string p = "password";
             var ps = ds.ComputeSha256Hash(p);
             string v = ds.Login("Check", ps);
             Console.WriteLine(v);*/
 
-           // Console.WriteLine(ds.GetPersonalityById(1));
+            // Console.WriteLine(ds.GetPersonalityById(1));
+
+            string password = "password";
+             byte[] pwBytes = Encoding.Unicode.GetBytes(password);
+             ds.CreateUser("Check2", pwBytes, "hsahmad@maidl.dk", DateTime.Today);
 
 
+             Console.WriteLine(ds.Login("Check2", pwBytes));
+            
+            /*List<Search_results> result = ds.SS_Search(2, "Batman", "", "Gotham", "");*/
 
             CreateHostBuilder(args).Build().Run();
         }

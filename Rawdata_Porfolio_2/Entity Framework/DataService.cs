@@ -118,7 +118,7 @@ namespace Rawdata_Porfolio_2.Entity_Framework
     {
 
         // making our context so we can add to it all the time
-        // instead of createing a new one in each method, which is kinda sus
+        // instead of createing a new one in each method
         public OurMDB_Context ctx = new OurMDB_Context();
         public ConnString connection = new ConnString();
 
