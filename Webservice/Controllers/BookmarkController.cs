@@ -37,9 +37,9 @@ namespace Webservice.Controllers
             {
                 return NotFound("no BMs found");
             }
-
+          //  .Select(x => GetBookmarkTitleViewModel(x))
             return Ok(titleBMs.Select(x => GetBookmarkTitleViewModel(x)));
-        }
+        }   
 
         [HttpPost("createTitleBookmark")]
         public IActionResult CreateBookmarkTitle(int userID, int titleID, string note)
@@ -62,16 +62,17 @@ namespace Webservice.Controllers
             // Bookmarks_Title bookmark = new Bookmarks_Title();
 
             // I dont know what else to put here, but it works and adds to database
-            return Created("/user/afkn", null);
+            return Created("", null);
         }
 
         private BookmarkTitleViewModel GetBookmarkTitleViewModel(Bookmarks_Title bookmarkTitle)
         {
             return new BookmarkTitleViewModel
             {
-                // Url = _linkGenerator.GetUriByName(HttpContext, nameof(GetBookmarkTitlesForUser), new { bookmarkTitle.Title_Id }),
+               // Url = _linkGenerator.GetUriByName(HttpContext, nameof(GetBookmarkTitlesForUser), new { bookmarkTitle.Title_Id }).Replace("%20", ""),
                 UserID = bookmarkTitle.User_Id,
-                TitleName = bookmarkTitle.Name
+                TitleName = bookmarkTitle.Name,
+                TitleNote = bookmarkTitle.Note
             };
         }
 

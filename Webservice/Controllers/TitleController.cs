@@ -113,7 +113,7 @@ namespace Webservice.Controllers
             {
                 Url = _linkGenerator.GetUriByName(HttpContext, nameof(GetTitleById), new { title.Id }).Replace("%20", ""),
                 Type = title.Type,
-               // Genre = title.Genre,
+              //  Genre = title.Genre,
               //  Primary_Title = title.Primary_Title,
                 Is_Adult = title.IsAdult,
                 Year_Start = title.Year_Start,

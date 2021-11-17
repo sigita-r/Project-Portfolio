@@ -11,6 +11,10 @@ using Microsoft.AspNetCore.Routing;
 using Webservice.Controllers;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Http;
+using System.Net.Http;
+using System.Net;
+using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
 
 namespace Test
 {
@@ -31,14 +35,30 @@ namespace Test
         //                          User                          //
         ////////////////////////////////////////////////////////////
 
-        
+        private const string UserApi = "https://localhost:44352/api/user";
+
         [Fact]
-        public void GetUser_returntype_test()
+        public void ApiUser_InvalidId_BadRequest()
         {
-            _dataServiceMock.Setup(x => x.GetUser(It.IsAny<int>())).Returns(new User());
-            var Usercontroller = CreateUserController();
-            var user = Usercontroller.GetUser(123);
-            Assert.IsType<OkObjectResult>(user);
+            var (_, statusCode) = GetObject($"{UserApi}/okokokok");
+
+            Assert.Equal(HttpStatusCode.BadRequest, statusCode);
+        }
+
+        [Fact]
+        public void ApiUser_validId()
+        {
+            var (_, statusCode) = GetObject($"{UserApi}/3");
+
+            Assert.Equal(HttpStatusCode.OK, statusCode);
+        }
+
+        [Fact]
+        public void ApiUser_invalidId_NotFound()
+        {
+            var (_, statusCode) = GetObject($"{UserApi}/999");
+
+            Assert.Equal(HttpStatusCode.NotFound, statusCode);
         }
 
         [Fact]
@@ -114,5 +134,53 @@ namespace Test
         }
 
 
+        // Helpers
+
+        (JArray, HttpStatusCode) GetArray(string url)
+        {
+            var client = new HttpClient();
+            var response = client.GetAsync(url).Result;
+            var data = response.Content.ReadAsStringAsync().Result;
+            return ((JArray)JsonConvert.DeserializeObject(data), response.StatusCode);
+        }
+
+        (JObject, HttpStatusCode) GetObject(string url)
+        {
+            var client = new HttpClient();
+            var response = client.GetAsync(url).Result;
+            var data = response.Content.ReadAsStringAsync().Result;
+            return ((JObject)JsonConvert.DeserializeObject(data), response.StatusCode);
+        }
+
+        (JObject, HttpStatusCode) PostData(string url, object content)
+        {
+            var client = new HttpClient();
+            var requestContent = new StringContent(
+                JsonConvert.SerializeObject(content),
+                Encoding.UTF8,
+                "application/json");
+            var response = client.PostAsync(url, requestContent).Result;
+            var data = response.Content.ReadAsStringAsync().Result;
+            return ((JObject)JsonConvert.DeserializeObject(data), response.StatusCode);
+        }
+
+        HttpStatusCode PutData(string url, object content)
+        {
+            var client = new HttpClient();
+            var response = client.PutAsync(
+                url,
+                new StringContent(
+                    JsonConvert.SerializeObject(content),
+                    Encoding.UTF8,
+                    "application/json")).Result;
+            return response.StatusCode;
+        }
+
+        HttpStatusCode DeleteData(string url)
+        {
+            var client = new HttpClient();
+            var response = client.DeleteAsync(url).Result;
+            return response.StatusCode;
+        }
     }
 }
