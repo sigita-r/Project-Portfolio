@@ -1,0 +1,1 @@
+host=localhost;db=postgres;uid=postgres;pwd=765522
