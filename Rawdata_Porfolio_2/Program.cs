@@ -32,8 +32,8 @@ namespace Rawdata_Porfolio_2
             //  Console.WriteLine(ds.ReadCharacter(1));
 
 
-            string plainData = "password";
-             var hashedData = ComputeSha256Hash(plainData);
+            //string plainData = "password";
+            //var hashedData = ComputeSha256Hash(plainData);
 
             // ds.CreateUser("test", hashedData, "mail@mail.com", DateTime.Today);
 
@@ -62,14 +62,22 @@ namespace Rawdata_Porfolio_2
             // Console.WriteLine(ds.GetSQ(1));
             //Console.WriteLine(ds.GetRole(212920, 41572));
             // Console.WriteLine( ds.ActorSearch(2, "Fred"));
+            /*
 
-
-            /*foreach (Search_results sr in ds.SS_Search(2, "batman", null, null, "Christian"))
+            foreach (Search_results sr in ds.SS_Search(2, "batman", "", "", "Christian"))
                {
                    Console.WriteLine(sr.Title_Name + sr.Title_ID);
                }*/
 
+           // ds.CreateUser("Check", ds.ComputeSha256Hash(p), "hsahmad@mail.dk", DateTime.Today);
             
+            /*string p = "password";
+            var ps = ds.ComputeSha256Hash(p);
+            string v = ds.Login("Check", ps);
+            Console.WriteLine(v);*/
+
+
+
 
             CreateHostBuilder(args).Build().Run();
         }
@@ -81,17 +89,6 @@ namespace Rawdata_Porfolio_2
                     webBuilder.UseStartup<Startup>();
                 });
 
-        static byte[] ComputeSha256Hash(string rawData)
-        {
-            // Create a SHA256   
-            using (SHA256 sha256Hash = SHA256.Create())
-            {
-                // ComputeHash - returns byte array  
-                byte[] bytes = sha256Hash.ComputeHash(Encoding.UTF8.GetBytes(rawData));
-
-                // Convert byte array to a string   
-                return bytes;
-            }
-        }
+        
     }
 }
