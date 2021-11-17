@@ -35,13 +35,13 @@ namespace Webservice.Controllers
 
             if (titleBMs.Count == 0)
             {
-                return NotFound();
+                return NotFound("no BMs found");
             }
-
+          //  .Select(x => GetBookmarkTitleViewModel(x))
             return Ok(titleBMs.Select(x => GetBookmarkTitleViewModel(x)));
-        }
+        }   
 
-        [HttpPost]
+        [HttpPost("createTitleBookmark")]
         public IActionResult CreateBookmarkTitle(int userID, int titleID, string note)
         {
             // checks
@@ -56,7 +56,7 @@ namespace Webservice.Controllers
 
             }
 
-            _dataService.CreateTitleBM(userID, titleID, note);
+           _dataService.CreateTitleBM(userID, titleID, note);
 
             //  ending may need change, this is just something i tried
             // Bookmarks_Title bookmark = new Bookmarks_Title();
@@ -69,9 +69,10 @@ namespace Webservice.Controllers
         {
             return new BookmarkTitleViewModel
             {
-                // Url = _linkGenerator.GetUriByName(HttpContext, nameof(GetBookmarkTitlesForUser), new { bookmarkTitle.Title_Id }),
+               // Url = _linkGenerator.GetUriByName(HttpContext, nameof(GetBookmarkTitlesForUser), new { bookmarkTitle.Title_Id }).Replace("%20", ""),
                 UserID = bookmarkTitle.User_Id,
-                TitleName = bookmarkTitle.Name
+                TitleName = bookmarkTitle.Name,
+                TitleNote = bookmarkTitle.Note
             };
         }
 
@@ -86,14 +87,15 @@ namespace Webservice.Controllers
 
             if (personalityBMs.Count == 0)
             {
-                return NotFound();
+                return NotFound("No personalityBMs found");
+               // return Ok(personalityBMs.Select(x => GetBookmarkPersonalityViewModel(x)));
             }
 
-            return Ok(personalityBMs.Select(x => GetBookmarkPersonalityViewModel(x)));
+           // .Select(x => GetBookmarkPersonalityViewModel(x))
+            return Ok(personalityBMs);
         }
 
-        /*  -- not sure you can have 2 post in one controller
-        [HttpPost]
+        [HttpPost("createPersonalityBookmark")]
         public IActionResult CreateBookmarkPersonality(int userID, int personalityID, string note)
         {
             // checks
@@ -114,18 +116,17 @@ namespace Webservice.Controllers
             // Bookmarks_Title bookmark = new Bookmarks_Title();
 
             // I dont know what else to put here, but it works and adds to database
-            Bookmarks_Personality x = new Bookmarks_Personality();
+           // Bookmarks_Personality x = new Bookmarks_Personality();
 
-            return Created("", GetBookmarkPersonalityViewModel(x));
+            return Created("", null);
         }
-        */
-
+        
         private BookmarkPersonalityViewModel GetBookmarkPersonalityViewModel(Bookmarks_Personality bookmarkPersonality)
         {
             return new BookmarkPersonalityViewModel
             {
-                // Url = _linkGenerator.GetUriByName(HttpContext, nameof(GetBookmarkTitlesForUser), new { bookmarkTitle.Title_Id }),
-                UserID = bookmarkPersonality.User_Id,
+                Url = _linkGenerator.GetUriByName(HttpContext, nameof(GetBookmarkTitlesForUser), new { bookmarkPersonality.Personality_Id }),
+                UserID = bookmarkPersonality.User.Id,
                 PersonalityName = bookmarkPersonality.Name
             };
         }

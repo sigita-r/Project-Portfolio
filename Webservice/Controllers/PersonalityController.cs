@@ -56,7 +56,7 @@ namespace Webservice.Controllers
                 Name = personality.Name,
                 Year_Birth = personality.Year_Birth,
                 Year_Death = personality.Year_Death,
-                // Profession = personality.Profession,
+               // Profession = personality.Profession,
             };
         }
 

@@ -55,7 +55,10 @@ namespace Rawdata_Porfolio_2.Entity_Framework
 
         public void CreatePersonalityBM(int userID, int personalityID, string note);
 
-        public List<Bookmarks_Personality> GetPersonalityBMsByUserID(int userID);
+      //  IList<Bookmarks_Personality> GetPersonalityBMsByUserID(int userID);
+
+      // old
+       public List<Bookmarks_Personality> GetPersonalityBMsByUserID(int userID);
 
         public void DeletePersonalityBM(int userID, int personalityID);
 
@@ -428,6 +431,15 @@ namespace Rawdata_Porfolio_2.Entity_Framework
             }
         }
 
+        //public IList<Bookmarks_Personality> GetPersonalityBMsByUserID(int userID)
+        //{
+        //    IList<Bookmarks_Personality> allPersonalityBMs = ctx.Bookmark_Personalities.ToList();
+
+        //    return allPersonalityBMs.Where(x => x.User_Id == userID).ToList();
+        //}
+
+       // we try a new method - this is an old version
+       
         public List<Bookmarks_Personality> GetPersonalityBMsByUserID(int userID)
         {
             var cmd = new NpgsqlCommand("SELECT * FROM select_user_bookmarks('p', @ID);", connection.Connect());
@@ -448,6 +460,7 @@ namespace Rawdata_Porfolio_2.Entity_Framework
             connection.Connect().Close();
             return result;
         }
+        
 
         public void DeletePersonalityBM(int UserId, int PersonalityId)
         {
