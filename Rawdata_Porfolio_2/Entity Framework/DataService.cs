@@ -496,10 +496,8 @@ namespace Rawdata_Porfolio_2.Entity_Framework
         //                          User                          //
         ////////////////////////////////////////////////////////////
  
-        public void CreateUser(string username, byte [] password, string email, DateTime dob)
+        public User CreateUser(string username, byte [] password, string email, DateTime dob)
         {
-
-
             var user = new User();
             user.Id = ctx.Users.Max(x => x.Id)+1;   // Since the ID column is a serial type (meaning that the value is auto-incremented on each new entry), do we even need this line?
             user.Username = username;
@@ -508,8 +506,7 @@ namespace Rawdata_Porfolio_2.Entity_Framework
             user.DateOfBirth = dob;
             ctx.Add(user);
             ctx.SaveChanges();
-            
-            
+            return user;
         }
 
         public User GetUser(int userId)

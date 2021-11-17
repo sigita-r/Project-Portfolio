@@ -20,6 +20,9 @@ namespace Test
         private readonly Mock<IDataService> _dataServiceMock;
         private readonly Mock<LinkGenerator> _linkGeneratorMock;
 
+        private readonly OurMDB_Context ctx;
+        private readonly DataService dataservice;
+
         public WebServiceTests()
         {
             _dataServiceMock = new Mock<IDataService>();
@@ -32,7 +35,7 @@ namespace Test
         ////////////////////////////////////////////////////////////
 
         [Fact]
-        public void GetUser_ValidUserId_ReturnsOkStatus()
+        public void GetUser_returntype_test()
         {
             _dataServiceMock.Setup(x => x.GetUser(It.IsAny<int>())).Returns(new User());
             var Usercontroller = CreateUserController();
@@ -40,8 +43,15 @@ namespace Test
             Assert.IsType<OkObjectResult>(user);
         }
 
-
-
+        [Fact]
+        public void GetUser_information_test()
+        {
+            var user = dataservice.GetUser(3);
+            Assert.IsType<User>(user);
+            Assert.Equal(3, user.Id);
+            Assert.Equal("test", user.Username);
+            Assert.Equal("testemail@test.com", user.Email);
+        }
 
         private UserController CreateUserController()
         {
