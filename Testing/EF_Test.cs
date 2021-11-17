@@ -43,13 +43,5 @@ namespace Test
             Assert.Equal("test", user.Username);
             Assert.Equal("testemail@test.com", user.Email);
         }
-
-        private UserController CreateUserController()
-        {
-            var ctrl = new UserController(_dataServiceMock.Object, _linkGeneratorMock.Object);
-            ctrl.ControllerContext = new ControllerContext();
-            ctrl.ControllerContext.HttpContext = new DefaultHttpContext();
-            return ctrl;
-        }
     }
 }
