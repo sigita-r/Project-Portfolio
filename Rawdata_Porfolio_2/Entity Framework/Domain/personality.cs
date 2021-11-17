@@ -15,7 +15,6 @@ namespace Rawdata_Porfolio_2.Pages.Entity_Framework.Domain
         public int Year_Death { get; set; }
         public List<Bookmarks_Personality> Bookmarks_Personalities { get; set; }
         public List<Character> Characters { get; set; }
-        public List<Personality> Personalities { get; set; }
         public List<Role> Roles { get; set; }
 
         public override string ToString()
