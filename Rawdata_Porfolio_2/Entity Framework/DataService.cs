@@ -137,26 +137,42 @@ namespace Rawdata_Porfolio_2.Entity_Framework
             }
         }
 
-        public byte[] ComputeSha256Hash(string rawData)
+        // Password hashing functions adapted from Christos Matskas, https://cmatskas.com/-net-password-hashing-using-pbkdf2/
+        public byte[] HashPassword(byte[] plainPass)
         {
-            // Create a SHA256   
-            using (SHA256 sha256Hash = SHA256.Create())
-            {
-                // ComputeHash - returns byte array  
-                byte[] bytes = sha256Hash.ComputeHash(Encoding.UTF8.GetBytes(rawData));
+            var cryptoProvider = new RNGCryptoServiceProvider();
+            byte[] salt = new byte[24];
+            cryptoProvider.GetBytes(salt);
 
-                // Convert byte array to a string   
-                return bytes;
-            }
+            var hash = GetPbkdf2Bytes(plainPass, salt, 1000, 32);
+            return Encoding.Unicode.GetBytes($"1000:{Convert.ToBase64String(salt)}:{Convert.ToBase64String(hash)}");
         }
-        public string UnHashSha256(Byte[] password)
+        public bool ValidatePassword(byte[] testPass, byte[] passBytes)
         {
-            StringBuilder builder = new StringBuilder();
-            for (int i = 0; i < password.Length; i++)
+            string storedPass = Encoding.Unicode.GetString(passBytes);
+            var split = storedPass.Split(":");
+            var iterations = Int32.Parse(split[0]);
+            var salt = Convert.FromBase64String(split[1]);
+            var hash = Convert.FromBase64String(split[2]);
+
+            var testHash = GetPbkdf2Bytes(testPass, salt, iterations, hash.Length);
+            return SlowEquals(hash, testHash);
+        }
+
+        public bool SlowEquals(byte[] a, byte[] b)
+        {
+            var diff = (uint) a.Length ^ (uint) b.Length;
+            for (int i = 0; i < a.Length && i < b.Length; i++)
             {
-                builder.Append(password[i].ToString("x2"));
+                diff |= (uint) (a[i] ^ b[i]);
             }
-            return builder.ToString();
+            return diff == 0;
+        }
+
+        public byte[] GetPbkdf2Bytes(byte[] password, byte[] salt, int iterations, int outputBytes)
+        {
+            var pbkdf2 = new Rfc2898DeriveBytes(password, salt, iterations, HashAlgorithmName.SHA256);
+            return pbkdf2.GetBytes(outputBytes);
         }
 
         ////////////////////////////////////////////////////////////
@@ -523,7 +539,7 @@ namespace Rawdata_Porfolio_2.Entity_Framework
         {
             var user = new User();
             user.Username = username;
-            user.Password = password;
+            user.Password = HashPassword(password);
             user.Email = email;
             user.DateOfBirth = dob;
             ctx.Add(user);
@@ -536,16 +552,18 @@ namespace Rawdata_Porfolio_2.Entity_Framework
             return ctx.Users.Find(userId);
         }
 
-        public void UpdateUser(int userID, string email, string username, Byte[] password, DateTime dob)
+        public void UpdateUser(int userID, string email, string username, byte[] password, DateTime dob)
         {
-
-            var user = ctx.Users.First(x => x.Id == userID);
-            user.Username = username;
-            user.Email = email;
-            user.Password = password;
-            user.DateOfBirth = dob;
-            ctx.SaveChanges();
-
+            using (var cmd = new NpgsqlCommand("CALL update_user('u', @ID, @USERNAME, @PASSWORD, @MAIL, @DOB);", connection.Connect()))
+            {
+                cmd.Parameters.AddWithValue("ID", userID);
+                cmd.Parameters.AddWithValue("USERNAME", username);
+                cmd.Parameters.AddWithValue("PASSWORD", password.Length == 0 ? password : HashPassword(password));
+                cmd.Parameters.AddWithValue("MAIL", email);
+                cmd.Parameters.AddWithValue("DOB", dob);
+                NpgsqlDataReader reader = cmd.ExecuteReader();
+            }
+            connection.Connect().Close();
         }
         public void DeleteUser(int userId)
         {
@@ -558,12 +576,11 @@ namespace Rawdata_Porfolio_2.Entity_Framework
             connection.Connect().Close();
         }
 
-        public string Login( string username, Byte[] password)
+        public string Login(string username, byte[] password)
         {
             try {
-                using (var cmd = new NpgsqlCommand("Select password from public.user where @USER = username", connection.Connect()))
+                using (var cmd = new NpgsqlCommand("SELECT password FROM public.user WHERE @USER = username", connection.Connect()))
                 {
-     
                     cmd.Parameters.AddWithValue("USER", username);
                     NpgsqlDataReader reader = cmd.ExecuteReader();
                     while (reader.Read())
@@ -571,11 +588,11 @@ namespace Rawdata_Porfolio_2.Entity_Framework
                         User user = new User()
                         {
 
-                            Password = (Byte[])reader["password"],
+                            Password = (byte[])reader["password"],
 
                         };
 
-                        if (UnHashSha256(password) == UnHashSha256(user.Password))
+                        if (ValidatePassword(password, user.Password))
                         {
                             return "Login accepted";
                         }
@@ -589,7 +606,7 @@ namespace Rawdata_Porfolio_2.Entity_Framework
            }
                 catch (NpgsqlException e) 
             {
-                return "Username did not match";
+                return "Username not found";
             } 
         } 
           
@@ -762,7 +779,7 @@ namespace Rawdata_Porfolio_2.Entity_Framework
 
         public List<Search_results> SS_Search(int userid, string title_Query, string plot_Query, string character_Query, string name_Query) 
         {
-            var cmd = new NpgsqlCommand("select * from structured_string_search(@UID, @TQUERY, @PQUERY, @CQUERY, @NQUERY)", connection.Connect());
+            var cmd = new NpgsqlCommand("SELECT * FROM structured_string_search(@UID, @TQUERY, @PQUERY, @CQUERY, @NQUERY)", connection.Connect());
             cmd.Parameters.AddWithValue("UID", userid);
             cmd.Parameters.AddWithValue("TQUERY", title_Query);
             cmd.Parameters.AddWithValue("PQUERY", plot_Query);
