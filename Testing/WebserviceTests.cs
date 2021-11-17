@@ -20,9 +20,6 @@ namespace Test
         private readonly Mock<IDataService> _dataServiceMock;
         private readonly Mock<LinkGenerator> _linkGeneratorMock;
 
-        private readonly OurMDB_Context ctx;
-        private readonly DataService dataservice;
-
         public WebServiceTests()
         {
             _dataServiceMock = new Mock<IDataService>();
@@ -34,6 +31,7 @@ namespace Test
         //                          User                          //
         ////////////////////////////////////////////////////////////
 
+        
         [Fact]
         public void GetUser_returntype_test()
         {
@@ -43,13 +41,53 @@ namespace Test
             Assert.IsType<OkObjectResult>(user);
         }
 
+        [Fact]
+        public void CreateUser_returntype_test()
+        {
+            _dataServiceMock.Setup(x => x.CreateUser(It.IsAny<string>(), It.IsAny<byte[]>(), It.IsAny<string>(), It.IsAny<DateTime>())).Returns(new User());
+            var Usercontroller = CreateUserController();
+            var user = Usercontroller.CreateUser("Test", "testpassword", "testmail.com", DateTime.Now);
+            Assert.IsType<CreatedResult>(user);
+        }
+
         private UserController CreateUserController()
         {
-            var ctrl = new UserController(_dataServiceMock.Object, _linkGeneratorMock.Object);
-            ctrl.ControllerContext = new ControllerContext();
-            ctrl.ControllerContext.HttpContext = new DefaultHttpContext();
-            return ctrl;
+            var userController = new UserController(_dataServiceMock.Object, _linkGeneratorMock.Object);
+            userController.ControllerContext = new ControllerContext();
+            userController.ControllerContext.HttpContext = new DefaultHttpContext();
+            return userController;
         }
+
+        ////////////////////////////////////////////////////////////
+        //                      PERSONALITY                       //
+        ////////////////////////////////////////////////////////////
+
+        [Fact]
+        public void GetPersonality_returntype_test()
+        {
+            _dataServiceMock.Setup(x => x.GetPersonalityById(It.IsAny<int>())).Returns(new Personality());
+            var PersonalityController = CreatePersonalityController();
+            var Personality = PersonalityController.GetPersonalityByID(1);
+            Assert.IsType<OkObjectResult>(Personality);
+        }
+
+
+
+        private PersonalityController CreatePersonalityController()
+        {
+            var PersonalityController = new PersonalityController(_dataServiceMock.Object, _linkGeneratorMock.Object);
+            PersonalityController.ControllerContext = new ControllerContext();
+            PersonalityController.ControllerContext.HttpContext = new DefaultHttpContext();
+            return PersonalityController;
+        }
+
+        ////////////////////////////////////////////////////////////
+        //                       BOOKMARKS                        //
+        ////////////////////////////////////////////////////////////
+        
+
+
+
 
     }
 }
