@@ -90,8 +90,9 @@ namespace Test
         {
             _dataServiceMock.Setup(x => x.GetPersonalityBMsByUserID(It.IsAny<int>())).Returns(new List<Bookmarks_Personality>());
             var BookmarkController = CreateBookmarkController();
-            var BMs = BookmarkController.GetBookmarkPersonalitiesForUser(1);
-            Assert.IsType<OkObjectResult>(BMs);
+            var res = BookmarkController.GetBookmarkPersonalitiesForUser(3);
+            Console.WriteLine(res);
+            Assert.IsType<OkObjectResult>(res);
         }
 
         private BookmarkController CreateBookmarkController()

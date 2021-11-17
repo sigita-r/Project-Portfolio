@@ -35,13 +35,13 @@ namespace Webservice.Controllers
 
             if (titleBMs.Count == 0)
             {
-                return NotFound();
+                return NotFound("no BMs found");
             }
 
             return Ok(titleBMs.Select(x => GetBookmarkTitleViewModel(x)));
         }
 
-        [HttpPost]
+        [HttpPost("createTitleBookmark")]
         public IActionResult CreateBookmarkTitle(int userID, int titleID, string note)
         {
             // checks
@@ -56,13 +56,13 @@ namespace Webservice.Controllers
 
             }
 
-            _dataService.CreateTitleBM(userID, titleID, note);
+           _dataService.CreateTitleBM(userID, titleID, note);
 
             //  ending may need change, this is just something i tried
             // Bookmarks_Title bookmark = new Bookmarks_Title();
 
             // I dont know what else to put here, but it works and adds to database
-            return Created("", null);
+            return Created("/user/afkn", null);
         }
 
         private BookmarkTitleViewModel GetBookmarkTitleViewModel(Bookmarks_Title bookmarkTitle)
@@ -84,16 +84,17 @@ namespace Webservice.Controllers
         {
             var personalityBMs = _dataService.GetPersonalityBMsByUserID(userID);
 
-            if (personalityBMs.Count == 0)
+            if (!personalityBMs.Any())
             {
-                return NotFound();
+                return NotFound("No personalityBMs found");
+              //  return Ok(personalityBMs.Select(x => GetBookmarkPersonalityViewModel(x)));
             }
 
-            return Ok(personalityBMs.Select(x => GetBookmarkPersonalityViewModel(x)));
+            //.Select(x => GetBookmarkPersonalityViewModel(x))
+            return Ok(personalityBMs);
         }
 
-        /*  -- not sure you can have 2 post in one controller
-        [HttpPost]
+        [HttpPost("createPersonalityBookmark")]
         public IActionResult CreateBookmarkPersonality(int userID, int personalityID, string note)
         {
             // checks
@@ -114,11 +115,11 @@ namespace Webservice.Controllers
             // Bookmarks_Title bookmark = new Bookmarks_Title();
 
             // I dont know what else to put here, but it works and adds to database
-            Bookmarks_Personality x = new Bookmarks_Personality();
+           // Bookmarks_Personality x = new Bookmarks_Personality();
 
-            return Created("", GetBookmarkPersonalityViewModel(x));
+            return Created("", null);
         }
-        */
+        
 
         private BookmarkPersonalityViewModel GetBookmarkPersonalityViewModel(Bookmarks_Personality bookmarkPersonality)
         {
