@@ -91,8 +91,7 @@ namespace Webservice.Controllers
             }
 
            // .Select(x => GetBookmarkPersonalityViewModel(x))
-            return Ok(personalityBMs.Select(x => GetBookmarkPersonalityViewModel(x))
-);
+            return Ok(personalityBMs);
         }
 
         [HttpPost("createPersonalityBookmark")]
@@ -125,8 +124,8 @@ namespace Webservice.Controllers
         {
             return new BookmarkPersonalityViewModel
             {
-                // Url = _linkGenerator.GetUriByName(HttpContext, nameof(GetBookmarkTitlesForUser), new { bookmarkTitle.Title_Id }),
-                UserID = bookmarkPersonality.User_Id,
+                Url = _linkGenerator.GetUriByName(HttpContext, nameof(GetBookmarkTitlesForUser), new { bookmarkPersonality.Personality_Id }),
+                UserID = bookmarkPersonality.User.Id,
                 PersonalityName = bookmarkPersonality.Name
             };
         }

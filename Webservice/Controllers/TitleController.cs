@@ -111,10 +111,10 @@ namespace Webservice.Controllers
         {
             return new TitleViewModel
             {
-               // Url = (_linkGenerator.GetUriByName(HttpContext, ),
+                Url = _linkGenerator.GetUriByName(HttpContext, nameof(GetTitleById), new { title.Id }).Replace("%20", ""),
                 Type = title.Type,
-              //  Genre = title.Genre,
-               // Primary_Title = title.Primary_Title,
+               // Genre = title.Genre,
+              //  Primary_Title = title.Primary_Title,
                 Is_Adult = title.IsAdult,
                 Year_Start = title.Year_Start,
                 Year_End = title.Year_End,

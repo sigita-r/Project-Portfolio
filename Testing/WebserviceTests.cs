@@ -70,7 +70,7 @@ namespace Test
             var Personality = PersonalityController.GetPersonalityByID(1);
             Assert.IsType<OkObjectResult>(Personality);
         }
-
+        
 
 
         private PersonalityController CreatePersonalityController()
