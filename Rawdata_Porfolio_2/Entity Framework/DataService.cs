@@ -584,7 +584,7 @@ namespace Rawdata_Porfolio_2.Entity_Framework
                             return "Wrong password";
                         }
                     }
-                    return "idk what happens here";
+                    return "I dont know what happens here"; // I need help for this one sometime -H
                 } 
            }
                 catch (NpgsqlException e) 
