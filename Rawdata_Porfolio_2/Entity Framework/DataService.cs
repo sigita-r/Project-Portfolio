@@ -176,7 +176,7 @@ namespace Rawdata_Porfolio_2.Entity_Framework
         public List<Character> GetCharactersFromTitleById(int title_Id)
         {
 
-            using (var cmd = new NpgsqlCommand("SELECT DISTINCT personality.\"ID\", personality.\"name\", \"character\" FROM public.personality, public.characters " +
+            using (var cmd = new NpgsqlCommand("SELECT DISTINCT personality.\"ID\", personality.\"name\", characters.\"character\" FROM public.personality, public.characters " +
                 "WHERE characters.\"title_ID\" = @TID AND characters.\"personality_ID\" = personality.\"ID\";", connection.Connect()))
             {
                 cmd.Parameters.AddWithValue("TID", title_Id);
@@ -201,8 +201,8 @@ namespace Rawdata_Porfolio_2.Entity_Framework
         public List<Character> GetKnownCharactersFromTitleById(int title_Id)
         {
 
-            using (var cmd = new NpgsqlCommand("SELECT DISTINCT personality.\"ID\", personality.\"name\", \"character\" FROM public.personality, public.characters " +
-                "WHERE characters.\"title_ID\" = @TID AND known_for = true AND characters.\"personality_ID\" = personality.\"ID\";", connection.Connect()))
+            using (var cmd = new NpgsqlCommand("SELECT DISTINCT personality.\"ID\", personality.\"name\", characters.\"character\" FROM public.personality, public.characters " +
+                "WHERE characters.\"title_ID\" = @TID AND characters.known_for = true AND characters.\"personality_ID\" = personality.\"ID\";", connection.Connect()))
             {
                 cmd.Parameters.AddWithValue("TID", title_Id);
                 NpgsqlDataReader reader = cmd.ExecuteReader();
@@ -330,7 +330,7 @@ namespace Rawdata_Porfolio_2.Entity_Framework
         public List<Character> GetCharactersFromPersonalityById(int personality_Id)
         {
             using (var cmd = new NpgsqlCommand("SELECT DISTINCT characters.\"title_ID\", characters.character, title_localization.name FROM public.characters, public.title_localization " +
-                                               "WHERE \"personality_ID\" = @PID AND title_localization.\"title_ID\" = characters.\"title_ID\";", connection.Connect()))
+                                               "WHERE characters.\"personality_ID\" = @PID AND title_localization.\"title_ID\" = characters.\"title_ID\";", connection.Connect()))
             {
                 cmd.Parameters.AddWithValue("PID", personality_Id);
                 NpgsqlDataReader reader = cmd.ExecuteReader();
@@ -354,7 +354,7 @@ namespace Rawdata_Porfolio_2.Entity_Framework
         public List<Character> GetKnownCharactersFromPersonalityById(int personality_Id)
         {
             using (var cmd = new NpgsqlCommand("SELECT DISTINCT characters.\"title_ID\", characters.character, title_localization.name FROM public.characters, public.title_localization " +
-                                               "WHERE \"personality_ID\" = @PID AND characters.known_for = true AND title_localization.\"title_ID\" = characters.\"title_ID\";", connection.Connect()))
+                                               "WHERE characters.\"personality_ID\" = @PID AND characters.known_for = true AND title_localization.\"title_ID\" = characters.\"title_ID\";", connection.Connect()))
             {
                 cmd.Parameters.AddWithValue("PID", personality_Id);
                 NpgsqlDataReader reader = cmd.ExecuteReader();
@@ -410,7 +410,6 @@ namespace Rawdata_Porfolio_2.Entity_Framework
                 cmd.Parameters.AddWithValue("note", note);
                 NpgsqlDataReader reader = cmd.ExecuteReader();
             }
-            connection.Connect().Close();
         }
 
         public List<Bookmarks_Personality> GetPersonalityBMsByUserID(int userID)
@@ -442,7 +441,6 @@ namespace Rawdata_Porfolio_2.Entity_Framework
                 cmd.Parameters.AddWithValue("PID", PersonalityId);
                 NpgsqlDataReader reader = cmd.ExecuteReader();
             }
-            connection.Connect().Close();
         }
 
         public void UpdatePersonalityBM(int UserId, int PersonalityId, string note)
@@ -455,7 +453,6 @@ namespace Rawdata_Porfolio_2.Entity_Framework
 
                 NpgsqlDataReader reader = cmd.ExecuteReader();
             }
-            connection.Connect().Close();
         }
 
         public void CreateTitleBM(int userID, int titleID, string note)
@@ -467,7 +464,6 @@ namespace Rawdata_Porfolio_2.Entity_Framework
                 cmd.Parameters.AddWithValue("note", note);
                 NpgsqlDataReader reader = cmd.ExecuteReader();
             }
-            connection.Connect().Close();
         }
 
         public List<Bookmarks_Title> GetTitleBMsByUserID(int userID)
@@ -498,7 +494,6 @@ namespace Rawdata_Porfolio_2.Entity_Framework
                 cmd.Parameters.AddWithValue("PID", titleID);
                 NpgsqlDataReader reader = cmd.ExecuteReader();
             }
-            connection.Connect().Close();
 
         }
 
@@ -512,7 +507,6 @@ namespace Rawdata_Porfolio_2.Entity_Framework
 
                 NpgsqlDataReader reader = cmd.ExecuteReader();
             }
-            connection.Connect().Close();
         }
 
         ////////////////////////////////////////////////////////////
@@ -789,7 +783,7 @@ namespace Rawdata_Porfolio_2.Entity_Framework
         public List<Role> GetRolesFromTitleById(int title_Id)
         {
             
-            using (var cmd = new NpgsqlCommand("SELECT DISTINCT personality.\"ID\", personality.\"name\", \"role\" FROM public.title_localization, public.roles " +
+            using (var cmd = new NpgsqlCommand("SELECT DISTINCT personality.\"ID\", personality.\"name\", roles.\"role\" FROM public.title_localization, public.roles " +
                                                "WHERE roles.\"title_ID\" = @TID AND title_localization.primary_title = true AND roles.\"personality_ID\" = personality.\"ID\";", connection.Connect()))
             {
                 cmd.Parameters.AddWithValue("TID", title_Id);

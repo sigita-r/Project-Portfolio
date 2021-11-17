@@ -43,7 +43,7 @@ namespace Webservice.Controllers
 
 
         [HttpPost]
-        public IActionResult CreateUser(/*int id,*/ string userName, string password, string email, DateTime dob)
+        public IActionResult CreateUser(string userName, string password, string email, DateTime dob)
         {
             // checks
 
