@@ -84,14 +84,15 @@ namespace Webservice.Controllers
         {
             var personalityBMs = _dataService.GetPersonalityBMsByUserID(userID);
 
-            if (!personalityBMs.Any())
+            if (personalityBMs.Count == 0)
             {
                 return NotFound("No personalityBMs found");
-              //  return Ok(personalityBMs.Select(x => GetBookmarkPersonalityViewModel(x)));
+               // return Ok(personalityBMs.Select(x => GetBookmarkPersonalityViewModel(x)));
             }
 
-            //.Select(x => GetBookmarkPersonalityViewModel(x))
-            return Ok(personalityBMs);
+           // .Select(x => GetBookmarkPersonalityViewModel(x))
+            return Ok(personalityBMs.Select(x => GetBookmarkPersonalityViewModel(x))
+);
         }
 
         [HttpPost("createPersonalityBookmark")]
@@ -120,7 +121,6 @@ namespace Webservice.Controllers
             return Created("", null);
         }
         
-
         private BookmarkPersonalityViewModel GetBookmarkPersonalityViewModel(Bookmarks_Personality bookmarkPersonality)
         {
             return new BookmarkPersonalityViewModel

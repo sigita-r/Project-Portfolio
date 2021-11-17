@@ -55,7 +55,7 @@ namespace Rawdata_Porfolio_2.Entity_Framework
 
         public void CreatePersonalityBM(int userID, int personalityID, string note);
 
-       // IList<Bookmarks_Personality> GetPersonalityBMsByUserID(int userID);
+      //  IList<Bookmarks_Personality> GetPersonalityBMsByUserID(int userID);
 
       // old
        public List<Bookmarks_Personality> GetPersonalityBMsByUserID(int userID);
@@ -438,8 +438,8 @@ namespace Rawdata_Porfolio_2.Entity_Framework
         //    return allPersonalityBMs.Where(x => x.User_Id == userID).ToList();
         //}
 
-        // we try a new method - this is an old version
-        
+       // we try a new method - this is an old version
+       
         public List<Bookmarks_Personality> GetPersonalityBMsByUserID(int userID)
         {
             var cmd = new NpgsqlCommand("SELECT * FROM select_user_bookmarks('p', @ID);", connection.Connect());

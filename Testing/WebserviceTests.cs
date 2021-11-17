@@ -95,6 +95,16 @@ namespace Test
             Assert.IsType<OkObjectResult>(res);
         }
 
+        [Fact]
+        public void GetTitleBMs_returntype_test()
+        {
+            _dataServiceMock.Setup(x => x.GetTitleBMsByUserID(It.IsAny<int>())).Returns(new List<Bookmarks_Title>());
+            var BookmarkController = CreateBookmarkController();
+            var res = BookmarkController.GetBookmarkTitlesForUser(3);
+            Assert.IsType<OkObjectResult>(res);
+        }
+
+
         private BookmarkController CreateBookmarkController()
         {
             var BookmarkController = new BookmarkController(_dataServiceMock.Object, _linkGeneratorMock.Object);
