@@ -93,19 +93,19 @@ namespace Rawdata_Porfolio_2.Entity_Framework
 
         List<Search_results> ActorSearch(int user_Id, string query); 
         List<Search_Queries> GetSQ(int userID);
-        public void DeleteSQ(int queryID);
+        public void DeleteSQ(int userID, int queryID);
         List<Search_results> StringSearch(int userId, string query);
 
-
+        List<Search_results> SS_Search(int userid, string title_Query, string plot_Query, string character_Query, string name_Query);
 
         ////////////////////////////////////////////////////////////
         //                          OTHER                         //
         ////////////////////////////////////////////////////////////
 
 
-        List<Role> GetRole(int titleID, int personalityID);
+      //  List<Role> GetRole(int titleID, int personalityID);
 
-        // Wi GettWi();
+      
 
         ////////////////////////////////////////////////////////////
 
@@ -472,7 +472,6 @@ namespace Rawdata_Porfolio_2.Entity_Framework
 
 
             var user = new User();
-            user.Id = ctx.Users.Max(x => x.Id)+1;   // Since the ID column is a serial type (meaning that the value is auto-incremented on each new entry), do we even need this line?
             user.Username = username;
             user.Password = password;
             user.Email = email;
@@ -628,10 +627,10 @@ namespace Rawdata_Porfolio_2.Entity_Framework
             return result;
         }
 
-
+        //TEST THIS
         // this dont seem to make sense - from sigita and mads, where is the userid, we need a userid to know from who the
         // search should be deleted, which it doesnt take
-        public void DeleteSQ(int queryID)
+        public void DeleteSQ(int user, int queryID)
         {
             using (var cmd = new NpgsqlCommand("call update_search_queries(@UID, @QID, @QUERY, @DEL)", connection.Connect()))
             {
@@ -684,6 +683,29 @@ namespace Rawdata_Porfolio_2.Entity_Framework
             connection.Connect().Close();
             return result;
         }
+
+        public List<Search_results> SS_Search(int userid, string title_Query, string plot_Query, string character_Query, string name_Query) 
+        {
+            var cmd = new NpgsqlCommand("select * from structured_string_search(@UID, @TQUERY, @PQUERY, @CQUERY, @NQUERY)", connection.Connect());
+            cmd.Parameters.AddWithValue("UID", userid);
+            cmd.Parameters.AddWithValue("TQUERY", title_Query);
+            cmd.Parameters.AddWithValue("PQUERY", plot_Query);
+            cmd.Parameters.AddWithValue("CQUERY", character_Query);
+            cmd.Parameters.AddWithValue("NQUERY", name_Query);
+            NpgsqlDataReader reader = cmd.ExecuteReader();
+            List<Search_results> result = new List<Search_results>();
+            while (reader.Read())
+            {
+                Search_results row = new Search_results()
+                {
+                    Title_ID = (Int64)reader["title_ID"],
+                    Title_Name = reader["title_name"].ToString(),
+                };
+                result.Add(row);
+            }
+            connection.Connect().Close();
+            return result;
+        }
         ////////////////////////////////////////////////////////////
         //                          OTHER                         //
         ////////////////////////////////////////////////////////////
@@ -707,7 +729,7 @@ namespace Rawdata_Porfolio_2.Entity_Framework
             }   
         }
         */
-
+        /*
            public List<Role> GetRole(int titleID, int personalityID)
         {
             var cmd = new NpgsqlCommand("select role from roles where \"title_ID\" = @TID AND \"personality_ID\" = @PID", connection.Connect());
@@ -725,7 +747,7 @@ namespace Rawdata_Porfolio_2.Entity_Framework
             }
             connection.Connect().Close();
             return result;
-        }
+        }*/
 
         ////////////////////////////////////////////////////////////
     }

@@ -61,13 +61,15 @@ namespace Rawdata_Porfolio_2
             //Console.WriteLine(ds.DeleteSQ(1));
             // Console.WriteLine(ds.GetSQ(1));
             //Console.WriteLine(ds.GetRole(212920, 41572));
-           // Console.WriteLine( ds.ActorSearch(2, "Fred"));
+            // Console.WriteLine( ds.ActorSearch(2, "Fred"));
 
-           
-            foreach (Search_results sr in ds.StringSearch(2, "batman"))
-            {
-                Console.WriteLine(sr.Title_Name + sr.Title_ID);
-            }
+
+            /*foreach (Search_results sr in ds.SS_Search(2, "batman", null, null, "Christian"))
+               {
+                   Console.WriteLine(sr.Title_Name + sr.Title_ID);
+               }*/
+
+            
 
             CreateHostBuilder(args).Build().Run();
         }

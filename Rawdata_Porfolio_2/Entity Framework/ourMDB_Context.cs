@@ -43,10 +43,11 @@ namespace Rawdata_Porfolio_2.Entity_Framework
             optionsBuilder.UseNpgsql(connStringFromFile);
         }
 
-        protected override void OnModelCreating(ModelBuilder modelBuilder)
+        protected override void OnModelCreating(ModelBuilder modelBuilder) 
         {
+              
             base.OnModelCreating(modelBuilder);
-
+            modelBuilder.UseSerialColumns();
             modelBuilder.Entity<Bookmarks_Personality>().ToTable("bookmarks_personality");
             modelBuilder.Entity<Bookmarks_Personality>().Property(x => x.User_Id).HasColumnName("user_ID");
             modelBuilder.Entity<Bookmarks_Personality>().Property(x => x.Personality_Id).HasColumnName("personality_ID");
