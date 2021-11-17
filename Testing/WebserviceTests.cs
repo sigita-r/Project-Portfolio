@@ -84,9 +84,23 @@ namespace Test
         ////////////////////////////////////////////////////////////
         //                       BOOKMARKS                        //
         ////////////////////////////////////////////////////////////
-        
+      
+        [Fact]
+        public void GetPersonalityBMs_returntype_test()
+        {
+            _dataServiceMock.Setup(x => x.GetPersonalityBMsByUserID(It.IsAny<int>())).Returns(new List<Bookmarks_Personality>());
+            var BookmarkController = CreateBookmarkController();
+            var BMs = BookmarkController.GetBookmarkPersonalitiesForUser(1);
+            Assert.IsType<OkObjectResult>(BMs);
+        }
 
-
+        private BookmarkController CreateBookmarkController()
+        {
+            var BookmarkController = new BookmarkController(_dataServiceMock.Object, _linkGeneratorMock.Object);
+            BookmarkController.ControllerContext = new ControllerContext();
+            BookmarkController.ControllerContext.HttpContext = new DefaultHttpContext();
+            return BookmarkController;
+        }
 
 
     }

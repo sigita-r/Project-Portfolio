@@ -51,13 +51,13 @@ namespace Webservice.Controllers
             byte[] pwBytes = Encoding.ASCII.GetBytes(password);
 
 
-            _dataService.CreateUser(/*id,*/ userName, pwBytes, email, dob);
+          var user = _dataService.CreateUser(userName, pwBytes, email, dob);
 
             //  ending may need change, this is just something i tried
             // Bookmarks_Title bookmark = new Bookmarks_Title();
 
             // I dont know what else to put here, but it works and adds to database
-            return Created("", null);
+            return Created("", user);
         }
 
         private UserViewModel GetUserViewModel(User user)
