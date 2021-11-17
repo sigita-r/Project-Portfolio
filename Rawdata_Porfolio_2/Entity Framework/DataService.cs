@@ -426,7 +426,6 @@ namespace Rawdata_Porfolio_2.Entity_Framework
                 cmd.Parameters.AddWithValue("note", note);
                 NpgsqlDataReader reader = cmd.ExecuteReader();
             }
-            connection.Connect().Close();
         }
 
         public List<Bookmarks_Personality> GetPersonalityBMsByUserID(int userID)
@@ -458,7 +457,6 @@ namespace Rawdata_Porfolio_2.Entity_Framework
                 cmd.Parameters.AddWithValue("PID", PersonalityId);
                 NpgsqlDataReader reader = cmd.ExecuteReader();
             }
-            connection.Connect().Close();
         }
 
         public void UpdatePersonalityBM(int UserId, int PersonalityId, string note)
@@ -471,7 +469,6 @@ namespace Rawdata_Porfolio_2.Entity_Framework
 
                 NpgsqlDataReader reader = cmd.ExecuteReader();
             }
-            connection.Connect().Close();
         }
 
         public void CreateTitleBM(int userID, int titleID, string note)
@@ -483,7 +480,6 @@ namespace Rawdata_Porfolio_2.Entity_Framework
                 cmd.Parameters.AddWithValue("note", note);
                 NpgsqlDataReader reader = cmd.ExecuteReader();
             }
-            connection.Connect().Close();
         }
 
         public List<Bookmarks_Title> GetTitleBMsByUserID(int userID)
@@ -514,7 +510,6 @@ namespace Rawdata_Porfolio_2.Entity_Framework
                 cmd.Parameters.AddWithValue("PID", titleID);
                 NpgsqlDataReader reader = cmd.ExecuteReader();
             }
-            connection.Connect().Close();
 
         }
 
@@ -528,7 +523,6 @@ namespace Rawdata_Porfolio_2.Entity_Framework
 
                 NpgsqlDataReader reader = cmd.ExecuteReader();
             }
-            connection.Connect().Close();
         }
 
         ////////////////////////////////////////////////////////////

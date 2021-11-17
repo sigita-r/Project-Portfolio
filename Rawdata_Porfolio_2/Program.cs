@@ -69,13 +69,14 @@ namespace Rawdata_Porfolio_2
                    Console.WriteLine(sr.Title_Name + sr.Title_ID);
                }*/
 
-           // ds.CreateUser("Check", ds.ComputeSha256Hash(p), "hsahmad@mail.dk", DateTime.Today);
-            
+            // ds.CreateUser("Check", ds.ComputeSha256Hash(p), "hsahmad@mail.dk", DateTime.Today);
+
             /*string p = "password";
             var ps = ds.ComputeSha256Hash(p);
             string v = ds.Login("Check", ps);
             Console.WriteLine(v);*/
 
+           // Console.WriteLine(ds.GetPersonalityById(1));
 
 
 
