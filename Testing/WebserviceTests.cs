@@ -35,9 +35,9 @@ namespace Test
         public void GetUser_ValidUserId_ReturnsOkStatus()
         {
             _dataServiceMock.Setup(x => x.GetUser(It.IsAny<int>())).Returns(new User());
-            var ctrl = CreateUserController();
-            var result = ctrl.GetUser(123);
-            Assert.IsType<OkObjectResult>(result);
+            var Usercontroller = CreateUserController();
+            var user = Usercontroller.GetUser(123);
+            Assert.IsType<OkObjectResult>(user);
         }
 
 
