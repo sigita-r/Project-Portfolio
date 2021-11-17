@@ -9,6 +9,7 @@ using Rawdata_Porfolio_2.Pages.Entity_Framework;
 using System.Reflection;
 using System.Text;
 using Rawdata_Porfolio_2.Entity_Framework.Domain;
+using System.Security.Cryptography;
 
 namespace Rawdata_Porfolio_2.Entity_Framework
 {
@@ -25,7 +26,7 @@ namespace Rawdata_Porfolio_2.Entity_Framework
 
         List<Character> GetKnownCharactersFromTitleById(int title_Id);
 
-         public List<Character> GetCharactersFromTitleById(int title_Id);
+        public List<Character> GetCharactersFromTitleById(int title_Id);
 
         public List<Episode> GetEpisode(int titleID);
         public List<Episode> GetAllEpisodes(int titleID);
@@ -45,7 +46,7 @@ namespace Rawdata_Porfolio_2.Entity_Framework
         List<Character> GetCharactersFromPersonalityById(int personality_Id);
 
         public List<Character> GetKnownCharactersFromPersonalityById(int personality_Id);
-       
+
 
 
         ////////////////////////////////////////////////////////////
@@ -73,11 +74,12 @@ namespace Rawdata_Porfolio_2.Entity_Framework
         //                          User                          //
         ////////////////////////////////////////////////////////////
 
-        public void CreateUser(string username, byte [] password, string email, DateTime dob);
+        public User CreateUser(string username, byte[] password, string email, DateTime dob);
         User GetUser(int userID);
         public void DeleteUser(int userID);
-       //Waiting with this one till i get how to do bytea, since users should be able to change passwords.
-       public void UpdateUser(int userID, string email, string username, Byte[] password, DateTime dob);
+        //Waiting with this one till i get how to do bytea, since users should be able to change passwords.
+        public void UpdateUser(int userID, string email, string username, Byte[] password, DateTime dob);
+        public string Login(string username, Byte[] password);
 
         ////////////////////////////////////////////////////////////
         //                         RATINGS                        //
@@ -93,7 +95,7 @@ namespace Rawdata_Porfolio_2.Entity_Framework
         //                          SEARCH                        //
         ////////////////////////////////////////////////////////////
 
-        List<Search_results> ActorSearch(int user_Id, string query); 
+        List<Search_results> ActorSearch(int user_Id, string query);
         List<Search_Queries> GetSQ(int userID);
         public void DeleteSQ(int userID, int queryID);
         List<Search_results> StringSearch(int userId, string query);
@@ -106,14 +108,14 @@ namespace Rawdata_Porfolio_2.Entity_Framework
 
         public List<Role> GetRolesFromTitleById(int title_Id);
 
-      //  List<Role> GetRole(int titleID, int personalityID);
+        //  List<Role> GetRole(int titleID, int personalityID);
 
-      
+
 
         ////////////////////////////////////////////////////////////
 
     }
-    public class DataService : IDataService
+    public class DataService :  IDataService
     {
 
         // making our context so we can add to it all the time
@@ -136,6 +138,28 @@ namespace Rawdata_Porfolio_2.Entity_Framework
             }
         }
 
+        public byte[] ComputeSha256Hash(string rawData)
+        {
+            // Create a SHA256   
+            using (SHA256 sha256Hash = SHA256.Create())
+            {
+                // ComputeHash - returns byte array  
+                byte[] bytes = sha256Hash.ComputeHash(Encoding.UTF8.GetBytes(rawData));
+
+                // Convert byte array to a string   
+                return bytes;
+            }
+        }
+        public string UnHashSha256(Byte[] password)
+        {
+            StringBuilder builder = new StringBuilder();
+            for (int i = 0; i < password.Length; i++)
+            {
+                builder.Append(password[i].ToString("x2"));
+            }
+            return builder.ToString();
+        }
+
         ////////////////////////////////////////////////////////////
         //                        TITLES                          //
         ////////////////////////////////////////////////////////////
@@ -152,7 +176,7 @@ namespace Rawdata_Porfolio_2.Entity_Framework
 
         public List<Character> GetCharactersFromTitleById(int title_Id)
         {
-            
+
             using (var cmd = new NpgsqlCommand("SELECT DISTINCT personality.\"ID\", personality.\"name\", \"character\" FROM public.personality, public.characters " +
                 "WHERE characters.\"title_ID\" = @TID AND characters.\"personality_ID\" = personality.\"ID\";", connection.Connect()))
             {
@@ -199,28 +223,28 @@ namespace Rawdata_Porfolio_2.Entity_Framework
                 return result;
             }
         }
-        
-       public List<Episode> GetEpisode(int titleID)
-       {
-           using (var cmd = new NpgsqlCommand("SELECT title_localization.name, episode.ep_number, episode.season FROM public.title_localization, public.episode " +
-                                              "WHERE episode.\"ID\" = @TID AND title_localization.\"title_ID\" = @TID AND title_localization.primary_title = true;", connection.Connect()))
-           {
+
+        public List<Episode> GetEpisode(int titleID)
+        {
+            using (var cmd = new NpgsqlCommand("SELECT title_localization.name, episode.ep_number, episode.season FROM public.title_localization, public.episode " +
+                                               "WHERE episode.\"ID\" = @TID AND title_localization.\"title_ID\" = @TID AND title_localization.primary_title = true;", connection.Connect()))
+            {
                 cmd.Parameters.AddWithValue("TID", titleID);
-               NpgsqlDataReader reader = cmd.ExecuteReader();
-               List<Episode> result = new List<Episode>();
-               while (reader.Read())
-               {
+                NpgsqlDataReader reader = cmd.ExecuteReader();
+                List<Episode> result = new List<Episode>();
+                while (reader.Read())
+                {
                     Episode row = new Episode()
                     {
                         Name = reader["name"].ToString(),
                         Ep_Number = (int)reader["ep_number"],
                         Season = (int)reader["season"],
-                   };
-                   result.Add(row);
-               }
-               return result;
-           }
-       }
+                    };
+                    result.Add(row);
+                }
+                return result;
+            }
+        }
 
         public List<Episode> GetAllEpisodes(int titleID)
         {
@@ -263,9 +287,9 @@ namespace Rawdata_Porfolio_2.Entity_Framework
                 connection.Connect().Close();
                 return result;
             }
-         
+
         }
-         
+
 
         public List<Title_Localization> GetTitleLocalization(int title_id)
         {
@@ -290,11 +314,11 @@ namespace Rawdata_Porfolio_2.Entity_Framework
                 }
                 connection.Connect().Close();
                 return result;
-                
+
             }
-           
+
         }
-        
+
         ////////////////////////////////////////////////////////////
         //                      PERSONALITY                       //
         ////////////////////////////////////////////////////////////
@@ -325,9 +349,9 @@ namespace Rawdata_Porfolio_2.Entity_Framework
                 connection.Connect().Close();
                 return result;
             }
-     
+
         }
-        
+
         public List<Character> GetKnownCharactersFromPersonalityById(int personality_Id)
         {
             using (var cmd = new NpgsqlCommand("SELECT DISTINCT characters.\"title_ID\", characters.character, title_localization.name FROM public.characters, public.title_localization " +
@@ -349,10 +373,10 @@ namespace Rawdata_Porfolio_2.Entity_Framework
                 connection.Connect().Close();
                 return result;
             }
-     
+
         }
 
-        public List<Personality_Profession> GetPersonalityProfession(int personality_Id) 
+        public List<Personality_Profession> GetPersonalityProfession(int personality_Id)
         {
             using (var cmd = new NpgsqlCommand("SELECT profession FROM public.personality_professions WHERE \"personality_ID\" = @PID;", connection.Connect()))
             {
@@ -367,7 +391,7 @@ namespace Rawdata_Porfolio_2.Entity_Framework
                     };
                     result.Add(row);
                 }
-                connection.Connect().Close();   
+                connection.Connect().Close();
                 return result;
             }
         }
@@ -495,8 +519,8 @@ namespace Rawdata_Porfolio_2.Entity_Framework
         ////////////////////////////////////////////////////////////
         //                          User                          //
         ////////////////////////////////////////////////////////////
- 
-        public User CreateUser(string username, byte [] password, string email, DateTime dob)
+
+        public User CreateUser(string username, byte[] password, string email, DateTime dob)
         {
             var user = new User();
             user.Username = username;
@@ -523,17 +547,6 @@ namespace Rawdata_Porfolio_2.Entity_Framework
             user.DateOfBirth = dob;
             ctx.SaveChanges();
 
-
-
-            /*
-            using var cmd = new NpgsqlCommand("call update_user('u', @ID, @USERNAME, @PASS, @EMAIL, @DOB)", connection.Connect());
-            cmd.Parameters.AddWithValue("ID", userID);
-            cmd.Parameters.AddWithValue("USERNAME", username);
-            cmd.Parameters.AddWithValue("PASS", password);
-            cmd.Parameters.AddWithValue("EMAIL", email);
-            cmd.Parameters.AddWithValue("DOB", dob);
-            NpgsqlDataReader reader = cmd.ExecuteReader();
-            */
         }
         public void DeleteUser(int userId)
         {
@@ -545,6 +558,44 @@ namespace Rawdata_Porfolio_2.Entity_Framework
             }
             connection.Connect().Close();
         }
+
+        public string Login( string username, Byte[] password)
+        {
+            try {
+                using (var cmd = new NpgsqlCommand("Select password from public.user where @USER = username", connection.Connect()))
+                {
+     
+                    cmd.Parameters.AddWithValue("USER", username);
+                    NpgsqlDataReader reader = cmd.ExecuteReader();
+                    while (reader.Read())
+                    {
+                        User user = new User()
+                        {
+
+                            Password = (Byte[])reader["password"],
+
+                        };
+
+                        if (UnHashSha256(password) == UnHashSha256(user.Password))
+                        {
+                            return "Login accepted";
+                        }
+                        else
+                        {
+                            return "Wrong password";
+                        }
+                    }
+                    return "idk what happens here";
+                } 
+           }
+                catch (NpgsqlException e) 
+            {
+                return "Username did not match";
+            } 
+        } 
+          
+            
+        
         ////////////////////////////////////////////////////////////
         //                         RATINGS                        //
         ////////////////////////////////////////////////////////////
