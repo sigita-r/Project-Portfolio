@@ -38,7 +38,6 @@ namespace Webservice.Controllers
                 return NotFound("no user found");
             }
 
-          //  UserViewModel viewModelUser = GetUserViewModel(user);
             return Ok(GetUserViewModel(user));
         }
 
