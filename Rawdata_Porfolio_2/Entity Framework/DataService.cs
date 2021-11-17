@@ -73,7 +73,7 @@ namespace Rawdata_Porfolio_2.Entity_Framework
         //                          User                          //
         ////////////////////////////////////////////////////////////
 
-        public void CreateUser(string username, byte [] password, string email, DateTime dob);
+        public User CreateUser(string username, byte [] password, string email, DateTime dob);
         User GetUser(int userID);
         public void DeleteUser(int userID);
        //Waiting with this one till i get how to do bytea, since users should be able to change passwords.
