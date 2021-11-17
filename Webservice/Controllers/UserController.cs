@@ -48,7 +48,7 @@ namespace Webservice.Controllers
             // checks
 
             // convert pw string to byte[]
-            byte[] pwBytes = Encoding.ASCII.GetBytes(password);
+            byte[] pwBytes = Encoding.Unicode.GetBytes(password);
 
 
           var user = _dataService.CreateUser(userName, pwBytes, email, dob);
