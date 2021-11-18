@@ -141,28 +141,23 @@ namespace Rawdata_Porfolio_2.Entity_Framework
         }
 
         // Password hashing functions adapted from Christos Matskas, https://cmatskas.com/-net-password-hashing-using-pbkdf2/
-        public byte[] HashPassword(byte[] plainPass)
+        private static byte[] HashPassword(byte[] plainPass)
         {
             var cryptoProvider = new RNGCryptoServiceProvider();
             byte[] salt = new byte[24];
             cryptoProvider.GetBytes(salt);
-
             var hash = GetPbkdf2Bytes(plainPass, salt, 1000, 32);
-            return Encoding.Unicode.GetBytes($"1000:{Convert.ToBase64String(salt)}:{Convert.ToBase64String(hash)}");
+            return salt.Concat(hash).ToArray();
         }
-        public bool ValidatePassword(byte[] testPass, byte[] passBytes)
+        private static bool ValidatePassword(byte[] testPass, byte[] passBytes)
         {
-            string storedPass = Encoding.Unicode.GetString(passBytes);
-            var split = storedPass.Split(":");
-            var iterations = Int32.Parse(split[0]);
-            var salt = Convert.FromBase64String(split[1]);
-            var hash = Convert.FromBase64String(split[2]);
-
-            var testHash = GetPbkdf2Bytes(testPass, salt, iterations, hash.Length);
+            var salt = passBytes.Take(24).ToArray();
+            var hash = passBytes.Skip(24).ToArray();
+            var testHash = GetPbkdf2Bytes(testPass, salt, 1000, hash.Length);
             return SlowEquals(hash, testHash);
         }
 
-        public bool SlowEquals(byte[] a, byte[] b)
+        private static bool SlowEquals(byte[] a, byte[] b)
         {
             var diff = (uint) a.Length ^ (uint) b.Length;
             for (int i = 0; i < a.Length && i < b.Length; i++)
@@ -172,7 +167,7 @@ namespace Rawdata_Porfolio_2.Entity_Framework
             return diff == 0;
         }
 
-        public byte[] GetPbkdf2Bytes(byte[] password, byte[] salt, int iterations, int outputBytes)
+        private static byte[] GetPbkdf2Bytes(byte[] password, byte[] salt, int iterations, int outputBytes)
         {
             var pbkdf2 = new Rfc2898DeriveBytes(password, salt, iterations, HashAlgorithmName.SHA256);
             return pbkdf2.GetBytes(outputBytes);
