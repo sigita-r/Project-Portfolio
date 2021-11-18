@@ -81,13 +81,13 @@ namespace Rawdata_Porfolio_2
             Console.WriteLine(v);*/
 
             // Console.WriteLine(ds.GetPersonalityById(1));
-
+            /*
             string password = "password";
              byte[] pwBytes = Encoding.Unicode.GetBytes(password);
              ds.CreateUser("Check2", pwBytes, "hsahmad@maidl.dk", DateTime.Today);
 
 
-             Console.WriteLine(ds.Login("Check2", pwBytes));
+             Console.WriteLine(ds.Login("Check2", pwBytes));*/
             
             /*List<Search_results> result = ds.SS_Search(2, "Batman", "", "Gotham", "");*/
 

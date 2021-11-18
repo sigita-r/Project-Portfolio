@@ -41,19 +41,22 @@ namespace Test
         [Fact]
         public void Create_User_test()
         {
-            
-            byte[] pwBytes = Encoding.Unicode.GetBytes(password);
-            User user = dataservice.CreateUser("testuser", pwBytes, "testemail@test.com", DateTime.Now);
-            Assert.Equal(1, user.Id);
-            Assert.Equal("testuser", user.Username);
-            Assert.Equal("testemail@test.com", user.Email);
 
+            byte[] pwBytes = Encoding.Unicode.GetBytes(password);
+            User user = dataservice.CreateUser("1234testuser", pwBytes, "1234testemail@test.com", DateTime.Now);
+            Assert.Equal("1234testuser", user.Username);
+            Assert.Equal("1234testemail@test.com", user.Email);
+            dataservice.DeleteUser(user.Id);
+           
         }
         [Fact]
         public void Login_Test()
         {
-            string response = dataservice.Login("testuser", Encoding.Unicode.GetBytes(password));
+            byte[] pwBytes = Encoding.Unicode.GetBytes(password);
+            User user = dataservice.CreateUser("1234testuser", pwBytes, "1234testemail@test.com", DateTime.Now);
+            string response = dataservice.Login("1234testuser", Encoding.Unicode.GetBytes(password));
             Assert.Equal("Login accepted", response);
+            dataservice.DeleteUser(user.Id);
         }
 
         [Fact]
@@ -74,9 +77,11 @@ namespace Test
         [Fact]
         public void SS_Search_Test()
         {
-
-            List<Search_results> result = dataservice.SS_Search(2, "Batman", "Gotham", "", "");
+            byte[] pwBytes = Encoding.Unicode.GetBytes(password);
+            User user = dataservice.CreateUser("1234testuser", pwBytes, "1234testemail@test.com", DateTime.Now);
+            List<Search_results> result = dataservice.SS_Search(user.Id, "Batman", "Gotham", "", "");
             Assert.Equal(11, result.Count);
+            dataservice.DeleteUser(user.Id);
         }
 
         
