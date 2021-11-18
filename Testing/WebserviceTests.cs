@@ -77,7 +77,7 @@ namespace Test
             userController.ControllerContext.HttpContext = new DefaultHttpContext();
             return userController;
         }
-
+        /*
         ////////////////////////////////////////////////////////////
         //                      PERSONALITY                       //
         ////////////////////////////////////////////////////////////
@@ -132,7 +132,7 @@ namespace Test
             BookmarkController.ControllerContext.HttpContext = new DefaultHttpContext();
             return BookmarkController;
         }
-
+        */
 
         // Helpers
 
