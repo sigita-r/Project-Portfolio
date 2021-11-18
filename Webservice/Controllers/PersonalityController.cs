@@ -29,7 +29,7 @@ namespace Webservice.Controllers
             var personality = _dataService.GetPersonalityById(id);
             if (personality == null)
             {
-                return NotFound("No personality found");
+                return NotFound();
             }
             return Ok(GetPersonalityViewModel(personality));
         }

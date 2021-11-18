@@ -87,7 +87,7 @@ namespace Test
         {
             _dataServiceMock.Setup(x => x.GetPersonalityById(It.IsAny<int>())).Returns(new Personality());
             var PersonalityController = CreatePersonalityController();
-            var Personality = PersonalityController.GetPersonalityByID(1);
+            var Personality = PersonalityController.GetPersonalityByID(123);
             Assert.IsType<OkObjectResult>(Personality);
         }
         
