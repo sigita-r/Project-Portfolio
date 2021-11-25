@@ -19,6 +19,7 @@ namespace Rawdata_Porfolio_2.Pages.Entity_Framework.Domain
         public string Poster { get; set; }
         public string Plot { get; set; }
         public string Awards { get; set; }
+        //public string Name { get; set; }
 
         public List<Bookmarks_Title> Bookmarks_Titles { get; set;}
         public List<Character> Characters { get; set; }

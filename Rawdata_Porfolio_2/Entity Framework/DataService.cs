@@ -2,16 +2,16 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Threading.Tasks;
+//using System.Threading.Tasks;
 using Npgsql;
 using System.IO;
 using Rawdata_Porfolio_2.Pages.Entity_Framework;
-using System.Reflection;
-using System.Text;
+//using System.Reflection;
+//using System.Text;
 using Rawdata_Porfolio_2.Entity_Framework.Domain;
 using System.Security.Cryptography;
 
-namespace Rawdata_Porfolio_2.Entity_Framework
+namespace Rawdata_Porfolio_2.Entity_Framework   // There's a typo in "Portfolio" - is that an issue, or is that namespace referenced in other places under that name already, so should not be changed?
 {
     public interface IDataService
     {
@@ -74,13 +74,13 @@ namespace Rawdata_Porfolio_2.Entity_Framework
 
 
         ////////////////////////////////////////////////////////////
-        //                          User                          //
+        //                          USER                          //
         ////////////////////////////////////////////////////////////
 
         public User CreateUser(string username, byte [] password, string email, DateTime dob);
         User GetUser(int userID);
         public void DeleteUser(int userID);
-        public void UpdateUser(int userID, string email, string username, Byte[] password, DateTime dob);
+        public void UpdateUser(int userID, string email, string username, Byte[] password, DateTime? dob);
         public string Login(string username, Byte[] password);
 
         ////////////////////////////////////////////////////////////
@@ -97,12 +97,12 @@ namespace Rawdata_Porfolio_2.Entity_Framework
         //                          SEARCH                        //
         ////////////////////////////////////////////////////////////
 
-        List<Search_results> ActorSearch(int user_Id, string query);
+        List<Search_results> ActorSearch(int? user_Id, string query);
         List<Search_Queries> GetSQ(int userID);
-        public void DeleteSQ(int userID, int queryID);
-        List<Search_results> StringSearch(int userId, string query);
+        public void DeleteSQ(int queryID);
+        List<Search_results> StringSearch(int? userId, string query);
 
-        List<Search_results> SS_Search(int userid, string title_Query, string plot_Query, string character_Query, string name_Query);
+        List<Search_results> SS_Search(int? userid, string title_Query, string plot_Query, string character_Query, string name_Query);
 
         ////////////////////////////////////////////////////////////
         //                          OTHER                         //
@@ -121,7 +121,7 @@ namespace Rawdata_Porfolio_2.Entity_Framework
     {
 
         // making our context so we can add to it all the time
-        // instead of createing a new one in each method
+        // instead of creating a new one in each method
         public OurMDB_Context ctx = new OurMDB_Context();
         public ConnString connection = new ConnString();
 
@@ -130,7 +130,7 @@ namespace Rawdata_Porfolio_2.Entity_Framework
             public NpgsqlConnection Connect()
             {
                 string connStringFromFile;
-                using (StreamReader readtext = new StreamReader("C:/Login/Login.txt"))
+                using (var readtext = new StreamReader("C:/Login/Login.txt"))
                 {
                     connStringFromFile = readtext.ReadLine();
                 }
@@ -146,14 +146,14 @@ namespace Rawdata_Porfolio_2.Entity_Framework
             var cryptoProvider = new RNGCryptoServiceProvider();
             byte[] salt = new byte[24];
             cryptoProvider.GetBytes(salt);
-            var hash = GetPbkdf2Bytes(plainPass, salt, 1000, 32);
+            var hash = GetPbkdf2Bytes(plainPass, salt, 310000, 32); // Iteration count chosen based on recommendation by Open Web Application Security Project, https://cheatsheetseries.owasp.org/cheatsheets/Password_Storage_Cheat_Sheet.html
             return salt.Concat(hash).ToArray();
         }
         private static bool ValidatePassword(byte[] testPass, byte[] passBytes)
         {
             var salt = passBytes.Take(24).ToArray();
             var hash = passBytes.Skip(24).ToArray();
-            var testHash = GetPbkdf2Bytes(testPass, salt, 1000, hash.Length);
+            var testHash = GetPbkdf2Bytes(testPass, salt, 310000, hash.Length);
             return SlowEquals(hash, testHash);
         }
 
@@ -177,7 +177,7 @@ namespace Rawdata_Porfolio_2.Entity_Framework
         //                        TITLES                          //
         ////////////////////////////////////////////////////////////
 
-        public Title GetTitleById(int Id)
+        public Title GetTitleById(int Id) // This SQL query should return the title details including its primary name, but I'm not sure how to implement it without breaking stuff in webservice: SELECT title.*, title_localization.name FROM public.title, public.title_localization WHERE title.\"ID\" = @TID AND title.\"ID\" = title_localization.\"title_ID\" AND title_localization.primary_title = true;
         {
             return ctx.Titles.Find(Id);
         }
@@ -239,8 +239,7 @@ namespace Rawdata_Porfolio_2.Entity_Framework
 
         public List<Episode> GetEpisode(int titleID)
         {
-            using (var cmd = new NpgsqlCommand("SELECT title_localization.name, episode.ep_number, episode.season FROM public.title_localization, public.episode " +
-                                               "WHERE episode.\"ID\" = @TID AND title_localization.\"title_ID\" = @TID AND title_localization.primary_title = true;", connection.Connect()))
+            using (var cmd = new NpgsqlCommand("SELECT ep_number, season FROM public.episode WHERE episode.\"ID\" = @TID;", connection.Connect()))
             {
                 cmd.Parameters.AddWithValue("TID", titleID);
                 NpgsqlDataReader reader = cmd.ExecuteReader();
@@ -249,7 +248,6 @@ namespace Rawdata_Porfolio_2.Entity_Framework
                 {
                     Episode row = new Episode()
                     {
-                        Name = reader["name"].ToString(),
                         Ep_Number = (int)reader["ep_number"],
                         Season = (int)reader["season"],
                     };
@@ -316,7 +314,7 @@ namespace Rawdata_Porfolio_2.Entity_Framework
                     Title_Localization row = new Title_Localization()
                     {
                         Id = (int)reader["ID"],
-                        Name = reader["ID"].ToString(),
+                        Name = reader["name"].ToString(),
                         Language = reader["langauge"].ToString(),
                         Region = reader["region"].ToString(),
                         Type = reader["type"].ToString(),
@@ -422,7 +420,7 @@ namespace Rawdata_Porfolio_2.Entity_Framework
                 cmd.Parameters.AddWithValue("ID", userID);
                 cmd.Parameters.AddWithValue("PID", personalityID);
                 cmd.Parameters.AddWithValue("note", note);
-                NpgsqlDataReader reader = cmd.ExecuteReader();
+                NpgsqlDataReader result = cmd.ExecuteReader();
             }
         }
 
@@ -448,7 +446,8 @@ namespace Rawdata_Porfolio_2.Entity_Framework
                 {
                     Name = reader["name"].ToString(),
                     Note = reader["note"].ToString(),
-                    Timestamp = (DateTime)reader["timestamp"]
+                    Timestamp = (DateTime)reader["timestamp"],
+                    Personality_Id = (int)reader["personality_ID"]
                 };
                 result.Add(row);
             }
@@ -463,7 +462,7 @@ namespace Rawdata_Porfolio_2.Entity_Framework
             {
                 cmd.Parameters.AddWithValue("ID", UserId);
                 cmd.Parameters.AddWithValue("PID", PersonalityId);
-                NpgsqlDataReader reader = cmd.ExecuteReader();
+                NpgsqlDataReader result = cmd.ExecuteReader();
             }
         }
 
@@ -475,7 +474,7 @@ namespace Rawdata_Porfolio_2.Entity_Framework
                 cmd.Parameters.AddWithValue("PID", PersonalityId);
                 cmd.Parameters.AddWithValue("NOTE", note);
 
-                NpgsqlDataReader reader = cmd.ExecuteReader();
+                NpgsqlDataReader result = cmd.ExecuteReader();
             }
         }
 
@@ -486,7 +485,7 @@ namespace Rawdata_Porfolio_2.Entity_Framework
                 cmd.Parameters.AddWithValue("ID", userID);
                 cmd.Parameters.AddWithValue("PID", titleID);
                 cmd.Parameters.AddWithValue("note", note);
-                NpgsqlDataReader reader = cmd.ExecuteReader();
+                NpgsqlDataReader result = cmd.ExecuteReader();
             }
         }
 
@@ -502,7 +501,8 @@ namespace Rawdata_Porfolio_2.Entity_Framework
                 {
                     Name = reader["name"].ToString(),
                     Note = reader["note"].ToString(),
-                    Timestamp = (DateTime)reader["timestamp"]
+                    Timestamp = (DateTime)reader["timestamp"],
+                    Title_Id = (int)reader["title_ID"]
                 };
                 result.Add(row);
             }
@@ -516,7 +516,7 @@ namespace Rawdata_Porfolio_2.Entity_Framework
             {
                 cmd.Parameters.AddWithValue("ID", userID);
                 cmd.Parameters.AddWithValue("PID", titleID);
-                NpgsqlDataReader reader = cmd.ExecuteReader();
+                NpgsqlDataReader result = cmd.ExecuteReader();
             }
 
         }
@@ -529,21 +529,23 @@ namespace Rawdata_Porfolio_2.Entity_Framework
                 cmd.Parameters.AddWithValue("TID", titleID);
                 cmd.Parameters.AddWithValue("NOTE", note);
 
-                NpgsqlDataReader reader = cmd.ExecuteReader();
+                NpgsqlDataReader result = cmd.ExecuteReader();
             }
         }
 
         ////////////////////////////////////////////////////////////
-        //                          User                          //
+        //                          USER                          //
         ////////////////////////////////////////////////////////////
 
         public User CreateUser(string username, byte[] password, string email, DateTime dob)
         {
-            var user = new User();
-            user.Username = username;
-            user.Password = HashPassword(password);
-            user.Email = email;
-            user.DateOfBirth = dob;
+            var user = new User
+            {
+                Username = username,
+                Password = HashPassword(password),
+                Email = email,
+                DateOfBirth = dob
+            };
             ctx.Add(user);
             ctx.SaveChanges();
             return user;
@@ -554,7 +556,7 @@ namespace Rawdata_Porfolio_2.Entity_Framework
             return ctx.Users.Find(userId);
         }
 
-        public void UpdateUser(int userID, string email, string username, byte[] password, DateTime dob)
+        public void UpdateUser(int userID, string email, string username, byte[] password, DateTime? dob)
         {
             using (var cmd = new NpgsqlCommand("CALL update_user('u', @ID, @USERNAME, @PASSWORD, @MAIL, @DOB);", connection.Connect()))
             {
@@ -562,8 +564,15 @@ namespace Rawdata_Porfolio_2.Entity_Framework
                 cmd.Parameters.AddWithValue("USERNAME", username);
                 cmd.Parameters.AddWithValue("PASSWORD", password.Length == 0 ? password : HashPassword(password));
                 cmd.Parameters.AddWithValue("MAIL", email);
-                cmd.Parameters.AddWithValue("DOB", dob);
-                NpgsqlDataReader reader = cmd.ExecuteReader();
+                if (dob.HasValue)
+                {
+                    cmd.Parameters.AddWithValue("DOB", dob);
+                }
+                else
+                {
+                    cmd.Parameters.AddWithValue("DOB", DBNull.Value);
+                }
+                NpgsqlDataReader result = cmd.ExecuteReader();
             }
             connection.Connect().Close();
         }
@@ -572,8 +581,7 @@ namespace Rawdata_Porfolio_2.Entity_Framework
             using (var cmd = new NpgsqlCommand("CALL update_user('d', @ID);", connection.Connect()))
             {
                 cmd.Parameters.AddWithValue("ID", userId);
-                NpgsqlDataReader reader = cmd.ExecuteReader();
-
+                NpgsqlDataReader result = cmd.ExecuteReader();
             }
             connection.Connect().Close();
         }
@@ -594,19 +602,12 @@ namespace Rawdata_Porfolio_2.Entity_Framework
 
                         };
 
-                        if (ValidatePassword(password, user.Password))
-                        {
-                            return "Login accepted";
-                        }
-                        else
-                        {
-                            return "Wrong password";
-                        }
+                        return ValidatePassword(password, user.Password) ? "Login accepted" : "Wrong password";
                     }
                     return "I dont know what happens here"; // I need help for this one sometime -H
                 } 
-           }
-                catch (NpgsqlException e) 
+            }
+            catch (NpgsqlException e) 
             {
                 return "Username not found";
             } 
@@ -626,7 +627,7 @@ namespace Rawdata_Porfolio_2.Entity_Framework
                 cmd.Parameters.AddWithValue("TID", title_ID);
                 cmd.Parameters.AddWithValue("RATING", rating);
                 cmd.Parameters.AddWithValue("DEL", false);
-                NpgsqlDataReader reader = cmd.ExecuteReader();
+                NpgsqlDataReader result = cmd.ExecuteReader();
             }
             connection.Connect().Close();
 
@@ -661,7 +662,7 @@ namespace Rawdata_Porfolio_2.Entity_Framework
                 cmd.Parameters.AddWithValue("TID", title_ID);
                 cmd.Parameters.AddWithValue("RATING", rating);
                 cmd.Parameters.AddWithValue("DEL", false);
-                NpgsqlDataReader reader = cmd.ExecuteReader();
+                NpgsqlDataReader result = cmd.ExecuteReader();
             }
             connection.Connect().Close();
             
@@ -672,9 +673,9 @@ namespace Rawdata_Porfolio_2.Entity_Framework
             {
                 cmd.Parameters.AddWithValue("UID", user_ID);
                 cmd.Parameters.AddWithValue("TID", title_ID);
-                cmd.Parameters.AddWithValue("RATING", Int16.MinValue);
+                cmd.Parameters.AddWithValue("RATING", DBNull.Value);
                 cmd.Parameters.AddWithValue("DEL", true);
-                NpgsqlDataReader reader = cmd.ExecuteReader();
+                NpgsqlDataReader result = cmd.ExecuteReader();
             }
             connection.Connect().Close();
         }
@@ -712,9 +713,9 @@ namespace Rawdata_Porfolio_2.Entity_Framework
             {
                 Search_Queries row = new Search_Queries()
                 {
-                    Query = reader["query"].ToString(), // we have to do some seperating the string up some time, should we do it now?
+                    Query = reader["query"].ToString(), // we have to do some separating the string up some time, should we do it now?
                     Timestamp = (DateTime)reader["timestamp"],
-
+                    Id = (int)reader["ID"]
                 };
                 result.Add(row);
             }
@@ -725,24 +726,32 @@ namespace Rawdata_Porfolio_2.Entity_Framework
         //TEST THIS
         // this dont seem to make sense - from sigita and mads, where is the userid, we need a userid to know from who the
         // search should be deleted, which it doesnt take
-        public void DeleteSQ(int user, int queryID)
+        // 25/11: Should be resolved - you use the query ID to identify which query is to be deleted, which is now returned by the GetSQ method
+        public void DeleteSQ(int queryID)
         {
             using (var cmd = new NpgsqlCommand("CALL update_search_queries(@UID, @QID, @QUERY, @DEL);", connection.Connect()))
             {
-                cmd.Parameters.AddWithValue("UID", int.MinValue);
+                cmd.Parameters.AddWithValue("UID", DBNull.Value);
                 cmd.Parameters.AddWithValue("QID", queryID);
-                cmd.Parameters.AddWithValue("QUERY", "");
+                cmd.Parameters.AddWithValue("QUERY", DBNull.Value);
                 cmd.Parameters.AddWithValue("DEL", true);
-                NpgsqlDataReader reader = cmd.ExecuteReader();
+                NpgsqlDataReader result = cmd.ExecuteReader();
 
             }
             connection.Connect().Close();
         }
 
-        public List<Search_results> ActorSearch(int user_Id, string query)
+        public List<Search_results> ActorSearch(int? user_Id, string query)
         {
             var cmd = new NpgsqlCommand("SELECT * FROM actor_search(@UID, @QUERY);", connection.Connect());
-            cmd.Parameters.AddWithValue("UID", user_Id);
+            if (user_Id.HasValue)
+            {
+                cmd.Parameters.AddWithValue("UID", user_Id);
+            }
+            else
+            {
+                cmd.Parameters.AddWithValue("UID", DBNull.Value);
+            }
             cmd.Parameters.AddWithValue("QUERY", query);
             NpgsqlDataReader reader = cmd.ExecuteReader();
             List<Search_results> result = new List<Search_results>();
@@ -759,10 +768,17 @@ namespace Rawdata_Porfolio_2.Entity_Framework
             return result;
         }
 
-        public List<Search_results> StringSearch(int userId, string query)
+        public List<Search_results> StringSearch(int? userId, string query)
         {
             var cmd = new NpgsqlCommand("SELECT * FROM string_search(@UID, @QUERY);", connection.Connect());
-            cmd.Parameters.AddWithValue("UID", userId);
+            if (userId.HasValue)
+            {
+                cmd.Parameters.AddWithValue("UID", userId);
+            }
+            else
+            {
+                cmd.Parameters.AddWithValue("UID", DBNull.Value);
+            }
             cmd.Parameters.AddWithValue("QUERY", query);
             NpgsqlDataReader reader = cmd.ExecuteReader();
             List<Search_results> result = new List<Search_results>();
@@ -779,10 +795,17 @@ namespace Rawdata_Porfolio_2.Entity_Framework
             return result;
         }
 
-        public List<Search_results> SS_Search(int userid, string title_Query, string plot_Query, string character_Query, string name_Query) 
+        public List<Search_results> SS_Search(int? userid, string title_Query, string plot_Query, string character_Query, string name_Query) 
         {
             var cmd = new NpgsqlCommand("SELECT * FROM structured_string_search(@UID, @TQUERY, @PQUERY, @CQUERY, @NQUERY)", connection.Connect());
-            cmd.Parameters.AddWithValue("UID", userid);
+            if (userid.HasValue)
+            {
+                cmd.Parameters.AddWithValue("UID", userid);
+            }
+            else
+            {
+                cmd.Parameters.AddWithValue("UID", DBNull.Value);
+            }
             cmd.Parameters.AddWithValue("TQUERY", title_Query);
             cmd.Parameters.AddWithValue("PQUERY", plot_Query);
             cmd.Parameters.AddWithValue("CQUERY", character_Query);
