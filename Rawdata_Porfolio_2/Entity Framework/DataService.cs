@@ -2,10 +2,12 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+
 //using System.Threading.Tasks;
 using Npgsql;
 using System.IO;
 using Rawdata_Porfolio_2.Pages.Entity_Framework;
+
 //using System.Reflection;
 //using System.Text;
 using Rawdata_Porfolio_2.Entity_Framework.Domain;
@@ -15,7 +17,6 @@ namespace Rawdata_Porfolio_2.Entity_Framework   // There's a typo in "Portfolio"
 {
     public interface IDataService
     {
-
         ////////////////////////////////////////////////////////////
         //                        TITLES                          //
         ////////////////////////////////////////////////////////////
@@ -29,11 +30,12 @@ namespace Rawdata_Porfolio_2.Entity_Framework   // There's a typo in "Portfolio"
         public List<Character> GetCharactersFromTitleById(int title_Id);
 
         public List<Episode> GetEpisode(int titleID);
+
         public List<Episode> GetAllEpisodes(int titleID);
+
         public List<Title_Genre> GetTitleGenre(int title_Id);
 
         public List<Title_Localization> GetTitleLocalization(int title_id);
-
 
         ////////////////////////////////////////////////////////////
         //                      PERSONALITY                       //
@@ -47,18 +49,16 @@ namespace Rawdata_Porfolio_2.Entity_Framework   // There's a typo in "Portfolio"
 
         public List<Character> GetKnownCharactersFromPersonalityById(int personality_Id);
 
-
-
         ////////////////////////////////////////////////////////////
         //                       BOOKMARKS                        //
         ////////////////////////////////////////////////////////////
 
         public void CreatePersonalityBM(int userID, int personalityID, string note);
 
-      //  IList<Bookmarks_Personality> GetPersonalityBMsByUserID(int userID);
+        //  IList<Bookmarks_Personality> GetPersonalityBMsByUserID(int userID);
 
-      // old
-       public List<Bookmarks_Personality> GetPersonalityBMsByUserID(int userID);
+        // old
+        public List<Bookmarks_Personality> GetPersonalityBMsByUserID(int userID);
 
         public void DeletePersonalityBM(int userID, int personalityID);
 
@@ -72,15 +72,18 @@ namespace Rawdata_Porfolio_2.Entity_Framework   // There's a typo in "Portfolio"
 
         public void UpdateTitleBM(int userID, int titleID, string note);
 
-
         ////////////////////////////////////////////////////////////
         //                          USER                          //
         ////////////////////////////////////////////////////////////
 
-        public User CreateUser(string username, byte [] password, string email, DateTime dob);
+        public User CreateUser(string username, byte[] password, string email, DateTime dob);
+
         User GetUser(int userID);
+
         public void DeleteUser(int userID);
+
         public void UpdateUser(int userID, string email, string username, Byte[] password, DateTime? dob);
+
         public string Login(string username, Byte[] password);
 
         ////////////////////////////////////////////////////////////
@@ -88,9 +91,13 @@ namespace Rawdata_Porfolio_2.Entity_Framework   // There's a typo in "Portfolio"
         ////////////////////////////////////////////////////////////
 
         public List<Title> GetAvgRatingFromTitleId(int title_ID);
+
         public void CreateRating(int user_ID, int title_ID, Int16 rating);
+
         List<Rating> GetRating(int userID);
+
         public void UpdateRating(int user_ID, int title_ID, Int16 rating);
+
         public void DeleteRating(int user_ID, int title_ID);
 
         ////////////////////////////////////////////////////////////
@@ -98,8 +105,11 @@ namespace Rawdata_Porfolio_2.Entity_Framework   // There's a typo in "Portfolio"
         ////////////////////////////////////////////////////////////
 
         List<Search_results> ActorSearch(int? user_Id, string query);
+
         List<Search_Queries> GetSQ(int userID);
+
         public void DeleteSQ(int queryID);
+
         List<Search_results> StringSearch(int? userId, string query);
 
         List<Search_results> SS_Search(int? userid, string title_Query, string plot_Query, string character_Query, string name_Query);
@@ -112,17 +122,15 @@ namespace Rawdata_Porfolio_2.Entity_Framework   // There's a typo in "Portfolio"
 
         //  List<Role> GetRole(int titleID, int personalityID);
 
-
-
         ////////////////////////////////////////////////////////////
-
     }
-    public class DataService :  IDataService
-    {
 
+    public class DataService : IDataService
+    {
         // making our context so we can add to it all the time
         // instead of creating a new one in each method
         public OurMDB_Context ctx = new OurMDB_Context();
+
         public ConnString connection = new ConnString();
 
         public class ConnString
@@ -149,6 +157,7 @@ namespace Rawdata_Porfolio_2.Entity_Framework   // There's a typo in "Portfolio"
             var hash = GetPbkdf2Bytes(plainPass, salt, 310000, 32); // Iteration count chosen based on recommendation by Open Web Application Security Project, https://cheatsheetseries.owasp.org/cheatsheets/Password_Storage_Cheat_Sheet.html
             return salt.Concat(hash).ToArray();
         }
+
         private static bool ValidatePassword(byte[] testPass, byte[] passBytes)
         {
             var salt = passBytes.Take(24).ToArray();
@@ -159,10 +168,10 @@ namespace Rawdata_Porfolio_2.Entity_Framework   // There's a typo in "Portfolio"
 
         private static bool SlowEquals(byte[] a, byte[] b)
         {
-            var diff = (uint) a.Length ^ (uint) b.Length;
+            var diff = (uint)a.Length ^ (uint)b.Length;
             for (int i = 0; i < a.Length && i < b.Length; i++)
             {
-                diff |= (uint) (a[i] ^ b[i]);
+                diff |= (uint)(a[i] ^ b[i]);
             }
             return diff == 0;
         }
@@ -189,7 +198,6 @@ namespace Rawdata_Porfolio_2.Entity_Framework   // There's a typo in "Portfolio"
 
         public List<Character> GetCharactersFromTitleById(int title_Id)
         {
-
             using (var cmd = new NpgsqlCommand("SELECT DISTINCT personality.\"ID\", personality.\"name\", characters.\"character\" FROM public.personality, public.characters " +
                 "WHERE characters.\"title_ID\" = @TID AND characters.\"personality_ID\" = personality.\"ID\";", connection.Connect()))
             {
@@ -203,7 +211,6 @@ namespace Rawdata_Porfolio_2.Entity_Framework   // There's a typo in "Portfolio"
                         CharacterOfPersonality = reader["character"].ToString(),
                         Name = reader["name"].ToString(),
                         Personality_Id = (int)reader["ID"],
-
                     };
                     result.Add(row);
                 }
@@ -214,7 +221,6 @@ namespace Rawdata_Porfolio_2.Entity_Framework   // There's a typo in "Portfolio"
 
         public List<Character> GetKnownCharactersFromTitleById(int title_Id)
         {
-
             using (var cmd = new NpgsqlCommand("SELECT DISTINCT personality.\"ID\", personality.\"name\", characters.\"character\" FROM public.personality, public.characters " +
                 "WHERE characters.\"title_ID\" = @TID AND characters.known_for = true AND characters.\"personality_ID\" = personality.\"ID\";", connection.Connect()))
             {
@@ -228,7 +234,6 @@ namespace Rawdata_Porfolio_2.Entity_Framework   // There's a typo in "Portfolio"
                         CharacterOfPersonality = reader["character"].ToString(),
                         Name = reader["name"].ToString(),
                         Personality_Id = (int)reader["ID"],
-
                     };
                     result.Add(row);
                 }
@@ -298,9 +303,7 @@ namespace Rawdata_Porfolio_2.Entity_Framework   // There's a typo in "Portfolio"
                 connection.Connect().Close();
                 return result;
             }
-
         }
-
 
         public List<Title_Localization> GetTitleLocalization(int title_id)
         {
@@ -325,9 +328,7 @@ namespace Rawdata_Porfolio_2.Entity_Framework   // There's a typo in "Portfolio"
                 }
                 connection.Connect().Close();
                 return result;
-
             }
-
         }
 
         ////////////////////////////////////////////////////////////
@@ -360,7 +361,6 @@ namespace Rawdata_Porfolio_2.Entity_Framework   // There's a typo in "Portfolio"
                 connection.Connect().Close();
                 return result;
             }
-
         }
 
         public List<Character> GetKnownCharactersFromPersonalityById(int personality_Id)
@@ -384,7 +384,6 @@ namespace Rawdata_Porfolio_2.Entity_Framework   // There's a typo in "Portfolio"
                 connection.Connect().Close();
                 return result;
             }
-
         }
 
         public List<Personality_Profession> GetPersonalityProfession(int personality_Id)
@@ -406,8 +405,6 @@ namespace Rawdata_Porfolio_2.Entity_Framework   // There's a typo in "Portfolio"
                 return result;
             }
         }
-
-
 
         ////////////////////////////////////////////////////////////
         //                       BOOKMARKS                        //
@@ -431,8 +428,8 @@ namespace Rawdata_Porfolio_2.Entity_Framework   // There's a typo in "Portfolio"
         //    return allPersonalityBMs.Where(x => x.User_Id == userID).ToList();
         //}
 
-       // we try a new method - this is an old version
-       
+        // we try a new method - this is an old version
+
         public List<Bookmarks_Personality> GetPersonalityBMsByUserID(int userID)
         {
             var cmd = new NpgsqlCommand("SELECT * FROM select_user_bookmarks('p', @ID);", connection.Connect());
@@ -447,14 +444,13 @@ namespace Rawdata_Porfolio_2.Entity_Framework   // There's a typo in "Portfolio"
                     Name = reader["name"].ToString(),
                     Note = reader["note"].ToString(),
                     Timestamp = (DateTime)reader["timestamp"],
-                    Personality_Id = (int)reader["personality_ID"]
+                    Personality_Id = (int)reader["ID"]
                 };
                 result.Add(row);
             }
             connection.Connect().Close();
             return result;
         }
-        
 
         public void DeletePersonalityBM(int UserId, int PersonalityId)
         {
@@ -518,7 +514,6 @@ namespace Rawdata_Porfolio_2.Entity_Framework   // There's a typo in "Portfolio"
                 cmd.Parameters.AddWithValue("PID", titleID);
                 NpgsqlDataReader result = cmd.ExecuteReader();
             }
-
         }
 
         public void UpdateTitleBM(int userID, int titleID, string note)
@@ -576,6 +571,7 @@ namespace Rawdata_Porfolio_2.Entity_Framework   // There's a typo in "Portfolio"
             }
             connection.Connect().Close();
         }
+
         public void DeleteUser(int userId)
         {
             using (var cmd = new NpgsqlCommand("CALL update_user('d', @ID);", connection.Connect()))
@@ -588,7 +584,8 @@ namespace Rawdata_Porfolio_2.Entity_Framework   // There's a typo in "Portfolio"
 
         public string Login(string username, byte[] password)
         {
-            try {
+            try
+            {
                 using (var cmd = new NpgsqlCommand("SELECT password FROM public.user WHERE @USER = username", connection.Connect()))
                 {
                     cmd.Parameters.AddWithValue("USER", username);
@@ -597,24 +594,20 @@ namespace Rawdata_Porfolio_2.Entity_Framework   // There's a typo in "Portfolio"
                     {
                         User user = new User()
                         {
-
                             Password = (byte[])reader["password"],
-
                         };
 
                         return ValidatePassword(password, user.Password) ? "Login accepted" : "Wrong password";
                     }
                     return "I dont know what happens here"; // I need help for this one sometime -H
-                } 
+                }
             }
-            catch (NpgsqlException e) 
+            catch (NpgsqlException e)
             {
                 return "Username not found";
-            } 
-        } 
-          
-            
-        
+            }
+        }
+
         ////////////////////////////////////////////////////////////
         //                         RATINGS                        //
         ////////////////////////////////////////////////////////////
@@ -630,9 +623,8 @@ namespace Rawdata_Porfolio_2.Entity_Framework   // There's a typo in "Portfolio"
                 NpgsqlDataReader result = cmd.ExecuteReader();
             }
             connection.Connect().Close();
-
-
         }
+
         public List<Rating> GetRating(int userID)
         {
             var cmd = new NpgsqlCommand("SELECT rating FROM ratings WHERE \"user_ID\" @UID;", connection.Connect());
@@ -644,9 +636,8 @@ namespace Rawdata_Porfolio_2.Entity_Framework   // There's a typo in "Portfolio"
                 Rating row = new Rating()
                 {
                     Title_Id = (int)reader["title_ID"],
-                    RatingOfTitle= (int)reader["rating"],
+                    RatingOfTitle = (int)reader["rating"],
                     Timestamp = (DateTime)reader["timestamp"],
-
                 };
                 result.Add(row);
             }
@@ -665,8 +656,8 @@ namespace Rawdata_Porfolio_2.Entity_Framework   // There's a typo in "Portfolio"
                 NpgsqlDataReader result = cmd.ExecuteReader();
             }
             connection.Connect().Close();
-            
         }
+
         public void DeleteRating(int user_ID, int title_ID)
         {
             using (var cmd = new NpgsqlCommand("CALL update_rating(@UID, @TID, @RATING, @DEL);", connection.Connect()))
@@ -692,14 +683,13 @@ namespace Rawdata_Porfolio_2.Entity_Framework   // There's a typo in "Portfolio"
                 {
                     Id = (int)reader["title_ID"],
                     AvgRating = (int)reader["avg_rating"],
-                 
-
                 };
                 result.Add(row);
             }
             connection.Connect().Close();
             return result;
         }
+
         ////////////////////////////////////////////////////////////
         //                          SEARCH                        //
         ////////////////////////////////////////////////////////////
@@ -736,7 +726,6 @@ namespace Rawdata_Porfolio_2.Entity_Framework   // There's a typo in "Portfolio"
                 cmd.Parameters.AddWithValue("QUERY", DBNull.Value);
                 cmd.Parameters.AddWithValue("DEL", true);
                 NpgsqlDataReader result = cmd.ExecuteReader();
-
             }
             connection.Connect().Close();
         }
@@ -795,7 +784,7 @@ namespace Rawdata_Porfolio_2.Entity_Framework   // There's a typo in "Portfolio"
             return result;
         }
 
-        public List<Search_results> SS_Search(int? userid, string title_Query, string plot_Query, string character_Query, string name_Query) 
+        public List<Search_results> SS_Search(int? userid, string title_Query, string plot_Query, string character_Query, string name_Query)
         {
             var cmd = new NpgsqlCommand("SELECT * FROM structured_string_search(@UID, @TQUERY, @PQUERY, @CQUERY, @NQUERY)", connection.Connect());
             if (userid.HasValue)
@@ -824,13 +813,13 @@ namespace Rawdata_Porfolio_2.Entity_Framework   // There's a typo in "Portfolio"
             connection.Connect().Close();
             return result;
         }
+
         ////////////////////////////////////////////////////////////
         //                          OTHER                         //
         ////////////////////////////////////////////////////////////
 
         public List<Role> GetRolesFromTitleById(int title_Id)
         {
-            
             using (var cmd = new NpgsqlCommand("SELECT DISTINCT personality.\"ID\", personality.\"name\", roles.\"role\" FROM public.title_localization, public.roles " +
                                                "WHERE roles.\"title_ID\" = @TID AND title_localization.primary_title = true AND roles.\"personality_ID\" = personality.\"ID\";", connection.Connect()))
             {
@@ -844,7 +833,6 @@ namespace Rawdata_Porfolio_2.Entity_Framework   // There's a typo in "Portfolio"
                         RoleOfPersonality = reader["role"].ToString(),
                         Name = reader["name"].ToString(),
                         Personality_Id = (int)reader["ID"],
-
                     };
                     result.Add(row);
                 }
@@ -852,9 +840,9 @@ namespace Rawdata_Porfolio_2.Entity_Framework   // There's a typo in "Portfolio"
                 return result;
             }
         }
-        
+
         /*
-        Personality ReadPersonality(int userID) 
+        Personality ReadPersonality(int userID)
         {
             using (var cmd = new NpgsqlCommand("Select username, password, email, dob, created FROM user WHERE \"ID\" = @ID;", connection.Connect()))
             {
@@ -869,7 +857,7 @@ namespace Rawdata_Porfolio_2.Entity_Framework   // There's a typo in "Portfolio"
                         passwor
                     }
                 }
-            }   
+            }
         }
         */
         /*

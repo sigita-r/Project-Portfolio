@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Rawdata_Porfolio_2.Pages.Entity_Framework.Domain;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -11,7 +12,7 @@ namespace Webservice.ViewModels
 
         public int Id { get; set; }
         public string? Type { get; set; }
-        public string? Genre { get; set; }
+        public string Title_Genres { get; set; }
         public bool? Is_Adult { get; set; }
         public int? Year_Start { get; set; }
         public int? Year_End { get; set; }
@@ -31,8 +32,5 @@ namespace Webservice.ViewModels
         public List<Rating> Ratings { get; set; }
         public List<Role> Roles { get; set; }
         */
-
-
-
     }
 }

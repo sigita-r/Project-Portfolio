@@ -15,8 +15,8 @@ namespace Webservice.Controllers
     [Route("api/user/bookmarks")] //??? dont remember
     public class BookmarkController : Controller
     {
-        IDataService _dataService;
-        LinkGenerator _linkGenerator;
+        private IDataService _dataService;
+        private LinkGenerator _linkGenerator;
 
         public BookmarkController(IDataService dataService, LinkGenerator linkGenerator)
         {
@@ -37,9 +37,9 @@ namespace Webservice.Controllers
             {
                 return NotFound("no BMs found");
             }
-          //  .Select(x => GetBookmarkTitleViewModel(x))
+            //  .Select(x => GetBookmarkTitleViewModel(x))
             return Ok(titleBMs.Select(x => GetBookmarkTitleViewModel(x)));
-        }   
+        }
 
         [HttpPost("createTitleBookmark")]
         public IActionResult CreateBookmarkTitle(int userID, int titleID, string note)
@@ -53,10 +53,9 @@ namespace Webservice.Controllers
             if (_dataService.GetTitleById(titleID) == null)
             {
                 return NotFound("No title Found");
-
             }
 
-           _dataService.CreateTitleBM(userID, titleID, note);
+            _dataService.CreateTitleBM(userID, titleID, note);
 
             //  ending may need change, this is just something i tried
             // Bookmarks_Title bookmark = new Bookmarks_Title();
@@ -69,7 +68,7 @@ namespace Webservice.Controllers
         {
             return new BookmarkTitleViewModel
             {
-               // Url = _linkGenerator.GetUriByName(HttpContext, nameof(GetBookmarkTitlesForUser), new { bookmarkTitle.Title_Id }).Replace("%20", ""),
+                // Url = _linkGenerator.GetUriByName(HttpContext, nameof(GetBookmarkTitlesForUser), new { bookmarkTitle.Title_Id }).Replace("%20", ""),
                 UserID = bookmarkTitle.User_Id,
                 TitleName = bookmarkTitle.Name,
                 TitleNote = bookmarkTitle.Note
@@ -88,10 +87,10 @@ namespace Webservice.Controllers
             if (personalityBMs.Count == 0)
             {
                 return NotFound("No personalityBMs found");
-               // return Ok(personalityBMs.Select(x => GetBookmarkPersonalityViewModel(x)));
+                // return Ok(personalityBMs.Select(x => GetBookmarkPersonalityViewModel(x)));
             }
 
-           // .Select(x => GetBookmarkPersonalityViewModel(x))
+            // .Select(x => GetBookmarkPersonalityViewModel(x))
             return Ok(personalityBMs);
         }
 
@@ -107,7 +106,6 @@ namespace Webservice.Controllers
             if (_dataService.GetPersonalityById(personalityID) == null)
             {
                 return NotFound("No title Found");
-
             }
 
             _dataService.CreatePersonalityBM(userID, personalityID, note);
@@ -116,11 +114,11 @@ namespace Webservice.Controllers
             // Bookmarks_Title bookmark = new Bookmarks_Title();
 
             // I dont know what else to put here, but it works and adds to database
-           // Bookmarks_Personality x = new Bookmarks_Personality();
+            // Bookmarks_Personality x = new Bookmarks_Personality();
 
             return Created("", null);
         }
-        
+
         private BookmarkPersonalityViewModel GetBookmarkPersonalityViewModel(Bookmarks_Personality bookmarkPersonality)
         {
             return new BookmarkPersonalityViewModel
@@ -132,9 +130,6 @@ namespace Webservice.Controllers
         }
 
         ////////////////////////////////////////////////////////////
-
-
-
 
         //[HttpGet("{id}", Name = nameof(GetUser))]
         //public IActionResult GetBookmarks()
@@ -149,7 +144,6 @@ namespace Webservice.Controllers
         //    return Ok(GetBookmarkViewModel(bookmarks));
         //}
 
-
         //private BookmarkViewModel GetPersonalityViewModel(Bookmarks personality)
         //{
         //    return new PersonalityViewModel
@@ -161,6 +155,5 @@ namespace Webservice.Controllers
         //        // Profession = personality.Profession,
         //    };
         //}
-
     }
 }
