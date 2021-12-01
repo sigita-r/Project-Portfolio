@@ -25,7 +25,7 @@ namespace Rawdata_Porfolio_2.Entity_Framework   // There's a typo in "Portfolio"
 
         Title GetTitleById(int Id);
 
-        public Character GetKnownCharactersFromTitleById(int title_Id);
+        public List<Character> GetKnownCharactersFromTitleById(int title_Id);
 
         public List<Character> GetCharactersFromTitleById(int title_Id);
 
@@ -242,30 +242,30 @@ namespace Rawdata_Porfolio_2.Entity_Framework   // There's a typo in "Portfolio"
                     result.Add(row);
                 }
                 connection.Connect().Close();
-                return null;
+                return result;
             }
         }
 
-        public Character GetKnownCharactersFromTitleById(int title_Id)
+        public List<Character> GetKnownCharactersFromTitleById(int title_Id)
         {
             using (var cmd = new NpgsqlCommand("SELECT DISTINCT personality.\"ID\", personality.\"name\", characters.\"character\" FROM public.personality, public.characters " +
                 "WHERE characters.\"title_ID\" = @TID AND characters.known_for = true AND characters.\"personality_ID\" = personality.\"ID\";", connection.Connect()))
             {
                 cmd.Parameters.AddWithValue("TID", title_Id);
                 NpgsqlDataReader reader = cmd.ExecuteReader();
-            
+                List<Character> result = new List<Character>();
                 while (reader.Read())
                 {
-                    Character result = new Character()
+                    Character row = new Character()
                     {
                         CharacterOfPersonality = reader["character"].ToString(),
                         Name = reader["name"].ToString(),
                         Personality_Id = (int)reader["ID"],
                     };
-                    return result;
+                    result.Add(row);
                 }
                 connection.Connect().Close();
-                return null;
+                return result;
             }
         }
 

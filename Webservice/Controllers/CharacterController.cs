@@ -33,10 +33,10 @@ namespace Webservice.Controllers
                 return NotFound();
             }
 
-            return Ok(GetCharacterViewModel(character)); 
+            return Ok(character.Select(x => GetCharacterViewModel(x))); 
         }
 
-
+         
 
         /*  [HttpGet("KnownCharacters")]
           public IActionResult GetKnownCharactersFromTitle(int id)
@@ -51,21 +51,18 @@ namespace Webservice.Controllers
               return Ok(GetCharacterViewModel(character));
           }
         */
-
-        private List<CharacterViewModel> GetCharacterViewModel(List<Character> character)
+        
+        private CharacterViewModel GetCharacterViewModel(Character character)
         {
 
-            List<CharacterViewModel> cvm = new List<CharacterViewModel>();
-
-            cvm = (List<CharacterViewModel>)character.Select(x => new CharacterViewModel()
+            return new CharacterViewModel
             {
-                Url = _linkGenerator.GetUriByName(HttpContext, nameof(GetCharactersFromTitle), new { x.Personality_Id }).Replace("%20", ""),
-                Name = x.Name,
-                Personality_Id = x.Personality_Id,
-                CharacterOfPersonality = x.CharacterOfPersonality
-            });
-
-            return cvm;            
+                // Url = _linkGenerator.GetUriByName(HttpContext, nameof(GetCharactersFromTitle), new { x.Personality_Id }).Replace("%20", ""),
+                Title_Id = character.Title_Id,
+                Name = character.Name,
+                Personality_Id = character.Personality_Id,
+                CharacterOfPersonality = character.CharacterOfPersonality
+            };       
         }
         
     }
