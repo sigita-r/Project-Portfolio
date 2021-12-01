@@ -26,7 +26,7 @@ namespace Webservice.Controllers
         [HttpGet("Characters")]
         public IActionResult GetCharactersFromTitle(int id)
         {
-             Character character = _dataService.GetCharactersFromTitleById(id);
+             List<Character> character = _dataService.GetCharactersFromTitleById(id);
 
             if (character == null)
             {
@@ -38,34 +38,35 @@ namespace Webservice.Controllers
 
 
 
-      /*  [HttpGet("KnownCharacters")]
-        public IActionResult GetKnownCharactersFromTitle(int id)
+        /*  [HttpGet("KnownCharacters")]
+          public IActionResult GetKnownCharactersFromTitle(int id)
+          {
+              Character character = _dataService.GetKnownCharactersFromTitleById(id);
+
+              if (character == null)
+              {
+                  return NotFound();
+              }
+
+              return Ok(GetCharacterViewModel(character));
+          }
+        */
+
+        private List<CharacterViewModel> GetCharacterViewModel(List<Character> character)
         {
-            Character character = _dataService.GetKnownCharactersFromTitleById(id);
 
-            if (character == null)
+            List<CharacterViewModel> cvm = new List<CharacterViewModel>();
+
+            cvm = (List<CharacterViewModel>)character.Select(x => new CharacterViewModel()
             {
-                return NotFound();
-            }
+                Url = _linkGenerator.GetUriByName(HttpContext, nameof(GetCharactersFromTitle), new { x.Personality_Id }).Replace("%20", ""),
+                Name = x.Name,
+                Personality_Id = x.Personality_Id,
+                CharacterOfPersonality = x.CharacterOfPersonality
+            });
 
-            return Ok(GetCharacterViewModel(character));
+            return cvm;            
         }
-      */
-
-        private CharacterViewModel GetCharacterViewModel(Character character)
-        {
-
-            return new CharacterViewModel
-            {
-                Url = _linkGenerator.GetUriByName(HttpContext, nameof(GetCharactersFromTitle), new { character.Id }).Replace("%20", ""),
-                Name = character.Name,
-                Personality_Id = character.Personality_Id,
-                Title_Id = character.Title_Id,
-                Id = character.Id,
-                CharacterOfPersonality = character.CharacterOfPersonality,
-                Known_For = character.Known_For,
-
-            };
-        }
+        
     }
 }
