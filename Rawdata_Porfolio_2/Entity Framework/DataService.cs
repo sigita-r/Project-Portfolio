@@ -106,7 +106,7 @@ namespace Rawdata_Porfolio_2.Entity_Framework   // There's a typo in "Portfolio"
 
         List<Search_results> ActorSearch(int? user_Id, string query);
 
-        List<Search_Queries> GetSQ(int userID);
+        public List<Search_Queries> GetSQ(Int64 userID);
 
         public void DeleteSQ(int queryID);
 
