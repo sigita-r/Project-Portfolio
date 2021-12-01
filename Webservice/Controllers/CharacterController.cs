@@ -57,7 +57,7 @@ namespace Webservice.Controllers
 
             return new CharacterViewModel
             {
-                Url = _linkGenerator.GetUriByName(HttpContext, nameof(GetKnownCharactersFromTitle), new { character.Id }).Replace("%20", ""),
+                Url = _linkGenerator.GetUriByName(HttpContext, nameof(GetCharactersFromTitle), new { character.Id }).Replace("%20", ""),
                 Name = character.Name,
                 Personality_Id = character.Personality_Id,
                 Title_Id = character.Title_Id,
