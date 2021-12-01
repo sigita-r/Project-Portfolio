@@ -58,6 +58,7 @@ namespace Webservice
             {
                 endpoints.MapControllers();
             });
+            app.UseStaticFiles();
         }
     }
 }

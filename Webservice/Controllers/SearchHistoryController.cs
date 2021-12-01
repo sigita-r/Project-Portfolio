@@ -28,7 +28,7 @@ namespace Webservice.Controllers
 
 
         [HttpGet("user/userId")]
-        public IActionResult GetSearchHistoryFromUser(int userID)
+        public IActionResult GetSearchHistoryFromUser(Int64 userID)
         {
 
             var searchHistory = _dataService.GetSQ(userID);

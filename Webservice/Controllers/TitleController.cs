@@ -1,4 +1,4 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿    using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -40,20 +40,9 @@ namespace Webservice.Controllers
 
 
 
-        /*
-        [HttpGet("{id}", Name = nameof(GetCharactersFromTitle))]
-        public IActionResult GetCharactersFromTitle(int id)
-        {
-            var title = _dataService.GetTitles(id);
 
-            if (title == null)
-            {
-                return NotFound();
-            }
-
-            return Ok(GetTitleViewModel(title)); //idk what we should return here
-        }
-        */
+       
+        
 
         [HttpGet]
         public IActionResult GetTitles()

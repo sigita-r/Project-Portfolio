@@ -20,13 +20,13 @@ namespace Rawdata_Porfolio_2.Entity_Framework   // There's a typo in "Portfolio"
         //                        TITLES                          //
         ////////////////////////////////////////////////////////////
 
-        IEnumerable<Title> GetTitles();
+        List<Title> GetTitles();
 
         Title GetTitleById(int Id);
 
-        List<Character> GetKnownCharactersFromTitleById(int title_Id);
+        public Character GetKnownCharactersFromTitleById(int title_Id);
 
-        public List<Character> GetCharactersFromTitleById(int title_Id);
+        public Character GetCharactersFromTitleById(int title_Id);
 
         public List<Episode> GetEpisode(int titleID);
         public List<Episode> GetAllEpisodes(int titleID);
@@ -98,7 +98,7 @@ namespace Rawdata_Porfolio_2.Entity_Framework   // There's a typo in "Portfolio"
         ////////////////////////////////////////////////////////////
 
         List<Search_results> ActorSearch(int? user_Id, string query);
-        List<Search_Queries> GetSQ(int userID);
+        List<Search_Queries> GetSQ(Int64 userID);
         public void DeleteSQ(int queryID);
         List<Search_results> StringSearch(int? userId, string query);
 
@@ -182,27 +182,27 @@ namespace Rawdata_Porfolio_2.Entity_Framework   // There's a typo in "Portfolio"
             return ctx.Titles.Find(Id);
         }
 
-        public IEnumerable<Title> GetTitles()
+        public List<Title> GetTitles()
         {
-            return ctx.Titles.ToList();
-        }
-
-        public List<Character> GetCharactersFromTitleById(int title_Id)
-        {
-
-            using (var cmd = new NpgsqlCommand("SELECT DISTINCT personality.\"ID\", personality.\"name\", characters.\"character\" FROM public.personality, public.characters " +
-                "WHERE characters.\"title_ID\" = @TID AND characters.\"personality_ID\" = personality.\"ID\";", connection.Connect()))
+            using (var cmd = new NpgsqlCommand("Select * From title", connection.Connect()))
             {
-                cmd.Parameters.AddWithValue("TID", title_Id);
+                
                 NpgsqlDataReader reader = cmd.ExecuteReader();
-                List<Character> result = new List<Character>();
+                List<Title> result = new List<Title>();
                 while (reader.Read())
                 {
-                    Character row = new Character()
+                    Title row = new Title()
                     {
-                        CharacterOfPersonality = reader["character"].ToString(),
-                        Name = reader["name"].ToString(),
-                        Personality_Id = (int)reader["ID"],
+                        Id = (Int64)reader["ID"],
+                        Type = reader["type"].ToString(),
+                        IsAdult = (bool)reader["isadult"],
+                        Year_Start = (Int16)reader["year_start"],
+                        Year_End = (Int16?)reader["year_end"],
+                        Runtime = (Int32?)reader["runtime"],
+                        AvgRating = (double?)reader["avg_rating"],
+                        Poster = reader["poster"].ToString(),
+                        Plot = reader["plot"].ToString(),
+                        Awards = reader["awards"].ToString(),
 
                     };
                     result.Add(row);
@@ -210,9 +210,36 @@ namespace Rawdata_Porfolio_2.Entity_Framework   // There's a typo in "Portfolio"
                 connection.Connect().Close();
                 return result;
             }
+
+            //return ctx.Titles.ToList();
         }
 
-        public List<Character> GetKnownCharactersFromTitleById(int title_Id)
+        public Character GetCharactersFromTitleById(int title_Id)
+        {
+
+            using (var cmd = new NpgsqlCommand("SELECT DISTINCT personality.\"ID\", personality.\"name\", characters.\"character\" FROM public.personality, public.characters " +
+                "WHERE characters.\"title_ID\" = @TID AND characters.\"personality_ID\" = personality.\"ID\";", connection.Connect()))
+            {
+                cmd.Parameters.AddWithValue("TID", title_Id);
+                NpgsqlDataReader reader = cmd.ExecuteReader();
+      
+                while (reader.Read())
+                {
+                    Character result = new Character()
+                    {
+                        CharacterOfPersonality = reader["character"].ToString(),
+                        Name = reader["name"].ToString(),
+                        Personality_Id = (int)reader["ID"],
+
+                    };
+                    return result;
+                }
+                connection.Connect().Close();
+                return null;
+            }
+        }
+
+        public Character GetKnownCharactersFromTitleById(int title_Id)
         {
 
             using (var cmd = new NpgsqlCommand("SELECT DISTINCT personality.\"ID\", personality.\"name\", characters.\"character\" FROM public.personality, public.characters " +
@@ -220,20 +247,20 @@ namespace Rawdata_Porfolio_2.Entity_Framework   // There's a typo in "Portfolio"
             {
                 cmd.Parameters.AddWithValue("TID", title_Id);
                 NpgsqlDataReader reader = cmd.ExecuteReader();
-                List<Character> result = new List<Character>();
+            
                 while (reader.Read())
                 {
-                    Character row = new Character()
+                    Character result = new Character()
                     {
                         CharacterOfPersonality = reader["character"].ToString(),
                         Name = reader["name"].ToString(),
                         Personality_Id = (int)reader["ID"],
 
                     };
-                    result.Add(row);
+                    return result;
                 }
                 connection.Connect().Close();
-                return result;
+                return null;
             }
         }
 
@@ -703,7 +730,7 @@ namespace Rawdata_Porfolio_2.Entity_Framework   // There's a typo in "Portfolio"
         ////////////////////////////////////////////////////////////
         //                          SEARCH                        //
         ////////////////////////////////////////////////////////////
-        public List<Search_Queries> GetSQ(int userID)
+        public List<Search_Queries> GetSQ(Int64 userID)
         {
             var cmd = new NpgsqlCommand("SELECT * FROM search_queries WHERE \"user_ID\" = @UID ORDER BY timestamp DESC;", connection.Connect());
             cmd.Parameters.AddWithValue("UID", userID);
@@ -715,7 +742,7 @@ namespace Rawdata_Porfolio_2.Entity_Framework   // There's a typo in "Portfolio"
                 {
                     Query = reader["query"].ToString(), // we have to do some separating the string up some time, should we do it now?
                     Timestamp = (DateTime)reader["timestamp"],
-                    Id = (int)reader["ID"]
+                    Id = (Int64)reader["ID"]
                 };
                 result.Add(row);
             }

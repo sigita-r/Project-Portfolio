@@ -10,7 +10,7 @@ namespace Rawdata_Porfolio_2.Pages.Entity_Framework.Domain
     public class Search_Queries
     {
         [Key]
-        public int Id { get; set; }
+        public Int64 Id { get; set; }
         public string Query { get; set; }
         public DateTime Timestamp { get; set; }
         public int User_Id { get; set; }

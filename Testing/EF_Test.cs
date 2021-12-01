@@ -12,7 +12,7 @@ using Rawdata_Porfolio_2.Entity_Framework.Domain;
 using System.Collections.Generic;
 
 namespace Test
-{
+{/*
     public class EF_Test
     {
         private readonly Mock<IDataService> _dataServiceMock;
@@ -87,4 +87,5 @@ namespace Test
         
 
     }
-}
+*/}
+

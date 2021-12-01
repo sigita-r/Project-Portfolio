@@ -12,4 +12,9 @@
     <ProjectReference Include="..\Rawdata_Porfolio_2\Rawdata_Porfolio_2.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="wwwroot\css\" />
+    <Folder Include="wwwroot\js\" />
+  </ItemGroup>
+
 </Project>
