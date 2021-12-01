@@ -9,15 +9,14 @@ using Rawdata_Porfolio_2.Pages.Entity_Framework.Domain;
 using Microsoft.AspNetCore.Routing;
 using Webservice.ViewModels;
 
-
 namespace Webservice.Controllers
 {
     [ApiController]
     [Route("api/titles")]
     public class TitleController : Controller
     {
-        IDataService _dataService;
-        LinkGenerator _linkGenerator;
+        private IDataService _dataService;
+        private LinkGenerator _linkGenerator;
 
         public TitleController(IDataService dataService, LinkGenerator linkGenerator)
         {
@@ -52,8 +51,6 @@ namespace Webservice.Controllers
             return Ok(titles.Select(x => GetTitleViewModel(x)));
         }
 
-
-
         private object CreateResultModel(QueryString queryString, int total, IEnumerable<TitleViewModel> model)
         {
             return new
@@ -71,7 +68,6 @@ namespace Webservice.Controllers
             var lastPage = GetLastPage(queryString.PageSize, total);
             return queryString.Page >= lastPage ? null : GetTitlesUrl(queryString.Page + 1, queryString.PageSize, queryString.OrderBy);
         }
-
 
         private string CreateCurrentPageLink(QueryString queryString)
         {
@@ -98,26 +94,28 @@ namespace Webservice.Controllers
 
         private TitleViewModel GetTitleViewModel(Title title)
         {
+            Console.WriteLine("heyo1");
+
+            String titleGenresFromTable = string.Join(",", title.Title_Genres);
+            Console.WriteLine("heyo");
             return new TitleViewModel
             {
                 Url = _linkGenerator.GetUriByName(HttpContext, nameof(GetTitleById), new { title.Id }).Replace("%20", ""),
                 Type = title.Type,
-              //  Genre = title.Genre,
-              //  Primary_Title = title.Primary_Title,
+
+                Title_Genres = titleGenresFromTable,
+                //  Primary_Title = title.Primary_Title,
                 Is_Adult = title.IsAdult,
                 Year_Start = title.Year_Start,
                 Year_End = title.Year_End,
                 Runtime = title.Runtime,
-              //  Avg_Rating = title.AvgRating,
+                //  Avg_Rating = title.AvgRating,
                 Poster = title.Poster,
                 Plot = title.Plot,
                 Awards = title.Awards,
-               // Language = title.Language,
-                //Region = title.Region,
-                
+                // Language = title.Language,
+                //   Region = title.Region,
             };
         }
-
-
     }
 }

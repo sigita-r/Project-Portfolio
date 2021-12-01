@@ -20,7 +20,7 @@ namespace Test
 
         private readonly OurMDB_Context ctx;
         private readonly DataService dataservice;
-        string password = "password";
+        private string password = "password";
 
         public EF_Test()
         {
@@ -29,10 +29,7 @@ namespace Test
 
             dataservice = new DataService();
             ctx = new OurMDB_Context();
-
-         
         }
-     
 
         ////////////////////////////////////////////////////////////
         //                          User                          //
@@ -41,14 +38,13 @@ namespace Test
         [Fact]
         public void Create_User_test()
         {
-
             byte[] pwBytes = Encoding.Unicode.GetBytes(password);
             User user = dataservice.CreateUser("1234testuser", pwBytes, "1234testemail@test.com", DateTime.Now);
             Assert.Equal("1234testuser", user.Username);
             Assert.Equal("1234testemail@test.com", user.Email);
             dataservice.DeleteUser(user.Id);
-           
         }
+
         [Fact]
         public void Login_Test()
         {
@@ -60,20 +56,20 @@ namespace Test
         }
 
         [Fact]
-        public void GetTitleById_Test() 
+        public void GetTitleById_Test()
         {
             Title title = dataservice.GetTitleById(1);
             Assert.Equal(1, title.Id);
             Assert.Equal("tvSeries", title.Type);
-            //Assert.Equal(false, title.IsAdult); 
+            //Assert.Equal(false, title.IsAdult);
             Assert.Equal(2019, title.Year_Start);
             Assert.Equal(2020, title.Year_End);
             Assert.Equal(120, title.Runtime);
             //Assert.Equal(null, title.AvgRating);
             Assert.Equal("https://m.media-amazon.com/images/M/MV5BZjdhYzM0OWQtYTgxNi00NThhLThmNzgtNWE0NjU5NDNiNjNhXkEyXkFqcGdeQXVyNDg4MjkzNDk@._V1_SX300.jpg", title.Poster);
             Assert.Equal("Being the daughter of a prostitute mother, Akca gives up her motherhood in order to give her child a better future. The bride of a wealthy family, Sule promises to be a mother to Akca's ...", title.Plot);
-
         }
+
         [Fact]
         public void SS_Search_Test()
         {
@@ -83,9 +79,6 @@ namespace Test
             Assert.Equal(11, result.Count);
             dataservice.DeleteUser(user.Id);
         }
-
-        
-
     }
 */}
 

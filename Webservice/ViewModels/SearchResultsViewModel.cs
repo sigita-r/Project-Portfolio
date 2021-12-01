@@ -9,9 +9,7 @@ namespace Webservice.ViewModels
     {
         public string TitleName { get; set; }
         public string TitleDate { get; set; }
-        
-        public string PersonalityName { get; set; }
 
-        //known for?? 
+        public string PersonalityName { get; set; }
     }
 }
