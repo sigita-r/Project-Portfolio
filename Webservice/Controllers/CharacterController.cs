@@ -26,10 +26,10 @@ namespace Webservice.Controllers
             _linkGenerator = linkGenerator;
         }
 
-        /*  [HttpGet("{id}")]
+          [HttpGet("{id}")]
           public IActionResult GetCharactersFromTitle(int id)
           {
-              number = id;
+            
               List<Character> character = _dataService.GetCharactersFromTitleById(id);
 
               if (character == null)
@@ -39,31 +39,42 @@ namespace Webservice.Controllers
 
               return Ok(character.Select(x => GetCharacterViewModel(x)));
           }
-        */
 
-        /*  [HttpGet("KnownCharacters")]
+         [HttpGet("KnownCharacters")]
           public IActionResult GetKnownCharactersFromTitle(int id)
           {
-              Character character = _dataService.GetKnownCharactersFromTitleById(id);
+              List<Character> character = _dataService.GetKnownCharactersFromTitleById(id);
 
               if (character == null)
               {
                   return NotFound();
               }
 
-              return Ok(GetCharacterViewModel(character));
+              return Ok(character.Select(x => GetCharacterViewModel(x)));;
           }
-        */
+        
 
         private CharacterViewModel GetCharacterViewModel(Character character)
         {
             return new CharacterViewModel
             {
                 // Url = _linkGenerator.GetUriByName(HttpContext, nameof(GetCharactersFromTitle), new { x.Personality_Id }).Replace("%20", ""),
-                Title_Id = number,
+                Title_Id = character.Title_Id,
                 Name = character.Name,
                 Personality_Id = character.Personality_Id,
                 CharacterOfPersonality = character.CharacterOfPersonality
+            };
+        }
+
+        private CharacterViewModel GetKnownCharacterViewModel(Character character) 
+        {
+            return new CharacterViewModel
+            {
+                Title_Id = character.Title_Id,
+                Name = character.Name,
+                Personality_Id = character.Personality_Id,
+                CharacterOfPersonality = character.CharacterOfPersonality,
+                Known_For = character.Known_For
             };
         }
     }

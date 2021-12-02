@@ -233,10 +233,11 @@ namespace Rawdata_Porfolio_2.Entity_Framework   // There's a typo in "Portfolio"
                 {
                     Character row = new Character()
                     {
-                        Title_Id = (int)reader["title_ID"],
+                        Title_Id = (Int64)reader["title_ID"],
                         CharacterOfPersonality = reader["character"].ToString(),
                         Name = reader["name"].ToString(),
                         Personality_Id = (int)reader["ID"],
+                        
                     };
                     result.Add(row);
                 }
@@ -247,7 +248,7 @@ namespace Rawdata_Porfolio_2.Entity_Framework   // There's a typo in "Portfolio"
 
         public List<Character> GetKnownCharactersFromTitleById(int title_Id)
         {
-            using (var cmd = new NpgsqlCommand("SELECT DISTINCT characters.\"title_ID\", personality.\"ID\", personality.\"name\", characters.\"character\" FROM public.personality, public.characters " +
+            using (var cmd = new NpgsqlCommand("SELECT DISTINCT characters.\"title_ID\", personality.\"ID\", personality.\"name\", characters.\"character\", characters.known_for FROM public.personality, public.characters " +
                 "WHERE characters.\"title_ID\" = @TID AND characters.known_for = true AND characters.\"personality_ID\" = personality.\"ID\";", connection.Connect()))
             {
                 cmd.Parameters.AddWithValue("TID", title_Id);
@@ -257,10 +258,11 @@ namespace Rawdata_Porfolio_2.Entity_Framework   // There's a typo in "Portfolio"
                 {
                     Character row = new Character()
                     {
-                        Title_Id = (int)reader["title_ID"],
+                        Title_Id = (Int64)reader["title_ID"],
                         CharacterOfPersonality = reader["character"].ToString(),
                         Name = reader["name"].ToString(),
                         Personality_Id = (int)reader["ID"],
+                        Known_For = (bool)reader["known_for"],
                     };
                     result.Add(row);
                 }
@@ -280,7 +282,7 @@ namespace Rawdata_Porfolio_2.Entity_Framework   // There's a typo in "Portfolio"
                 {
                     Episode row = new Episode()
                     {
-                        Parent_Id = (int)reader["parent_ID"],
+                        Parent_Id = (Int64)reader["parent_ID"],
                         Ep_Number = (int)reader["ep_number"],
                         Season = (int)reader["season"],
                     };
@@ -302,7 +304,7 @@ namespace Rawdata_Porfolio_2.Entity_Framework   // There's a typo in "Portfolio"
                 {
                     Episode row = new Episode()
                     {
-                        Parent_Id = (int)reader["parent_ID"],
+                        Parent_Id = (Int64)reader["parent_ID"],
                         Name = reader["name"].ToString(),
                         Ep_Number = (int)reader["ep_number"],
                         Season = (int)reader["season"],
@@ -325,7 +327,7 @@ namespace Rawdata_Porfolio_2.Entity_Framework   // There's a typo in "Portfolio"
                 {
                     Title_Genre row = new Title_Genre()
                     {
-                        Title_Id = (int)reader["title_ID"],
+                        Title_Id = (Int64)reader["title_ID"],
                         Genre = reader["genre"].ToString(),
                     };
                     result.Add(row);
@@ -346,7 +348,7 @@ namespace Rawdata_Porfolio_2.Entity_Framework   // There's a typo in "Portfolio"
                 {
                     Title_Localization row = new Title_Localization()
                     {
-                        Title_Id = (int)reader["title_ID"],
+                        Title_Id = (Int64)reader["title_ID"],
                         Id = (int)reader["ID"],
                         Name = reader["name"].ToString(),
                         Language = reader["langauge"].ToString(),
@@ -385,8 +387,9 @@ namespace Rawdata_Porfolio_2.Entity_Framework   // There's a typo in "Portfolio"
                     {
                         Personality_Id = (int)reader["personality_ID"],
                         CharacterOfPersonality = reader["character"].ToString(),
-                        Title_Id = (int)reader["title_ID"],
+                        Title_Id = (Int64)reader["title_ID"],
                         Name = reader["name"].ToString(),
+                       
                     };
                     result.Add(row);
                 }
@@ -408,7 +411,7 @@ namespace Rawdata_Porfolio_2.Entity_Framework   // There's a typo in "Portfolio"
                     Character row = new Character()
                     {
                         CharacterOfPersonality = reader["character"].ToString(),
-                        Title_Id = (int)reader["title_ID"],
+                        Title_Id = (Int64)reader["title_ID"],
                         Name = reader["name"].ToString(),
                     };
                     result.Add(row);
@@ -533,7 +536,7 @@ namespace Rawdata_Porfolio_2.Entity_Framework   // There's a typo in "Portfolio"
                     Name = reader["name"].ToString(),
                     Note = reader["note"].ToString(),
                     Timestamp = (DateTime)reader["timestamp"],
-                    Title_Id = (int)reader["title_ID"]
+                    Title_Id = (Int64)reader["title_ID"]
                 };
                 result.Add(row);
             }
@@ -671,7 +674,7 @@ namespace Rawdata_Porfolio_2.Entity_Framework   // There's a typo in "Portfolio"
                 Rating row = new Rating()
                 {
                     User_Id = (int)reader["user_ID"],
-                    Title_Id = (int)reader["title_ID"],
+                    Title_Id = (Int64)reader["title_ID"],
                     RatingOfTitle = (int)reader["rating"],
                     Timestamp = (DateTime)reader["timestamp"],
                 };
@@ -870,7 +873,7 @@ namespace Rawdata_Porfolio_2.Entity_Framework   // There's a typo in "Portfolio"
                 {
                     Role row = new Role()
                     {
-                        Title_Id = (int)reader["title_ID"],
+                        Title_Id = (Int64)reader["title_ID"],
                         RoleOfPersonality = reader["role"].ToString(),
                         Name = reader["name"].ToString(),
                         Personality_Id = (int)reader["ID"],

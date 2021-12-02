@@ -9,7 +9,7 @@ namespace Rawdata_Porfolio_2.Entity_Framework.Domain
     {
         public int User_Id { get; set; }
         public int Personality_ID { get; set; }
-        public long Title_ID { get; set; }
+        public Int64 Title_ID { get; set; }
         public string Character_Name { get; set; }
         public int Year_Birth { get; set; }
         public int Year_Death { get; set; }

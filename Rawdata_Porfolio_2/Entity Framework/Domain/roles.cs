@@ -13,7 +13,7 @@ namespace Rawdata_Porfolio_2.Pages.Entity_Framework.Domain
         public string Name { get; set; }
         public int Personality_Id { get; set; }
         public Personality Personality { get; set; }
-        public int Title_Id { get; set; }
+        public Int64 Title_Id { get; set; }
         public Title Title { get; set; }
         public string RoleOfPersonality { get; set; }
 
