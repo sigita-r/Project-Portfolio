@@ -7,6 +7,7 @@ namespace Rawdata_Porfolio_2.Entity_Framework.Domain
 {
     public class Search_results
     {
+        public int User_Id { get; set; }
         public int Personality_ID { get; set; }
         public long Title_ID { get; set; }
         public string Character_Name { get; set; }

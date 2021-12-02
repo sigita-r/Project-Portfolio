@@ -225,7 +225,7 @@ namespace Rawdata_Porfolio_2.Entity_Framework   // There's a typo in "Portfolio"
 
         public List<Character> GetCharactersFromTitleById(int title_Id)
         {
-            using (var cmd = new NpgsqlCommand("SELECT DISTINCT personality.\"ID\", personality.\"name\", characters.\"character\" FROM public.personality, public.characters " +
+            using (var cmd = new NpgsqlCommand("SELECT DISTINCT characters.\"title_ID\", personality.\"ID\", personality.\"name\", characters.\"character\" FROM public.personality, public.characters " +
                 "WHERE characters.\"title_ID\" = @TID AND characters.\"personality_ID\" = personality.\"ID\";", connection.Connect()))
             {
                 cmd.Parameters.AddWithValue("TID", title_Id);
@@ -235,6 +235,7 @@ namespace Rawdata_Porfolio_2.Entity_Framework   // There's a typo in "Portfolio"
                 {
                     Character row = new Character()
                     {
+                        Title_Id = (int)reader["title_ID"],
                         CharacterOfPersonality = reader["character"].ToString(),
                         Name = reader["name"].ToString(),
                         Personality_Id = (int)reader["ID"],
@@ -248,7 +249,7 @@ namespace Rawdata_Porfolio_2.Entity_Framework   // There's a typo in "Portfolio"
 
         public List<Character> GetKnownCharactersFromTitleById(int title_Id)
         {
-            using (var cmd = new NpgsqlCommand("SELECT DISTINCT personality.\"ID\", personality.\"name\", characters.\"character\" FROM public.personality, public.characters " +
+            using (var cmd = new NpgsqlCommand("SELECT DISTINCT characters.\"title_ID\", personality.\"ID\", personality.\"name\", characters.\"character\" FROM public.personality, public.characters " +
                 "WHERE characters.\"title_ID\" = @TID AND characters.known_for = true AND characters.\"personality_ID\" = personality.\"ID\";", connection.Connect()))
             {
                 cmd.Parameters.AddWithValue("TID", title_Id);
@@ -258,6 +259,7 @@ namespace Rawdata_Porfolio_2.Entity_Framework   // There's a typo in "Portfolio"
                 {
                     Character row = new Character()
                     {
+                        Title_Id = (int)reader["title_ID"],
                         CharacterOfPersonality = reader["character"].ToString(),
                         Name = reader["name"].ToString(),
                         Personality_Id = (int)reader["ID"],
@@ -271,7 +273,7 @@ namespace Rawdata_Porfolio_2.Entity_Framework   // There's a typo in "Portfolio"
 
         public List<Episode> GetEpisode(int titleID)
         {
-            using (var cmd = new NpgsqlCommand("SELECT ep_number, season FROM public.episode WHERE episode.\"ID\" = @TID;", connection.Connect()))
+            using (var cmd = new NpgsqlCommand("SELECT episode.\"parent_ID\", ep_number, season FROM public.episode WHERE episode.\"ID\" = @TID;", connection.Connect()))
             {
                 cmd.Parameters.AddWithValue("TID", titleID);
                 NpgsqlDataReader reader = cmd.ExecuteReader();
@@ -280,6 +282,7 @@ namespace Rawdata_Porfolio_2.Entity_Framework   // There's a typo in "Portfolio"
                 {
                     Episode row = new Episode()
                     {
+                        Parent_Id = (int)reader["parent_ID"],
                         Ep_Number = (int)reader["ep_number"],
                         Season = (int)reader["season"],
                     };
@@ -291,7 +294,7 @@ namespace Rawdata_Porfolio_2.Entity_Framework   // There's a typo in "Portfolio"
 
         public List<Episode> GetAllEpisodes(int titleID)
         {
-            using (var cmd = new NpgsqlCommand("SELECT title_localization.name, episode.\"ID\", episode.ep_number, episode.season FROM public.title_localization, public.episode " +
+            using (var cmd = new NpgsqlCommand("SELECT Episode.\"parent_ID\", title_localization.name, episode.\"ID\", episode.ep_number, episode.season FROM public.title_localization, public.episode " +
                                                "WHERE episode.\"parent_ID\" = @TID AND title_localization.\"title_ID\" = episode.\"ID\" AND title_localization.primary_title = true;", connection.Connect()))
             {
                 cmd.Parameters.AddWithValue("TID", titleID);
@@ -301,6 +304,7 @@ namespace Rawdata_Porfolio_2.Entity_Framework   // There's a typo in "Portfolio"
                 {
                     Episode row = new Episode()
                     {
+                        Parent_Id = (int)reader["parent_ID"],
                         Name = reader["name"].ToString(),
                         Ep_Number = (int)reader["ep_number"],
                         Season = (int)reader["season"],
@@ -323,6 +327,7 @@ namespace Rawdata_Porfolio_2.Entity_Framework   // There's a typo in "Portfolio"
                 {
                     Title_Genre row = new Title_Genre()
                     {
+                        Title_Id = (int)reader["title_ID"],
                         Genre = reader["genre"].ToString(),
                     };
                     result.Add(row);
@@ -343,6 +348,7 @@ namespace Rawdata_Porfolio_2.Entity_Framework   // There's a typo in "Portfolio"
                 {
                     Title_Localization row = new Title_Localization()
                     {
+                        Title_Id = (int)reader["title_ID"],
                         Id = (int)reader["ID"],
                         Name = reader["name"].ToString(),
                         Language = reader["langauge"].ToString(),
@@ -369,7 +375,7 @@ namespace Rawdata_Porfolio_2.Entity_Framework   // There's a typo in "Portfolio"
 
         public List<Character> GetCharactersFromPersonalityById(int personality_Id)
         {
-            using (var cmd = new NpgsqlCommand("SELECT DISTINCT characters.\"title_ID\", characters.character, title_localization.name FROM public.characters, public.title_localization " +
+            using (var cmd = new NpgsqlCommand("SELECT DISTINCT characters.\"personality_ID\", characters.\"title_ID\", characters.character, title_localization.name FROM public.characters, public.title_localization " +
                                                "WHERE characters.\"personality_ID\" = @PID AND title_localization.\"title_ID\" = characters.\"title_ID\";", connection.Connect()))
             {
                 cmd.Parameters.AddWithValue("PID", personality_Id);
@@ -379,6 +385,7 @@ namespace Rawdata_Porfolio_2.Entity_Framework   // There's a typo in "Portfolio"
                 {
                     Character row = new Character()
                     {
+                        Personality_Id = (int)reader["personality_ID"],
                         CharacterOfPersonality = reader["character"].ToString(),
                         Title_Id = (int)reader["title_ID"],
                         Name = reader["name"].ToString(),
@@ -415,7 +422,7 @@ namespace Rawdata_Porfolio_2.Entity_Framework   // There's a typo in "Portfolio"
 
         public List<Personality_Profession> GetPersonalityProfession(int personality_Id)
         {
-            using (var cmd = new NpgsqlCommand("SELECT profession FROM public.personality_professions WHERE \"personality_ID\" = @PID;", connection.Connect()))
+            using (var cmd = new NpgsqlCommand("SELECT profession,  personality_professions.\"personality_ID\" FROM public.personality_professions WHERE \"personality_ID\" = @PID;", connection.Connect()))
             {
                 cmd.Parameters.AddWithValue("PID", personality_Id);
                 NpgsqlDataReader reader = cmd.ExecuteReader();
@@ -424,6 +431,7 @@ namespace Rawdata_Porfolio_2.Entity_Framework   // There's a typo in "Portfolio"
                 {
                     Personality_Profession row = new Personality_Profession()
                     {
+                        Personality_Id = (int)reader["personality_ID"],
                         Profession = reader["profession"].ToString(),
                     };
                     result.Add(row);
@@ -468,6 +476,7 @@ namespace Rawdata_Porfolio_2.Entity_Framework   // There's a typo in "Portfolio"
             {
                 Bookmarks_Personality row = new Bookmarks_Personality()
                 {
+                    User_Id = (int)reader["user_ID"],
                     Name = reader["name"].ToString(),
                     Note = reader["note"].ToString(),
                     Timestamp = (DateTime)reader["timestamp"],
@@ -522,6 +531,7 @@ namespace Rawdata_Porfolio_2.Entity_Framework   // There's a typo in "Portfolio"
             {
                 Bookmarks_Title row = new Bookmarks_Title()
                 {
+                    User_Id = (int)reader["user_ID"],
                     Name = reader["name"].ToString(),
                     Note = reader["note"].ToString(),
                     Timestamp = (DateTime)reader["timestamp"],
@@ -654,7 +664,7 @@ namespace Rawdata_Porfolio_2.Entity_Framework   // There's a typo in "Portfolio"
 
         public List<Rating> GetRating(int userID)
         {
-            var cmd = new NpgsqlCommand("SELECT rating FROM ratings WHERE \"user_ID\" @UID;", connection.Connect());
+            var cmd = new NpgsqlCommand("SELECT rating, ratings.\"user_ID\" FROM ratings WHERE \"user_ID\" @UID;", connection.Connect());
             cmd.Parameters.AddWithValue("UID", userID);
             NpgsqlDataReader reader = cmd.ExecuteReader();
             List<Rating> result = new List<Rating>();
@@ -662,6 +672,7 @@ namespace Rawdata_Porfolio_2.Entity_Framework   // There's a typo in "Portfolio"
             {
                 Rating row = new Rating()
                 {
+                    User_Id = (int)reader["user_ID"],
                     Title_Id = (int)reader["title_ID"],
                     RatingOfTitle = (int)reader["rating"],
                     Timestamp = (DateTime)reader["timestamp"],
@@ -700,7 +711,7 @@ namespace Rawdata_Porfolio_2.Entity_Framework   // There's a typo in "Portfolio"
 
         public List<Title> GetAvgRatingFromTitleId(int title_ID)
         {
-            var cmd = new NpgsqlCommand("SELECT avg_rating FROM title WHERE \"title_ID\" = @TID;", connection.Connect());
+            var cmd = new NpgsqlCommand("SELECT avg_rating, \"ID\" FROM title WHERE \"ID\" = @TID;", connection.Connect());
             cmd.Parameters.AddWithValue("TID", title_ID);
             NpgsqlDataReader reader = cmd.ExecuteReader();
             List<Title> result = new List<Title>();
@@ -708,7 +719,7 @@ namespace Rawdata_Porfolio_2.Entity_Framework   // There's a typo in "Portfolio"
             {
                 Title row = new Title()
                 {
-                    Id = (int)reader["title_ID"],
+                    Id = (int)reader["ID"],
                     AvgRating = (int)reader["avg_rating"],
                 };
                 result.Add(row);
@@ -730,6 +741,7 @@ namespace Rawdata_Porfolio_2.Entity_Framework   // There's a typo in "Portfolio"
             {
                 Search_Queries row = new Search_Queries()
                 {
+                    User_Id = (int)reader["user_ID"],
                     Query = reader["query"].ToString(), // we have to do some separating the string up some time, should we do it now?
                     Timestamp = (DateTime)reader["timestamp"],
                     Id = (Int64)reader["ID"]
@@ -775,6 +787,7 @@ namespace Rawdata_Porfolio_2.Entity_Framework   // There's a typo in "Portfolio"
             {
                 Search_results row = new Search_results()
                 {
+                    User_Id = (int)reader["user_ID"],
                     Personality_ID = (int)reader["personality_ID"],
                     Character_Name = reader["personality_name"].ToString(),
                 };
@@ -802,6 +815,7 @@ namespace Rawdata_Porfolio_2.Entity_Framework   // There's a typo in "Portfolio"
             {
                 Search_results row = new Search_results()
                 {
+                    User_Id = (int)reader["user_ID"],
                     Title_ID = (Int64)reader["title_ID"],
                     Title_Name = reader["title_name"].ToString(),
                 };
@@ -832,6 +846,7 @@ namespace Rawdata_Porfolio_2.Entity_Framework   // There's a typo in "Portfolio"
             {
                 Search_results row = new Search_results()
                 {
+                    User_Id = (int)reader["user_ID"],
                     Title_ID = (Int64)reader["title_ID"],
                     Title_Name = reader["title_name"].ToString(),
                 };
@@ -847,7 +862,7 @@ namespace Rawdata_Porfolio_2.Entity_Framework   // There's a typo in "Portfolio"
 
         public List<Role> GetRolesFromTitleById(int title_Id)
         {
-            using (var cmd = new NpgsqlCommand("SELECT DISTINCT personality.\"ID\", personality.\"name\", roles.\"role\" FROM public.title_localization, public.roles " +
+            using (var cmd = new NpgsqlCommand("SELECT DISTINCT roles.\"title_ID\", personality.\"ID\", personality.\"name\", roles.\"role\" FROM public.title_localization, public.roles " +
                                                "WHERE roles.\"title_ID\" = @TID AND title_localization.primary_title = true AND roles.\"personality_ID\" = personality.\"ID\";", connection.Connect()))
             {
                 cmd.Parameters.AddWithValue("TID", title_Id);
@@ -857,6 +872,7 @@ namespace Rawdata_Porfolio_2.Entity_Framework   // There's a typo in "Portfolio"
                 {
                     Role row = new Role()
                     {
+                        Title_Id = (int)reader["title_ID"],
                         RoleOfPersonality = reader["role"].ToString(),
                         Name = reader["name"].ToString(),
                         Personality_Id = (int)reader["ID"],

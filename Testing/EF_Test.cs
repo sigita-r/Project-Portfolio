@@ -80,5 +80,6 @@ namespace Test
             dataservice.DeleteUser(user.Id);
         }
     }
-*/}
+    */
+}
 
