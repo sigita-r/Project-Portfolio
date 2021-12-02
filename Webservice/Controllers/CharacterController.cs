@@ -26,19 +26,20 @@ namespace Webservice.Controllers
             _linkGenerator = linkGenerator;
         }
 
-        [HttpGet("Characters")]
-        public IActionResult GetCharactersFromTitle(int id)
-        {
-            number = id;
-            List<Character> character = _dataService.GetCharactersFromTitleById(id);
+        /*  [HttpGet("{id}")]
+          public IActionResult GetCharactersFromTitle(int id)
+          {
+              number = id;
+              List<Character> character = _dataService.GetCharactersFromTitleById(id);
 
-            if (character == null)
-            {
-                return NotFound();
-            }
+              if (character == null)
+              {
+                  return NotFound();
+              }
 
-            return Ok(character.Select(x => GetCharacterViewModel(x)));
-        }
+              return Ok(character.Select(x => GetCharacterViewModel(x)));
+          }
+        */
 
         /*  [HttpGet("KnownCharacters")]
           public IActionResult GetKnownCharactersFromTitle(int id)
