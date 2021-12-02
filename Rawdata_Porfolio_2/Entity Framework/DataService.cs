@@ -665,7 +665,7 @@ namespace Rawdata_Porfolio_2.Entity_Framework   // There's a typo in "Portfolio"
 
         public List<Rating> GetRating(int userID)
         {
-            var cmd = new NpgsqlCommand("SELECT rating, ratings.\"user_ID\" FROM ratings WHERE \"user_ID\" @UID;", connection.Connect());
+            var cmd = new NpgsqlCommand("SELECT ratings.rating, ratings.timestamp, ratings.\"user_ID\", ratings.\"title_ID\" FROM ratings WHERE \"user_ID\" = @UID;", connection.Connect());
             cmd.Parameters.AddWithValue("UID", userID);
             NpgsqlDataReader reader = cmd.ExecuteReader();
             List<Rating> result = new List<Rating>();

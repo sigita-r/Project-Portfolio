@@ -15,8 +15,7 @@ namespace Webservice.Controllers
     [Route("api/characters")]
     public class CharacterController : Controller
     {
-        private int number;
-
+        
         private IDataService _dataService;
         private LinkGenerator _linkGenerator;
 
