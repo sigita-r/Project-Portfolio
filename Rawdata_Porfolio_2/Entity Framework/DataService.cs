@@ -195,7 +195,6 @@ namespace Rawdata_Porfolio_2.Entity_Framework   // There's a typo in "Portfolio"
         {
             using (var cmd = new NpgsqlCommand("Select * From title", connection.Connect()))
             {
-                
                 NpgsqlDataReader reader = cmd.ExecuteReader();
                 List<Title> result = new List<Title>();
                 while (reader.Read())
@@ -205,14 +204,13 @@ namespace Rawdata_Porfolio_2.Entity_Framework   // There's a typo in "Portfolio"
                         Id = (Int64)reader["ID"],
                         Type = reader["type"].ToString(),
                         IsAdult = (bool)reader["isadult"],
-                        Year_Start = (Int16)reader["year_start"],
+                        Year_Start = (Int16?)reader["year_start"],
                         Year_End = (Int16?)reader["year_end"],
                         Runtime = (Int32?)reader["runtime"],
                         AvgRating = (double?)reader["avg_rating"],
                         Poster = reader["poster"].ToString(),
                         Plot = reader["plot"].ToString(),
                         Awards = reader["awards"].ToString(),
-
                     };
                     result.Add(row);
                 }

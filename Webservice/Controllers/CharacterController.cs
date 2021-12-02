@@ -15,28 +15,31 @@ namespace Webservice.Controllers
     [Route("api/characters")]
     public class CharacterController : Controller
     {
-        IDataService _dataService;
-        LinkGenerator _linkGenerator;
+        private int number;
+
+        private IDataService _dataService;
+        private LinkGenerator _linkGenerator;
+
         public CharacterController(IDataService dataService, LinkGenerator linkGenerator)
         {
             _dataService = dataService;
             _linkGenerator = linkGenerator;
         }
 
-        [HttpGet("Characters")]
-        public IActionResult GetCharactersFromTitle(int id)
-        {
-             List<Character> character = _dataService.GetCharactersFromTitleById(id);
+        /*  [HttpGet("{id}")]
+          public IActionResult GetCharactersFromTitle(int id)
+          {
+              number = id;
+              List<Character> character = _dataService.GetCharactersFromTitleById(id);
 
-            if (character == null)
-            {
-                return NotFound();
-            }
+              if (character == null)
+              {
+                  return NotFound();
+              }
 
-            return Ok(character.Select(x => GetCharacterViewModel(x))); 
-        }
-
-         
+              return Ok(character.Select(x => GetCharacterViewModel(x)));
+          }
+        */
 
         /*  [HttpGet("KnownCharacters")]
           public IActionResult GetKnownCharactersFromTitle(int id)
@@ -51,19 +54,17 @@ namespace Webservice.Controllers
               return Ok(GetCharacterViewModel(character));
           }
         */
-        
+
         private CharacterViewModel GetCharacterViewModel(Character character)
         {
-
             return new CharacterViewModel
             {
                 // Url = _linkGenerator.GetUriByName(HttpContext, nameof(GetCharactersFromTitle), new { x.Personality_Id }).Replace("%20", ""),
-                Title_Id = character.Title_Id,
+                Title_Id = number,
                 Name = character.Name,
                 Personality_Id = character.Personality_Id,
                 CharacterOfPersonality = character.CharacterOfPersonality
-            };       
+            };
         }
-        
     }
 }

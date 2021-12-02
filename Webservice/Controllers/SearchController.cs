@@ -11,7 +11,7 @@ using Webservice.ViewModels;
 namespace Webservice.Controllers
 {
     [ApiController]
-    [Route("api/PersonalitySearch")]
+    [Route("api/Search")]
     public class SearchController : Controller
     {
         private IDataService _dataService;
@@ -38,5 +38,15 @@ namespace Webservice.Controllers
 
             return Ok(result);
         }
+
+        /*
+        [HttpGet("SSSearch/asd", Name = nameof(SS_Search))]
+        public IActionResult SS_Search(int? userID, string title_Query, string plot_Query, string character_Query, string name_Query)
+        {
+            var result = _dataService.SS_Search(userID, title_Query, title_Query, character_Query, name_Query);
+
+            return Ok(result);
+        }
+        */
     }
 }

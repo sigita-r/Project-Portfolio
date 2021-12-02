@@ -1,4 +1,4 @@
-﻿    using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -37,18 +37,25 @@ namespace Webservice.Controllers
             return Ok(GetTitleViewModel(title));
         }
 
-
-
-
-       
-        
-
-        [HttpGet]
+        [HttpGet("allTitles")]
         public IActionResult GetTitles()
         {
             var titles = _dataService.GetTitles();
 
             return Ok(titles.Select(x => GetTitleViewModel(x)));
+        }
+
+        [HttpGet("CharactersFromTitle")]
+        public IActionResult GetCharactersFromTitle(int id)
+        {
+            List<Character> characters = _dataService.GetCharactersFromTitleById(id);
+
+            if (characters == null)
+            {
+                return NotFound();
+            }
+
+            return Ok(characters);
         }
 
         private object CreateResultModel(QueryString queryString, int total, IEnumerable<TitleViewModel> model)

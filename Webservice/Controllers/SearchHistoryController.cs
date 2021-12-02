@@ -11,13 +11,12 @@ using Webservice.ViewModels;
 
 namespace Webservice.Controllers
 {
-    
     [ApiController]
     [Route("api/searchHistory")]
     public class SearchHistoryController : Controller
     {
-        IDataService _dataService;
-        LinkGenerator _linkGenerator;
+        private IDataService _dataService;
+        private LinkGenerator _linkGenerator;
 
         public SearchHistoryController(IDataService dataService, LinkGenerator linkGenerator)
         {
@@ -25,12 +24,9 @@ namespace Webservice.Controllers
             _linkGenerator = linkGenerator;
         }
 
-
-
         [HttpGet("user/userId")]
         public IActionResult GetSearchHistoryFromUser(Int64 userID)
         {
-
             var searchHistory = _dataService.GetSQ(userID);
 
             if (searchHistory.Count() == 0)
@@ -41,20 +37,11 @@ namespace Webservice.Controllers
             return Ok(searchHistory);
         }
 
-        //[HttpGet("user/userId")]
-        //public IActionResult DeleteSearchHistoryFromUser(int ID)
-        //{
-
-        //    var searchHistory = _dataService.GetSQ(ID);
-
-        //    if (searchHistory.Count() == 0)
-        //    {
-        //        return NotFound("no search matching that ID");
-        //    }
-
-        //    return Ok(searchHistory);
-        //}
-
+        [HttpGet("SQDeleted", Name = nameof(DeleteSQ))]
+        public IActionResult DeleteSQ(int SQid)
+        {
+            _dataService.DeleteSQ(SQid);
+            return Ok();
+        }
     }
-    
 }
