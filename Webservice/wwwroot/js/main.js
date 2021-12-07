@@ -15,6 +15,12 @@
 });
 
 // component registration
+require(['knockout'], (ko) => {
+    ko.components.register("Frontpage", {
+        viewModel: { require: "components/Frontpage/frontpage" },
+        template: { require: "text!components/Frontpage/Frontpage.html" }
+    });
+});
 
 require(["jquery", "bootstrap"], function ($) {
     $(function () {

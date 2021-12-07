@@ -76,7 +76,7 @@ using System.Threading.Tasks;
 using Rawdata_Porfolio_2;
 using Rawdata_Porfolio_2.Entity_Framework;
 
-namespace WebService
+namespace Webservice
 {
     public class Startup
     {
