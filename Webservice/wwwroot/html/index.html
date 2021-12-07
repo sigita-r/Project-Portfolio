@@ -20,7 +20,11 @@
                         <input class="form-control" type="search" placeholder="Find titles and people..." aria-label="Search">
                         <button class="btn btn-light border" type="submit"><i class="bi bi-search"></i> Search</button>
                     </form>
-                    <div class="btn-group mb-1 ms-2" role="group">
+                    <div data-bind="if: loggedIn" class="btn-group mb-1 ms-2" role="group">
+                        <a href="#" type="button" class="btn btn-secondary text-nowrap" role="button"><i class="bi bi-person-circle"></i> My profile</a>
+                        <a href="#" type="button" class="btn btn-danger text-nowrap" role="button">Log out</a>
+                    </div>
+                    <div data-bind="ifnot: loggedIn" class="btn-group mb-1 ms-2" role="group">
                         <button type="button" class="btn btn-secondary text-nowrap" data-bs-toggle="modal" data-bs-target="#signupModal" id="signupTriggerButton">Create account</button>
                         <button type="button" class="btn btn-success text-nowrap" data-bs-toggle="modal" data-bs-target="#loginModal" id="loginTriggerButton">Log in</button>
                     </div>
@@ -34,11 +38,11 @@
                         <div class="modal-header">
                             <h5 class="modal-title" id="loginModalLabel">Log in</h5>
                             <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                        </div>
-                        <div class="modal-body">
+                        </div> 
+                        <div class="modal-body text-center">
                             <form>
-                                <div class="form-floating mb-3"><input type="text" class="form-control" id="floatingLoginUsername" aria-label="Username"><label for="floatingLoginUsername">Username</label></input></div>
-                                <div class="form-floating mb-3"><input type="password" class="form-control" id="floatingLoginPass" aria-label="Password"><label for="floatingLoginPass">Password</label></input></div>
+                                <div class="form-floating mb-3"><input type="text" class="form-control" id="floatingLoginUsername" aria-label="Username" placeholder=" "><label for="floatingLoginUsername">Username</label></input></div>
+                                <div class="form-floating mb-3"><input type="password" class="form-control" id="floatingLoginPass" aria-label="Password" placeholder=" "><label for="floatingLoginPass">Password</label></input></div>
                                 <button type="submit" class="btn btn-success">Log in</button>
                             </form>
                         </div>
@@ -54,12 +58,12 @@
                             <h5 class="modal-title" id="signupModalLabel">Log in</h5>
                             <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                         </div>
-                        <div class="modal-body">
+                        <div class="modal-body text-center">
                             <form>
-                                <div class="form-floating mb-3"><input type="text" class="form-control" id="floatingSignupUsername" aria-label="Username"><label for="floatingSignupUsername">Username</label></input></div>
-                                <div class="form-floating mb-3"><input type="password" class="form-control" id="floatingSignupPass" aria-label="Password"><label for="floatingSignupPass">Password</label></input></div>
-                                <div class="form-floating mb-3"><input type="email" class="form-control" id="floatingSignupEmail" aria-label="Email"><label for="floatingSignupEmail">Email</label></input></div>
-                                <div class="form-floating mb-3"><input type="text" class="form-control" id="floatingSignupDOB" aria-label="Date of birth"><label for="floatingSignupDOB">Date of birth (DD/MM/YYYY)</label></input></div>
+                                <div class="form-floating mb-3"><input type="text" class="form-control" id="floatingSignupUsername" aria-label="Username" placeholder=" "><label for="floatingSignupUsername">Username</label></input></div>
+                                <div class="form-floating mb-3"><input type="password" class="form-control" id="floatingSignupPass" aria-label="Password" placeholder=" "><label for="floatingSignupPass">Password</label></input></div>
+                                <div class="form-floating mb-3"><input type="email" class="form-control" id="floatingSignupEmail" aria-label="Email" placeholder=" "><label for="floatingSignupEmail">Email</label></input></div>
+                                <div class="form-floating mb-3"><input type="text" class="form-control" id="floatingSignupDOB" aria-label="Date of birth" placeholder=" "><label for="floatingSignupDOB">Date of birth (DD/MM/YYYY)</label></input></div>
                                 <button type="submit" class="btn btn-success">Create account</button>
                             </form>
                         </div>
