@@ -6,7 +6,7 @@ define(["knockout", "postman"], function (ko, postman) {
 
     let amount = ko.observable(123.4567);
 
-    let currentView = ko.observable(Frontpage);
+    let currentView = ko.observable('Frontpage');
 
     let changeContent = menuItem => {
         console.log(menuItem);
@@ -23,7 +23,6 @@ define(["knockout", "postman"], function (ko, postman) {
 
     return {
         currentView,
-        menuItems,
         changeContent,
         isActive,
         amount

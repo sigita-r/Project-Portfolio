@@ -1,8 +1,8 @@
 ﻿require.config({
     baseUrl: 'js',
     shim: {
-        bootstrap: {
-            deps: ["jquery"]
+        knockout: {
+            deps: ["bootstrap"]
         }
     },
     paths: {
@@ -10,7 +10,8 @@
         knockout: "lib/knockout/knockout-3.5.1",
         dataService: "services/dataService",
         text: "lib/requirejs/text",
-        bootstrap: "lib/bootstrap/bootstrap"
+        bootstrap: "lib/bootstrap/bootstrap.bundle.min",
+        postman: "services/postman"
     }
 });
 
@@ -22,8 +23,6 @@ require(['knockout'], (ko) => {
     });
 });
 
-require(["jquery", "bootstrap"], function ($) {
-    $(function () {
-        $('#loginTriggerButton').show();
-    });
+require(['knockout', 'viewmodel'], function (ko, vm) {
+    ko.applyBindings(vm);
 });
