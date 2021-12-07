@@ -14,8 +14,10 @@
     }
 });
 
-require(["jquery", "bootstrap"], function($) {
-    $(function(){
+// component registration
+
+require(["jquery", "bootstrap"], function ($) {
+    $(function () {
         $('#loginTriggerButton').show();
     });
 });
