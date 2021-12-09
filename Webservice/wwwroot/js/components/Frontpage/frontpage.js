@@ -4,13 +4,13 @@
 
         let getCharsFromTitle = () => {
             console.log("getCharsFromTitle");
-            ds.getCharsFromTitle(data => {
+            ds.getCharsFromTitle(2, data => {
                 console.log(data);
                 charsFromTitle(data);
             });
-   //         currentView("Frontpage");
+            //         currentView("Frontpage");
         }
-        getCharsFromTitle(2);
+        getCharsFromTitle();
 
         return {
             charsFromTitle,
