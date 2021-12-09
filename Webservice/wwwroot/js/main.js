@@ -21,19 +21,23 @@ require(['knockout'], (ko) => {
         viewModel: { require: "components/Frontpage/frontpage" },
         template: { require: "text!components/Frontpage/Frontpage.html" }
     });
-/*
-    ko.bindinghandlers.currency = {
-        update: function (element, valueaccessor, allbindings) {
-            // first get the latest data that we're bound to
-            var value = valueaccessor();
 
-            // next, whether or not the supplied model property is observable, get its current value
-            var valueunwrapped = ko.unwrap(value);
+    ko.components.register("specificTitle", {
+        viewModel: { require: "components/title/specificTitle" },
+        template: { require: "text!components/specificTitle/specificTitle.html" }
+    });
 
-            element.innertext = "$" + number(valueunwrapped).tofixed(2);
-        }
-    };
-    */
+    //ko.bindinghandlers.currency = {
+    //    update: function (element, valueaccessor, allbindings) {
+    //        // first get the latest data that we're bound to
+    //        var value = valueaccessor();
+
+    //        // next, whether or not the supplied model property is observable, get its current value
+    //        var valueunwrapped = ko.unwrap(value);
+
+    //        element.innertext = "$" + number(valueunwrapped).tofixed(2);
+    //    }
+    //};
 });
 
 require(['knockout', 'viewmodel'], function (ko, vm) {

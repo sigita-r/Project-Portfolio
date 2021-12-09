@@ -11,11 +11,11 @@ using Webservice.ViewModels;
 namespace Webservice.Controllers
 {
     [ApiController]
-    [Route("api/personalities")]
+    [Route("api/personality")]
     public class PersonalityController : Controller
     {
-        IDataService _dataService;
-        LinkGenerator _linkGenerator;
+        private IDataService _dataService;
+        private LinkGenerator _linkGenerator;
 
         public PersonalityController(IDataService dataService, LinkGenerator linkGenerator)
         {
@@ -56,9 +56,8 @@ namespace Webservice.Controllers
                 Name = personality.Name,
                 Year_Birth = personality.Year_Birth,
                 Year_Death = personality.Year_Death,
-               // Profession = personality.Profession,
+                // Profession = personality.Profession,
             };
         }
-
-    } 
+    }
 }
