@@ -8,8 +8,9 @@
                 console.log(data);
                 charsFromTitle(data);
             });
-            currentView("Frontpage");
+   //         currentView("Frontpage");
         }
+        getCharsFromTitle(2);
 
         return {
             charsFromTitle,

@@ -10,11 +10,11 @@
 
     <div>
         Personalities in the titles:123
-        <table class="table">
+        <table class="table" border="">
             <thead>
                 <tr><th>url</th><th>Name</th></tr>
             </thead>
-            <tbody data-bind="foreach: charsInTitle">
+            <tbody data-bind="foreach: charsFromTitle">
                 <tr>
                     <td data-bind="text: url"></td>
                     <td data-bind="text: name"></td>
@@ -22,7 +22,8 @@
             </tbody>
         </table>
     </div>
-
+    <!--
     <div data-bind="currency: amount"></div>
+        -->
 </body>
 </html>
