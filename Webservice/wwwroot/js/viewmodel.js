@@ -4,7 +4,7 @@ define(["knockout", "postman"], function (ko, postman) {
 
     ];
 
-    let amount = ko.observable(123.4567);
+    let amount = ko.observable(123999212123.4567);
 
     let currentView = ko.observable('Frontpage');
 

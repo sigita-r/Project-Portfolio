@@ -12,7 +12,7 @@ using Webservice.ViewModels;
 namespace Webservice.Controllers
 {
     [ApiController]
-    [Route("api/titles")]
+    [Route("api/title")]
     public class TitleController : Controller
     {
         private IDataService _dataService;
@@ -45,7 +45,7 @@ namespace Webservice.Controllers
             return Ok(titles.Select(x => GetTitleViewModel(x)));
         }
 
-        [HttpGet("CharactersFromTitle")]
+        [HttpGet("{id}/CharactersFromTitle")]
         public IActionResult GetCharactersFromTitle(int id)
         {
             List<Character> characters = _dataService.GetCharactersFromTitleById(id);

@@ -15,7 +15,6 @@ namespace Webservice.ViewModels.Profiles
         {
             CreateMap<Title, TitleViewModel>();
             CreateMap<TitleViewModel, Title>();
-            CreateMap<CreateTitleViewModel, Title>();
         }
     }
 }
