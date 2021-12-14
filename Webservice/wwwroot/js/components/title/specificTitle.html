@@ -5,8 +5,22 @@
     <title></title>
 </head>
 <body>
-    <h1>Specific title</h1>
+    <h1 data-bind=""></h1>
 
+    <div>
+        Personalities in the titles:
+        <table class="table">
+            <thead>
+                <tr><th>Name</th></tr>
+            </thead>
+            <tbody data-bind="foreach: personalitiesInTitle">
+                <tr>
+                    <td data-bind="text: url"></td>
+                    <td data-bind="text: name"></td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
     <div>
         Personalities in the titles:
         <table class="table">

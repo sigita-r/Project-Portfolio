@@ -7,18 +7,24 @@ define(['knockout', 'dataService', 'postman'], function (ko, ds, postman) {
         let currentView = ko.observable();
         let titleName = ko.observable();
         let selectedTitleId = ko.observable();
-        let charactersFromTitles = ko.observableArray([]);
+        let getCharactersFromTitle = ko.observableArray([]);
 
-        ds.GetCharactersFromTitle(selectedTitleId, data => {
-            console.log(data);
-            charactersFromTitles(data)
-        });
+        let getCharactersFromTitle = () => {
+            console.log("getCharsFromTitle");
+            ds.getCharsFromTitle(2, data => {
+                console.log(data);
+                charsFromTitle(data);
+            });
+            //         currentView("Frontpage");
+        }
+        getCharsFromTitle();
 
         return {
             currentView,
             titleName,
             selectedTitleId,
-            charactersFromTitles
+            charactersFromTitle,
+            getCharactersFromTitle
         }
     };
 });
