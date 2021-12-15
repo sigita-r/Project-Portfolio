@@ -80,11 +80,13 @@ namespace Rawdata_Porfolio_2.Entity_Framework   // There's a typo in "Portfolio"
 
         User GetUser(int userID);
 
+        User GetUserByName(string username);
+
         public void DeleteUser(int userID);
 
         public void UpdateUser(int userID, string email, string username, Byte[] password, DateTime? dob);
 
-        public string Login(string username, Byte[] password);
+        public bool Login(string username, Byte[] password);
 
         ////////////////////////////////////////////////////////////
         //                         RATINGS                        //
@@ -588,6 +590,11 @@ namespace Rawdata_Porfolio_2.Entity_Framework   // There's a typo in "Portfolio"
         {
             return ctx.Users.Find(userId);
         }
+        
+        public User GetUserByName(string username)
+        {
+            return ctx.Users.Find(username);
+        }
 
         public void UpdateUser(int userID, string email, string username, byte[] password, DateTime? dob)
         {
@@ -620,7 +627,7 @@ namespace Rawdata_Porfolio_2.Entity_Framework   // There's a typo in "Portfolio"
             connection.Connect().Close();
         }
 
-        public string Login(string username, byte[] password)
+        public bool Login(string username, byte[] password)
         {
             try
             {
@@ -635,14 +642,14 @@ namespace Rawdata_Porfolio_2.Entity_Framework   // There's a typo in "Portfolio"
                             Password = (byte[])reader["password"],
                         };
 
-                        return ValidatePassword(password, user.Password) ? "Login accepted" : "Wrong password";
+                        return ValidatePassword(password, user.Password);
                     }
-                    return "I dont know what happens here"; // I need help for this one sometime -H
+                    return false;
                 }
             }
             catch (NpgsqlException e)
             {
-                return "Username not found";
+                return false;
             }
         }
 

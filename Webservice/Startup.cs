@@ -77,6 +77,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using Rawdata_Porfolio_2;
 using Rawdata_Porfolio_2.Entity_Framework;
+using Webservice.Middleware;
 
 namespace Webservice
 {
@@ -110,6 +111,8 @@ namespace Webservice
                 .AllowCredentials());
 
             app.UseEndpoints(endpoints => endpoints.MapControllers());
+            
+            app.UseJwtAuth();
         }
     }
 }
