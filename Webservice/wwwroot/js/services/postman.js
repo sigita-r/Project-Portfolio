@@ -1,4 +1,4 @@
-﻿﻿define([], () => {
+﻿define([], () => {
     let subscribers = [];
 
     let subscribe = (event, callback, target) => {
