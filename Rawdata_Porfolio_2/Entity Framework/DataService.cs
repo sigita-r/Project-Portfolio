@@ -195,7 +195,7 @@ namespace Rawdata_Porfolio_2.Entity_Framework   // There's a typo in "Portfolio"
 
         public List<Title> GetTitles()
         {
-            using (var cmd = new NpgsqlCommand("Select * From title", connection.Connect()))
+            using (var cmd = new NpgsqlCommand("SELECT * FROM title", connection.Connect()))
             {
                 NpgsqlDataReader reader = cmd.ExecuteReader();
                 List<Title> result = new List<Title>();
@@ -593,7 +593,7 @@ namespace Rawdata_Porfolio_2.Entity_Framework   // There's a typo in "Portfolio"
         
         public User GetUserByName(string username)
         {
-            return ctx.Users.Find(username);
+            return ctx.Users.SingleOrDefault(user => user.Username == username);
         }
 
         public void UpdateUser(int userID, string email, string username, byte[] password, DateTime? dob)

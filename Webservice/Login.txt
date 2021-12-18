@@ -1,0 +1,1 @@
+host=rawdata.ruc.dk;db=raw14;uid=raw14;pwd=I.eSywI3;

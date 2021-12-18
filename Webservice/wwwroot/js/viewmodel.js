@@ -36,7 +36,6 @@ define(["knockout", "postman", 'dataService'], function (ko, postman, ds) {
 
         ds.register(user, data => {
             console.log(data);
-            postman.publish("changeView", "Frontpage");
         });
 
     };
@@ -51,7 +50,7 @@ define(["knockout", "postman", 'dataService'], function (ko, postman, ds) {
         localStorage.removeItem("token");
         localStorage.removeItem("id");
 
-        ds.register(user, data => {
+        ds.login(user, data => {
             console.log(data);
             localStorage.setItem("username", data.username);
             localStorage.setItem("token", data.token);
@@ -63,6 +62,7 @@ define(["knockout", "postman", 'dataService'], function (ko, postman, ds) {
         localStorage.removeItem("username");
         localStorage.removeItem("token");
         localStorage.removeItem("id");
+        postman.publish("changeView", "Frontpage");
     };
 
     return {

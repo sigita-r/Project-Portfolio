@@ -16,7 +16,7 @@ define([], () => {
         fetch('api/register/register', params)
             .then(response => response.json())
             .then(json => callback(json));
-    }
+    };
 
     let login = (user, callback) => {
         let params = {
@@ -29,7 +29,7 @@ define([], () => {
         fetch('api/login/login', params)
             .then(response => response.json())
             .then(json => callback(json));
-    }
+    };
 
     return {
         getCharsFromTitle,
