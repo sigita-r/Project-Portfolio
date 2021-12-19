@@ -8,4 +8,17 @@ define([], () => {
     return {
         getCharsFromTitle
     }
+
+});
+
+define([], () => {
+    let getPersonality = (id, callback) => {
+        fetch("api/personality" + id)
+            .then(response => response.json())
+            .then(json => callback(json));
+    };
+
+    return {
+        getPersonality
+    }
 });

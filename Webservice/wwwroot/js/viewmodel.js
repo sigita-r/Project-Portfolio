@@ -1,12 +1,16 @@
 define(["knockout", "postman"], function (ko, postman) {
-    let personalityInTitle = [
-        { title: "List", component: "list-categories" },
+
+    let menuItems = [
+        { title: "Personality", component: "personality" },
+        { title: "Frontpage", component: "Frontpage" }
 
     ];
 
     let amount = ko.observable(123999212123.4567);
 
-    let currentView = ko.observable('Frontpage');
+    //let currentView = ko.observable('Frontpage');
+
+    let currentView = ko.observable(menuItems[0].component);
 
     let changeContent = menuItem => {
         console.log(menuItem);
@@ -23,6 +27,7 @@ define(["knockout", "postman"], function (ko, postman) {
 
     return {
         currentView,
+        menuItems,
         changeContent,
         isActive,
         amount

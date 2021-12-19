@@ -27,6 +27,11 @@ require(['knockout'], (ko) => {
         template: { require: "text!components/specificTitle/specificTitle.html" }
     });
 
+    ko.components.register("personality", {
+        viewModel: { require: "components/personality/personality" },
+        template: { require: "text!components/personality/personality.html" }
+    });
+
     //ko.bindinghandlers.currency = {
     //    update: function (element, valueaccessor, allbindings) {
     //        // first get the latest data that we're bound to
