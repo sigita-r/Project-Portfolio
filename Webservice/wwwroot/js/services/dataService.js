@@ -5,13 +5,6 @@ define([], () => {
             .then(json => callback(json));
     };
 
-    return {
-        getCharsFromTitle
-    }
-
-});
-
-define([], () => {
     let getPersonality = (id, callback) => {
         fetch("api/personality" + id)
             .then(response => response.json())
@@ -19,6 +12,10 @@ define([], () => {
     };
 
     return {
+        getCharsFromTitle,
         getPersonality
+
     }
+
 });
+
