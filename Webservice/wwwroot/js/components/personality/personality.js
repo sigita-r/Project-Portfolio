@@ -3,9 +3,11 @@
         let personality = ko.observable();
 
         let getPersonality = () => {
-            console.log("personalities:");
-            ds.getPersonality(2, personality);
-            //         currentView("Frontpage");
+            console.log("perosnalities");
+            ds.getPersonality(2, data => {
+                console.log(data);
+                personality(data);
+            });
         }
 
         getPersonality();
