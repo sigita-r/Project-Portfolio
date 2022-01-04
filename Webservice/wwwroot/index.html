@@ -62,7 +62,7 @@
                 <div class="modal-body text-center">
                     <form>
                         <div class="form-floating mb-3"><input type="text" class="form-control" id="floatingLoginUsername" aria-label="Username" placeholder=" " data-bind="value: usernameLogin"><label for="floatingLoginUsername">Username</label></input></div>
-                        <div class="form-floating mb-3"><input type="password" class="form-control" id="floatingLoginPass" aria-label="Password" placeholder=" " data-bind="value: passwordLogin"><label for="floatingLoginPass">Password</label></input></div>
+                        <div class="form-floating mb-3"><input type="password" class="form-control" id="floatingLoginPass" aria-label="Password" placeholder=" " data-bind="value: passwordLogin" autocomplete="off"><label for="floatingLoginPass">Password</label></input></div>
                         <button type="submit" class="btn btn-success" data-bind="click: login">Log in</button>
                     </form>
                 </div>
@@ -81,7 +81,7 @@
                 <div class="modal-body text-center">
                     <form>
                         <div class="form-floating mb-3"><input type="text" class="form-control" id="floatingSignupUsername" aria-label="Username" placeholder=" " data-bind="value: usernameSignup"><label for="floatingSignupUsername">Username</label></input></div>
-                        <div class="form-floating mb-3"><input type="password" class="form-control" id="floatingSignupPass" aria-label="Password" placeholder=" " data-bind="value: passwordSignup"><label for="floatingSignupPass">Password</label></input></div>
+                        <div class="form-floating mb-3"><input type="password" class="form-control" id="floatingSignupPass" aria-label="Password" placeholder=" " data-bind="value: passwordSignup" autocomplete="off"><label for="floatingSignupPass">Password</label></input></div>
                         <div class="form-floating mb-3"><input type="email" class="form-control" id="floatingSignupEmail" aria-label="Email" placeholder=" " data-bind="value: emailSignup"><label for="floatingSignupEmail">Email</label></input></div>
                         <div class="form-floating mb-3"><input type="text" class="form-control" id="floatingSignupDOB" aria-label="Date of birth" placeholder=" " data-bind="value: dobSignup"><label for="floatingSignupDOB">Date of birth (DD/MM/YYYY)</label></input></div>
                         <button type="submit" class="btn btn-success" data-bind="click: register">Create account</button>

@@ -1,11 +1,4 @@
-﻿<!DOCTYPE html>
-<html>
-<head>
-    <meta charset="utf-8" />
-    <title></title>
-</head>
-<body>
-    <h1>Frontpage</h1>
+﻿    <h1>Frontpage</h1>
     <h1>sdadfdhjhgf</h1>
 
     <div>
@@ -24,5 +17,278 @@
     <!--
     <div data-bind="currency: amount"></div>
         -->
-</body>
-</html>
+
+<div class="container-fluid">
+    <!-- ko ifnot: localStorage.getItem("username") === null; -->
+        <div class="row border-bottom align-middle justify-content-center">
+            <h2>Your favorites</h2>
+            <!-- if user has favorites -->
+                <div id="favCarousel" class="carousel slide carousel-dark" data-bs-ride="carousel" data-bs-touch="false" data-bs-interval="false">
+                    <div class="carousel-inner">
+                        <div class="card" style="width: 8.75rem;">
+                            <img src="..." class="card-img-top" alt="Poster">
+                            <div class="card-body">
+                                <div class="row">
+                                    <div class="col">
+                                        <h5 class="card-title">Primary title</h5>
+                                    </div>
+                                    <div class="col-1">
+                                        <i class="text-danger bi bi-explicit-fill"></i>
+                                    </div>
+                                </div>
+                                <h6 class="card-subtitle mb-2 text-muted">Genres</h6>
+                                <h6 class="card-subtitle mb-2 text-muted">Year</h6>
+                                <h6 class="card-subtitle mb-2 text-muted"><i class="text-warning bi bi-star-fill"></i> rating</h6>
+                                <p class="card-text">Plot</p>
+                                <a href="#" class="stretched-link"></a>
+                            </div>
+                        </div>    
+                    </div>
+                    <button class="carousel-control-prev" type="button" data-bs-target="#favCarousel" data-bs-slide="prev">
+                        <span class="carousel-dark-control-prev-icon" aria-hidden="true"></span>
+                        <span class="visually-hidden">Previous</span>
+                    </button>
+                    <button class="carousel-control-next" type="button" data-bs-target="#favCarousel" data-bs-slide="next">
+                        <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                        <span class="visually-hidden">Next</span>
+                    </button>    
+                </div>   
+            <!-- end if -->
+        </div>
+    <!-- /ko -->
+
+    <div class="row border-bottom align-middle justify-content-center">
+        <h2 class="mb-1">New releases</h2>
+        <div class="col-1 align-items-center justify-content-center">
+            <button class="carousel-control-prev" type="button" data-bs-target="#cardCarouselNew" data-bs-slide="prev">
+                <span class="carousel-control-prev-icon" aria-hidden="true" style="filter: invert(100%);"></span>
+                <span class="visually-hidden">Previous</span>
+            </button>
+        </div>
+        <div class="col">
+            <div id="cardCarouselNew" class="carousel carousel-dark mb-2" data-bs-ride="carousel" data-bs-touch="false" data-bs-interval="false">
+                <div class="carousel-inner">
+                    <div class="carousel-item active">
+                        <div class="card" style="width: 11.107rem;">
+                            <img src="..." class="card-img-top" alt="Poster" style="width: 11.107rem; height: 16.438rem;">
+                            <div class="card-body">
+                                <a href="#" class="card-title stretched-link h3 text-reset text-decoration-none">Primary title &#128286;</a>
+                                <h6 class="card-subtitle mt-1 text-muted">Genres</h6>
+                                <h6 class="card-subtitle text-muted">Year</h6>
+                                <h6 class="card-subtitle mb-2 text-muted"><i class="text-warning bi bi-star-fill"></i> rating</h6>
+                                <p class="card-text">Plot?</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="carousel-item">
+                        <div class="card" style="width: 11.107rem;">
+                            <img src="..." class="card-img-top" alt="Poster" style="width: 11.107rem; height: 16.438rem;">
+                            <div class="card-body">
+                                <a href="#" class="card-title stretched-link h3 text-reset text-decoration-none">Primary title &#128286;</a>
+                                <h6 class="card-subtitle mt-1 text-muted">Genres</h6>
+                                <h6 class="card-subtitle text-muted">Year</h6>
+                                <h6 class="card-subtitle mb-2 text-muted"><i class="text-warning bi bi-star-fill"></i> rating</h6>
+                                <p class="card-text">Plot?</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="carousel-item">
+                        <div class="card" style="width: 11.107rem;">
+                            <img src="..." class="card-img-top" alt="Poster" style="width: 11.107rem; height: 16.438rem;">
+                            <div class="card-body">
+                                <a href="#" class="card-title stretched-link h3 text-reset text-decoration-none">Primary title &#128286;</a>
+                                <h6 class="card-subtitle mt-1 text-muted">Genres</h6>
+                                <h6 class="card-subtitle text-muted">Year</h6>
+                                <h6 class="card-subtitle mb-2 text-muted"><i class="text-warning bi bi-star-fill"></i> rating</h6>
+                                <p class="card-text">Plot?</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="carousel-item">
+                        <div class="card" style="width: 11.107rem;">
+                            <img src="..." class="card-img-top" alt="Poster" style="width: 11.107rem; height: 16.438rem;">
+                            <div class="card-body">
+                                <a href="#" class="card-title stretched-link h3 text-reset text-decoration-none">Primary title &#128286;</a>
+                                <h6 class="card-subtitle mt-1 text-muted">Genres</h6>
+                                <h6 class="card-subtitle text-muted">Year</h6>
+                                <h6 class="card-subtitle mb-2 text-muted"><i class="text-warning bi bi-star-fill"></i> rating</h6>
+                                <p class="card-text">Plot?</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="carousel-item">
+                        <div class="card" style="width: 11.107rem;">
+                            <img src="..." class="card-img-top" alt="Poster" style="width: 11.107rem; height: 16.438rem;">
+                            <div class="card-body">
+                                <a href="#" class="card-title stretched-link h3 text-reset text-decoration-none">Primary title &#128286;</a>
+                                <h6 class="card-subtitle mt-1 text-muted">Genres</h6>
+                                <h6 class="card-subtitle text-muted">Year</h6>
+                                <h6 class="card-subtitle mb-2 text-muted"><i class="text-warning bi bi-star-fill"></i> rating</h6>
+                                <p class="card-text">Plot?</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="carousel-item">
+                        <div class="card" style="width: 11.107rem;">
+                            <img src="..." class="card-img-top" alt="Poster" style="width: 11.107rem; height: 16.438rem;">
+                            <div class="card-body">
+                                <a href="#" class="card-title stretched-link h3 text-reset text-decoration-none">Primary title &#128286;</a>
+                                <h6 class="card-subtitle mt-1 text-muted">Genres</h6>
+                                <h6 class="card-subtitle text-muted">Year</h6>
+                                <h6 class="card-subtitle mb-2 text-muted"><i class="text-warning bi bi-star-fill"></i> rating</h6>
+                                <p class="card-text">Plot?</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="carousel-item">
+                        <div class="card" style="width: 11.107rem;">
+                            <img src="..." class="card-img-top" alt="Poster" style="width: 11.107rem; height: 16.438rem;">
+                            <div class="card-body">
+                                <a href="#" class="card-title stretched-link h3 text-reset text-decoration-none">Primary title &#128286;</a>
+                                <h6 class="card-subtitle mt-1 text-muted">Genres</h6>
+                                <h6 class="card-subtitle text-muted">Year</h6>
+                                <h6 class="card-subtitle mb-2 text-muted"><i class="text-warning bi bi-star-fill"></i> rating</h6>
+                                <p class="card-text">Plot?</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="carousel-item">
+                        <div class="card" style="width: 11.107rem;">
+                            <img src="..." class="card-img-top" alt="Poster" style="width: 11.107rem; height: 16.438rem;">
+                            <div class="card-body">
+                                <a href="#" class="card-title stretched-link h3 text-reset text-decoration-none">Primary title &#128286;</a>
+                                <h6 class="card-subtitle mt-1 text-muted">Genres</h6>
+                                <h6 class="card-subtitle text-muted">Year</h6>
+                                <h6 class="card-subtitle mb-2 text-muted"><i class="text-warning bi bi-star-fill"></i> rating</h6>
+                                <p class="card-text">Plot?</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="carousel-item">
+                        <div class="card" style="width: 11.107rem;">
+                            <img src="..." class="card-img-top" alt="Poster" style="width: 11.107rem; height: 16.438rem;">
+                            <div class="card-body">
+                                <a href="#" class="card-title stretched-link h3 text-reset text-decoration-none">Primary title &#128286;</a>
+                                <h6 class="card-subtitle mt-1 text-muted">Genres</h6>
+                                <h6 class="card-subtitle text-muted">Year</h6>
+                                <h6 class="card-subtitle mb-2 text-muted"><i class="text-warning bi bi-star-fill"></i> rating</h6>
+                                <p class="card-text">Plot?</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="carousel-item">
+                        <div class="card" style="width: 11.107rem;">
+                            <img src="..." class="card-img-top" alt="Poster" style="width: 11.107rem; height: 16.438rem;">
+                            <div class="card-body">
+                                <a href="#" class="card-title stretched-link h3 text-reset text-decoration-none">Primary title &#128286;</a>
+                                <h6 class="card-subtitle mt-1 text-muted">Genres</h6>
+                                <h6 class="card-subtitle text-muted">Year</h6>
+                                <h6 class="card-subtitle mb-2 text-muted"><i class="text-warning bi bi-star-fill"></i> rating</h6>
+                                <p class="card-text">Plot?</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-1 d-flex align-items-center justify-content-center">
+            <button class="carousel-control-next" type="button" data-bs-target="#cardCarouselNew" data-bs-slide="next">
+                <span class="carousel-control-next-icon" aria-hidden="true" style="filter: invert(100%);"></span>
+                <span class="visually-hidden">Next</span>
+            </button>
+        </div>
+    </div>
+
+    <div class="row border-bottom align-middle justify-content-center">
+        <h2>Top-rated titles</h2>
+        <div id="trmCarousel" class="carousel slide carousel-dark" data-bs-ride="carousel" data-bs-touch="false" data-bs-interval="false">
+            <div class="carousel-inner">
+                <div class="card" style="width: 8.75rem;">
+                    <img src="..." class="card-img-top" alt="Poster">
+                    <div class="card-body">
+                        <div class="row">
+                            <div class="col">
+                                <h5 class="card-title">Primary title</h5>
+                            </div>
+                            <div class="col-1">
+                                <i class="text-danger bi bi-explicit-fill"></i>
+                            </div>
+                        </div>
+                        <h6 class="card-subtitle mb-2 text-muted">Genres</h6>
+                        <h6 class="card-subtitle mb-2 text-muted">Year</h6>
+                        <h6 class="card-subtitle mb-2 text-muted"><i class="text-warning bi bi-star-fill"></i> rating</h6>
+                        <p class="card-text">Plot</p>
+                        <a href="#" class="stretched-link"></a>
+                    </div>
+                </div>
+            </div>
+            <button class="carousel-control-prev" type="button" data-bs-target="#trmCarousel" data-bs-slide="prev">
+                <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                <span class="visually-hidden">Previous</span>
+            </button>
+            <button class="carousel-control-next" type="button" data-bs-target="#trmCarousel" data-bs-slide="next">
+                <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                <span class="visually-hidden">Next</span>
+            </button>
+        </div>
+    </div>
+
+    <div class="row border-bottom align-middle justify-content-center">
+        <h2>Explore</h2>
+        <div id="randCarousel" class="carousel slide carousel-dark" data-bs-ride="carousel" data-bs-touch="false" data-bs-interval="false">
+            <div class="carousel-inner">
+                <div class="card" style="width: 8.75rem;">
+                    <img src="..." class="card-img-top" alt="Poster">
+                    <div class="card-body">
+                        <div class="row">
+                            <div class="col">
+                                <h5 class="card-title">Primary title</h5>
+                            </div>
+                            <div class="col-1">
+                                <i class="text-danger bi bi-explicit-fill"></i>
+                            </div>
+                        </div>
+                        <h6 class="card-subtitle mb-2 text-muted">Genres</h6>
+                        <h6 class="card-subtitle mb-2 text-muted">Year</h6>
+                        <h6 class="card-subtitle mb-2 text-muted"><i class="text-warning bi bi-star-fill"></i> rating</h6>
+                        <p class="card-text">Plot</p>
+                        <a href="#" class="stretched-link"></a>
+                    </div>
+                </div>
+            </div>
+            <button class="carousel-control-prev" type="button" data-bs-target="#randCarousel" data-bs-slide="prev">
+                <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                <span class="visually-hidden">Previous</span>
+            </button>
+            <button class="carousel-control-next" type="button" data-bs-target="#randCarousel" data-bs-slide="next">
+                <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                <span class="visually-hidden">Next</span>
+            </button>
+        </div>
+    </div>
+
+    <div class="row align-middle justify-content-center">
+        <h2>Top-rated personalities</h2>
+        <div id="traCarousel" class="carousel slide carousel-dark" data-bs-ride="carousel" data-bs-touch="false" data-bs-interval="false">
+            <div class="carousel-inner">
+                <div class="card" style="width: 8.75rem;">
+                    <img src="..." class="card-img-top" alt="Photo">
+                    <div class="card-body">
+                        <h5 class="card-title">Name</h5>
+                        <h6 class="card-subtitle mb-2 text-muted">Age</h6>
+                        <h6 class="card-subtitle mb-2 text-muted"><i class="text-warning bi bi-star-fill"></i> rating</h6>
+                        <a href="#" class="stretched-link"></a>
+                    </div>
+                </div>
+            </div>
+            <button class="carousel-control-prev" type="button" data-bs-target="#traCarousel" data-bs-slide="prev">
+                <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                <span class="visually-hidden">Previous</span>
+            </button>
+            <button class="carousel-control-next" type="button" data-bs-target="#traCarousel" data-bs-slide="next">
+                <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                <span class="visually-hidden">Next</span>
+            </button>
+        </div>
+    </div>
+</div>
