@@ -1,4 +1,33 @@
 ﻿define(['knockout', 'dataService', 'postman', 'jquery'], function (ko, ds, postman, $) {
+    console.log($('*[id^="cardCarousel"]')); /* I don't understand why this returns an empty array. Maybe it fires before the DOM is loaded, but I don't know how to prevent it from doing that... Will try to figure it out later. */
+    $('*[id^="cardCarousel"]').each(function() {
+        if (window.matchMedia("(min-width: 768px)").matches) {
+            let carouselWidth = $("#" + this + "Inner").scrollWidth;
+            let cardWidth = $(".carousel-item").width();
+            let scrollPosition = 0;
+            $("#" + this + "Next").on("click", function () {
+                if (scrollPosition < carouselWidth - cardWidth * 4) {
+                    scrollPosition += cardWidth;
+                    $("#" + this + "Inner").animate(
+                        { scrollLeft: scrollPosition },
+                        600
+                    );
+                }
+            });
+            $("#" + this + "Prev").on("click", function () {
+                if (scrollPosition > 0) {
+                    scrollPosition -= cardWidth;
+                    $("#" + this + "Inner").animate(
+                        { scrollLeft: scrollPosition },
+                        600
+                    );
+                }
+            });
+        } else {
+            $(this).addClass("slide");
+        }
+    });
+    
     return function (params) {
         let charsFromTitle = ko.observableArray([]);
 
@@ -17,34 +46,4 @@
             getCharsFromTitle
         };
     };
-});
-
-define(['jquery'], function ($) {
-    $('*[id^="cardCarousel"]').each(function() {
-        if (window.matchMedia("(min-width: 768px)").matches) {
-            let carouselWidth = $(".carousel-inner")[0].scrollWidth;
-            let cardWidth = $(".carousel-item").width();
-            let scrollPosition = 0;
-            $("#" + $(this) + " .carousel-control-next").on("click", function () {
-                if (scrollPosition < carouselWidth - cardWidth * 4) {
-                    scrollPosition += cardWidth;
-                    this(".carousel-inner").animate(
-                        { scrollLeft: scrollPosition },
-                        600
-                    );
-                }
-            });
-            this(".carousel-control-prev").on("click", function () {
-                if (scrollPosition > 0) {
-                    scrollPosition -= cardWidth;
-                    this(".carousel-inner").animate(
-                        { scrollLeft: scrollPosition },
-                        600
-                    );
-                }
-            });
-        } else {
-            $(this).addClass("slide");
-        }
-    });
 });

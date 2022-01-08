@@ -2,7 +2,7 @@
     baseUrl: 'js',
     shim: {
         knockout: {
-            deps: ["bootstrap"]
+            deps: ["bootstrap", "jquery"]
         }
     },
     paths: {

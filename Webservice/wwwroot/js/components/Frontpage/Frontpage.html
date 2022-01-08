@@ -20,275 +20,428 @@
 
 <div class="container-fluid">
     <!-- ko ifnot: localStorage.getItem("username") === null; -->
-        <div class="row border-bottom align-middle justify-content-center">
+        <div class="row border-bottom justify-content-center align-items-center mb-2">
             <h2>Your favorites</h2>
             <!-- if user has favorites -->
-                <div id="favCarousel" class="carousel slide carousel-dark" data-bs-ride="carousel" data-bs-touch="false" data-bs-interval="false">
-                    <div class="carousel-inner">
-                        <div class="card" style="width: 8.75rem;">
-                            <img src="..." class="card-img-top" alt="Poster">
-                            <div class="card-body">
-                                <div class="row">
-                                    <div class="col">
-                                        <h5 class="card-title">Primary title</h5>
-                                    </div>
-                                    <div class="col-1">
-                                        <i class="text-danger bi bi-explicit-fill"></i>
+                <div class="col">
+                    <div id="cardCarouselFav" class="carousel carousel-dark mb-2" data-bs-ride="carousel" data-bs-touch="false" data-bs-interval="false" data-bs-wrap="false">
+                        <div class="carousel-inner" id="cardCarouselFavInner">
+                            <div class="carousel-item active">
+                                <div class="card">
+                                    <div class="row g-0">
+                                        <div class="col-md-4" style="min-width: 11.107rem;">
+                                            <div class="card-poster">
+                                                <img src="..." class="rounded-start" alt="Poster">
+                                            </div>
+                                        </div>
+                                        <div class="col" style="min-width: 224.67px;">
+                                            <div class="card-body">
+                                                <a href="#" class="card-title stretched-link h3 text-reset text-decoration-none">Primary title</a>
+                                                <!-- if explicit: &#128286; -->
+                                                <div class="row justify-content-between mt-1 mb-2">
+                                                    <div class="col-md-auto d-flex">
+                                                        <h6 class="card-subtitle text-muted">Year</h6>
+                                                    </div>
+                                                    <div class="col-md-auto d-flex justify-content-center-desktop">
+                                                        <h6 class="card-subtitle text-muted"><i class="text-warning bi bi-star-fill"></i> rating</h6>
+                                                    </div>
+                                                    <div class="col-md-auto d-flex justify-content-end-desktop">
+                                                        <h6 class="card-subtitle text-muted">Genres</h6>
+                                                    </div>
+                                                </div>
+                                                <p class="card-text line-clamp hide-on-mobile">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Suspendisse rhoncus urna et sapien egestas pellentesque. Cras eget nisl eu dolor vulputate ultrices at quis augue. In ut malesuada mi, sed mattis risus. Pellentesque molestie mattis purus vel finibus. Maecenas nec tellus sit amet velit scelerisque sodales in pulvinar ante. Fusce dictum, odio in tempus vehicula, nibh nulla maximus orci, non molestie urna augue sed enim. Proin ac tincidunt velit. Fusce sem ipsum, luctus eget quam non, semper rhoncus mi. Quisque iaculis et enim et pulvinar. In ullamcorper metus iaculis mi ullamcorper congue. Curabitur sed varius purus. Fusce consectetur justo ut lacus molestie, pretium suscipit nisi fermentum. Nullam leo ante, laoreet vel pretium venenatis, dapibus vel mauris. Etiam interdum sit amet metus a dapibus. Aliquam sit amet justo tincidunt, dignissim felis et, malesuada lectus. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aliquam erat volutpat. Donec eget sodales tellus. Orci varius natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Quisque enim leo, accumsan non leo sit amet, ultricies egestas est. Phasellus rhoncus aliquam lorem eget vehicula.</p>
+                                            </div>
+                                        </div>
                                     </div>
                                 </div>
-                                <h6 class="card-subtitle mb-2 text-muted">Genres</h6>
-                                <h6 class="card-subtitle mb-2 text-muted">Year</h6>
-                                <h6 class="card-subtitle mb-2 text-muted"><i class="text-warning bi bi-star-fill"></i> rating</h6>
-                                <p class="card-text">Plot</p>
-                                <a href="#" class="stretched-link"></a>
                             </div>
-                        </div>    
+                            <div class="carousel-item">
+                                <div class="card">
+                                    <div class="row g-0">
+                                        <div class="col-md-4" style="min-width: 11.107rem;">
+                                            <div class="card-poster">
+                                                <img src="..." class="rounded-start" alt="Poster">
+                                            </div>
+                                        </div>
+                                        <div class="col" style="min-width: 224.67px;">
+                                            <div class="card-body">
+                                                <a href="#" class="card-title stretched-link h3 text-reset text-decoration-none">Primary title</a>
+                                                <!-- if explicit: &#128286; -->
+                                                <div class="row justify-content-between mt-1 mb-2">
+                                                    <div class="col-md-auto d-flex">
+                                                        <h6 class="card-subtitle text-muted">Year</h6>
+                                                    </div>
+                                                    <div class="col-md-auto d-flex justify-content-center-desktop">
+                                                        <h6 class="card-subtitle text-muted"><i class="text-warning bi bi-star-fill"></i> rating</h6>
+                                                    </div>
+                                                    <div class="col-md-auto d-flex justify-content-end-desktop">
+                                                        <h6 class="card-subtitle text-muted">Genres</h6>
+                                                    </div>
+                                                </div>
+                                                <p class="card-text line-clamp hide-on-mobile">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Suspendisse rhoncus urna et sapien egestas pellentesque. Cras eget nisl eu dolor vulputate ultrices at quis augue. In ut malesuada mi, sed mattis risus. Pellentesque molestie mattis purus vel finibus. Maecenas nec tellus sit amet velit scelerisque sodales in pulvinar ante. Fusce dictum, odio in tempus vehicula, nibh nulla maximus orci, non molestie urna augue sed enim. Proin ac tincidunt velit. Fusce sem ipsum, luctus eget quam non, semper rhoncus mi. Quisque iaculis et enim et pulvinar. In ullamcorper metus iaculis mi ullamcorper congue. Curabitur sed varius purus. Fusce consectetur justo ut lacus molestie, pretium suscipit nisi fermentum. Nullam leo ante, laoreet vel pretium venenatis, dapibus vel mauris. Etiam interdum sit amet metus a dapibus. Aliquam sit amet justo tincidunt, dignissim felis et, malesuada lectus. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aliquam erat volutpat. Donec eget sodales tellus. Orci varius natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Quisque enim leo, accumsan non leo sit amet, ultricies egestas est. Phasellus rhoncus aliquam lorem eget vehicula.</p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="carousel-item">
+                                <div class="card">
+                                    <div class="row g-0">
+                                        <div class="col-md-4" style="min-width: 11.107rem;">
+                                            <div class="card-poster">
+                                                <img src="..." class="rounded-start" alt="Poster">
+                                            </div>
+                                        </div>
+                                        <div class="col" style="min-width: 224.67px;">
+                                            <div class="card-body">
+                                                <a href="#" class="card-title stretched-link h3 text-reset text-decoration-none">Primary title</a>
+                                                <!-- if explicit: &#128286; -->
+                                                <div class="row justify-content-between mt-1 mb-2">
+                                                    <div class="col-md-auto d-flex">
+                                                        <h6 class="card-subtitle text-muted">Year</h6>
+                                                    </div>
+                                                    <div class="col-md-auto d-flex justify-content-center-desktop">
+                                                        <h6 class="card-subtitle text-muted"><i class="text-warning bi bi-star-fill"></i> rating</h6>
+                                                    </div>
+                                                    <div class="col-md-auto d-flex justify-content-end-desktop">
+                                                        <h6 class="card-subtitle text-muted">Genres</h6>
+                                                    </div>
+                                                </div>
+                                                <p class="card-text line-clamp hide-on-mobile">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Suspendisse rhoncus urna et sapien egestas pellentesque. Cras eget nisl eu dolor vulputate ultrices at quis augue. In ut malesuada mi, sed mattis risus. Pellentesque molestie mattis purus vel finibus. Maecenas nec tellus sit amet velit scelerisque sodales in pulvinar ante. Fusce dictum, odio in tempus vehicula, nibh nulla maximus orci, non molestie urna augue sed enim. Proin ac tincidunt velit. Fusce sem ipsum, luctus eget quam non, semper rhoncus mi. Quisque iaculis et enim et pulvinar. In ullamcorper metus iaculis mi ullamcorper congue. Curabitur sed varius purus. Fusce consectetur justo ut lacus molestie, pretium suscipit nisi fermentum. Nullam leo ante, laoreet vel pretium venenatis, dapibus vel mauris. Etiam interdum sit amet metus a dapibus. Aliquam sit amet justo tincidunt, dignissim felis et, malesuada lectus. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aliquam erat volutpat. Donec eget sodales tellus. Orci varius natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Quisque enim leo, accumsan non leo sit amet, ultricies egestas est. Phasellus rhoncus aliquam lorem eget vehicula.</p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <button class="carousel-control-prev" type="button" data-bs-target="#cardCarouselFav" data-bs-slide="prev" id="cardCarouselFavPrev">
+                                <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                                <span class="visually-hidden">Previous</span>
+                            </button>
+                            <button class="carousel-control-next" type="button" data-bs-target="#cardCarouselFav" data-bs-slide="next" id="cardCarouselFavNext">
+                                <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                                <span class="visually-hidden">Next</span>
+                            </button>
+                        </div>
                     </div>
-                    <button class="carousel-control-prev" type="button" data-bs-target="#favCarousel" data-bs-slide="prev">
-                        <span class="carousel-dark-control-prev-icon" aria-hidden="true"></span>
-                        <span class="visually-hidden">Previous</span>
-                    </button>
-                    <button class="carousel-control-next" type="button" data-bs-target="#favCarousel" data-bs-slide="next">
-                        <span class="carousel-control-next-icon" aria-hidden="true"></span>
-                        <span class="visually-hidden">Next</span>
-                    </button>    
-                </div>   
+                </div>
+            <!-- if user has no favorites -->
+                <h3 class="text-secondary text-center mb-2">You have no favorite titles.</h3>
             <!-- end if -->
         </div>
     <!-- /ko -->
 
-    <div class="row border-bottom align-middle justify-content-center">
-        <h2 class="mb-1">New releases</h2>
-        <div class="col-1 align-items-center justify-content-center">
-            <button class="carousel-control-prev" type="button" data-bs-target="#cardCarouselNew" data-bs-slide="prev">
-                <span class="carousel-control-prev-icon" aria-hidden="true" style="filter: invert(100%);"></span>
-                <span class="visually-hidden">Previous</span>
-            </button>
-        </div>
+    <div class="row border-bottom justify-content-center align-items-center mb-2">
+        <h2>New releases</h2>
         <div class="col">
-            <div id="cardCarouselNew" class="carousel carousel-dark mb-2" data-bs-ride="carousel" data-bs-touch="false" data-bs-interval="false">
-                <div class="carousel-inner">
+            <div id="cardCarouselNew" class="carousel carousel-dark mb-2" data-bs-ride="carousel" data-bs-touch="false" data-bs-interval="false" data-bs-wrap="false">
+                <div class="carousel-inner" id="cardCarouselNewInner">
                     <div class="carousel-item active">
-                        <div class="card" style="width: 11.107rem;">
-                            <img src="..." class="card-img-top" alt="Poster" style="width: 11.107rem; height: 16.438rem;">
-                            <div class="card-body">
-                                <a href="#" class="card-title stretched-link h3 text-reset text-decoration-none">Primary title &#128286;</a>
-                                <h6 class="card-subtitle mt-1 text-muted">Genres</h6>
-                                <h6 class="card-subtitle text-muted">Year</h6>
-                                <h6 class="card-subtitle mb-2 text-muted"><i class="text-warning bi bi-star-fill"></i> rating</h6>
-                                <p class="card-text">Plot?</p>
+                        <div class="card">
+                            <div class="row g-0">
+                                <div class="col-md-4" style="min-width: 11.107rem;">
+                                    <div class="card-poster">
+                                        <img src="..." class="rounded-start" alt="Poster">
+                                    </div>    
+                                </div>
+                                <div class="col" style="min-width: 224.67px;">
+                                    <div class="card-body">
+                                        <a href="#" class="card-title stretched-link h3 text-reset text-decoration-none">Primary title</a>
+                                        <!-- if explicit: &#128286; -->
+                                        <div class="row justify-content-between mt-1 mb-2">
+                                            <div class="col-md-auto d-flex">
+                                                <h6 class="card-subtitle text-muted">Year</h6>
+                                            </div>
+                                            <div class="col-md-auto d-flex justify-content-center-desktop">
+                                                <h6 class="card-subtitle text-muted"><i class="text-warning bi bi-star-fill"></i> rating</h6>
+                                            </div>
+                                            <div class="col-md-auto d-flex justify-content-end-desktop">
+                                                <h6 class="card-subtitle text-muted">Genres</h6>
+                                            </div>    
+                                        </div>
+                                        <p class="card-text line-clamp hide-on-mobile">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Suspendisse rhoncus urna et sapien egestas pellentesque. Cras eget nisl eu dolor vulputate ultrices at quis augue. In ut malesuada mi, sed mattis risus. Pellentesque molestie mattis purus vel finibus. Maecenas nec tellus sit amet velit scelerisque sodales in pulvinar ante. Fusce dictum, odio in tempus vehicula, nibh nulla maximus orci, non molestie urna augue sed enim. Proin ac tincidunt velit. Fusce sem ipsum, luctus eget quam non, semper rhoncus mi. Quisque iaculis et enim et pulvinar. In ullamcorper metus iaculis mi ullamcorper congue. Curabitur sed varius purus. Fusce consectetur justo ut lacus molestie, pretium suscipit nisi fermentum. Nullam leo ante, laoreet vel pretium venenatis, dapibus vel mauris. Etiam interdum sit amet metus a dapibus. Aliquam sit amet justo tincidunt, dignissim felis et, malesuada lectus. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aliquam erat volutpat. Donec eget sodales tellus. Orci varius natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Quisque enim leo, accumsan non leo sit amet, ultricies egestas est. Phasellus rhoncus aliquam lorem eget vehicula.</p>
+                                    </div>
+                                </div>   
+                            </div>    
+                        </div>
+                    </div>
+                    <div class="carousel-item">
+                        <div class="card">
+                            <div class="row g-0">
+                                <div class="col-md-4" style="min-width: 11.107rem;">
+                                    <div class="card-poster">
+                                        <img src="..." class="rounded-start" alt="Poster">
+                                    </div>
+                                </div>
+                                <div class="col" style="min-width: 224.67px;">
+                                    <div class="card-body">
+                                        <a href="#" class="card-title stretched-link h3 text-reset text-decoration-none">Primary title</a>
+                                        <!-- if explicit: &#128286; -->
+                                        <div class="row justify-content-between mt-1 mb-2">
+                                            <div class="col-md-auto d-flex">
+                                                <h6 class="card-subtitle text-muted">Year</h6>
+                                            </div>
+                                            <div class="col-md-auto d-flex justify-content-center-desktop">
+                                                <h6 class="card-subtitle text-muted"><i class="text-warning bi bi-star-fill"></i> rating</h6>
+                                            </div>
+                                            <div class="col-md-auto d-flex justify-content-end-desktop">
+                                                <h6 class="card-subtitle text-muted">Genres</h6>
+                                            </div>
+                                        </div>
+                                        <p class="card-text line-clamp hide-on-mobile">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Suspendisse rhoncus urna et sapien egestas pellentesque. Cras eget nisl eu dolor vulputate ultrices at quis augue. In ut malesuada mi, sed mattis risus. Pellentesque molestie mattis purus vel finibus. Maecenas nec tellus sit amet velit scelerisque sodales in pulvinar ante. Fusce dictum, odio in tempus vehicula, nibh nulla maximus orci, non molestie urna augue sed enim. Proin ac tincidunt velit. Fusce sem ipsum, luctus eget quam non, semper rhoncus mi. Quisque iaculis et enim et pulvinar. In ullamcorper metus iaculis mi ullamcorper congue. Curabitur sed varius purus. Fusce consectetur justo ut lacus molestie, pretium suscipit nisi fermentum. Nullam leo ante, laoreet vel pretium venenatis, dapibus vel mauris. Etiam interdum sit amet metus a dapibus. Aliquam sit amet justo tincidunt, dignissim felis et, malesuada lectus. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aliquam erat volutpat. Donec eget sodales tellus. Orci varius natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Quisque enim leo, accumsan non leo sit amet, ultricies egestas est. Phasellus rhoncus aliquam lorem eget vehicula.</p>
+                                    </div>
+                                </div>
                             </div>
                         </div>
                     </div>
                     <div class="carousel-item">
-                        <div class="card" style="width: 11.107rem;">
-                            <img src="..." class="card-img-top" alt="Poster" style="width: 11.107rem; height: 16.438rem;">
-                            <div class="card-body">
-                                <a href="#" class="card-title stretched-link h3 text-reset text-decoration-none">Primary title &#128286;</a>
-                                <h6 class="card-subtitle mt-1 text-muted">Genres</h6>
-                                <h6 class="card-subtitle text-muted">Year</h6>
-                                <h6 class="card-subtitle mb-2 text-muted"><i class="text-warning bi bi-star-fill"></i> rating</h6>
-                                <p class="card-text">Plot?</p>
+                        <div class="card">
+                            <div class="row g-0">
+                                <div class="col-md-4" style="min-width: 11.107rem;">
+                                    <div class="card-poster">
+                                        <img src="..." class="rounded-start" alt="Poster">
+                                    </div>
+                                </div>
+                                <div class="col" style="min-width: 224.67px;">
+                                    <div class="card-body">
+                                        <a href="#" class="card-title stretched-link h3 text-reset text-decoration-none">Primary title</a>
+                                        <!-- if explicit: &#128286; -->
+                                        <div class="row justify-content-between mt-1 mb-2">
+                                            <div class="col-md-auto d-flex">
+                                                <h6 class="card-subtitle text-muted">Year</h6>
+                                            </div>
+                                            <div class="col-md-auto d-flex justify-content-center-desktop">
+                                                <h6 class="card-subtitle text-muted"><i class="text-warning bi bi-star-fill"></i> rating</h6>
+                                            </div>
+                                            <div class="col-md-auto d-flex justify-content-end-desktop">
+                                                <h6 class="card-subtitle text-muted">Genres</h6>
+                                            </div>
+                                        </div>
+                                        <p class="card-text line-clamp hide-on-mobile">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Suspendisse rhoncus urna et sapien egestas pellentesque. Cras eget nisl eu dolor vulputate ultrices at quis augue. In ut malesuada mi, sed mattis risus. Pellentesque molestie mattis purus vel finibus. Maecenas nec tellus sit amet velit scelerisque sodales in pulvinar ante. Fusce dictum, odio in tempus vehicula, nibh nulla maximus orci, non molestie urna augue sed enim. Proin ac tincidunt velit. Fusce sem ipsum, luctus eget quam non, semper rhoncus mi. Quisque iaculis et enim et pulvinar. In ullamcorper metus iaculis mi ullamcorper congue. Curabitur sed varius purus. Fusce consectetur justo ut lacus molestie, pretium suscipit nisi fermentum. Nullam leo ante, laoreet vel pretium venenatis, dapibus vel mauris. Etiam interdum sit amet metus a dapibus. Aliquam sit amet justo tincidunt, dignissim felis et, malesuada lectus. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aliquam erat volutpat. Donec eget sodales tellus. Orci varius natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Quisque enim leo, accumsan non leo sit amet, ultricies egestas est. Phasellus rhoncus aliquam lorem eget vehicula.</p>
+                                    </div>
+                                </div>
                             </div>
                         </div>
                     </div>
-                    <div class="carousel-item">
-                        <div class="card" style="width: 11.107rem;">
-                            <img src="..." class="card-img-top" alt="Poster" style="width: 11.107rem; height: 16.438rem;">
-                            <div class="card-body">
-                                <a href="#" class="card-title stretched-link h3 text-reset text-decoration-none">Primary title &#128286;</a>
-                                <h6 class="card-subtitle mt-1 text-muted">Genres</h6>
-                                <h6 class="card-subtitle text-muted">Year</h6>
-                                <h6 class="card-subtitle mb-2 text-muted"><i class="text-warning bi bi-star-fill"></i> rating</h6>
-                                <p class="card-text">Plot?</p>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="carousel-item">
-                        <div class="card" style="width: 11.107rem;">
-                            <img src="..." class="card-img-top" alt="Poster" style="width: 11.107rem; height: 16.438rem;">
-                            <div class="card-body">
-                                <a href="#" class="card-title stretched-link h3 text-reset text-decoration-none">Primary title &#128286;</a>
-                                <h6 class="card-subtitle mt-1 text-muted">Genres</h6>
-                                <h6 class="card-subtitle text-muted">Year</h6>
-                                <h6 class="card-subtitle mb-2 text-muted"><i class="text-warning bi bi-star-fill"></i> rating</h6>
-                                <p class="card-text">Plot?</p>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="carousel-item">
-                        <div class="card" style="width: 11.107rem;">
-                            <img src="..." class="card-img-top" alt="Poster" style="width: 11.107rem; height: 16.438rem;">
-                            <div class="card-body">
-                                <a href="#" class="card-title stretched-link h3 text-reset text-decoration-none">Primary title &#128286;</a>
-                                <h6 class="card-subtitle mt-1 text-muted">Genres</h6>
-                                <h6 class="card-subtitle text-muted">Year</h6>
-                                <h6 class="card-subtitle mb-2 text-muted"><i class="text-warning bi bi-star-fill"></i> rating</h6>
-                                <p class="card-text">Plot?</p>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="carousel-item">
-                        <div class="card" style="width: 11.107rem;">
-                            <img src="..." class="card-img-top" alt="Poster" style="width: 11.107rem; height: 16.438rem;">
-                            <div class="card-body">
-                                <a href="#" class="card-title stretched-link h3 text-reset text-decoration-none">Primary title &#128286;</a>
-                                <h6 class="card-subtitle mt-1 text-muted">Genres</h6>
-                                <h6 class="card-subtitle text-muted">Year</h6>
-                                <h6 class="card-subtitle mb-2 text-muted"><i class="text-warning bi bi-star-fill"></i> rating</h6>
-                                <p class="card-text">Plot?</p>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="carousel-item">
-                        <div class="card" style="width: 11.107rem;">
-                            <img src="..." class="card-img-top" alt="Poster" style="width: 11.107rem; height: 16.438rem;">
-                            <div class="card-body">
-                                <a href="#" class="card-title stretched-link h3 text-reset text-decoration-none">Primary title &#128286;</a>
-                                <h6 class="card-subtitle mt-1 text-muted">Genres</h6>
-                                <h6 class="card-subtitle text-muted">Year</h6>
-                                <h6 class="card-subtitle mb-2 text-muted"><i class="text-warning bi bi-star-fill"></i> rating</h6>
-                                <p class="card-text">Plot?</p>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="carousel-item">
-                        <div class="card" style="width: 11.107rem;">
-                            <img src="..." class="card-img-top" alt="Poster" style="width: 11.107rem; height: 16.438rem;">
-                            <div class="card-body">
-                                <a href="#" class="card-title stretched-link h3 text-reset text-decoration-none">Primary title &#128286;</a>
-                                <h6 class="card-subtitle mt-1 text-muted">Genres</h6>
-                                <h6 class="card-subtitle text-muted">Year</h6>
-                                <h6 class="card-subtitle mb-2 text-muted"><i class="text-warning bi bi-star-fill"></i> rating</h6>
-                                <p class="card-text">Plot?</p>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="carousel-item">
-                        <div class="card" style="width: 11.107rem;">
-                            <img src="..." class="card-img-top" alt="Poster" style="width: 11.107rem; height: 16.438rem;">
-                            <div class="card-body">
-                                <a href="#" class="card-title stretched-link h3 text-reset text-decoration-none">Primary title &#128286;</a>
-                                <h6 class="card-subtitle mt-1 text-muted">Genres</h6>
-                                <h6 class="card-subtitle text-muted">Year</h6>
-                                <h6 class="card-subtitle mb-2 text-muted"><i class="text-warning bi bi-star-fill"></i> rating</h6>
-                                <p class="card-text">Plot?</p>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="carousel-item">
-                        <div class="card" style="width: 11.107rem;">
-                            <img src="..." class="card-img-top" alt="Poster" style="width: 11.107rem; height: 16.438rem;">
-                            <div class="card-body">
-                                <a href="#" class="card-title stretched-link h3 text-reset text-decoration-none">Primary title &#128286;</a>
-                                <h6 class="card-subtitle mt-1 text-muted">Genres</h6>
-                                <h6 class="card-subtitle text-muted">Year</h6>
-                                <h6 class="card-subtitle mb-2 text-muted"><i class="text-warning bi bi-star-fill"></i> rating</h6>
-                                <p class="card-text">Plot?</p>
-                            </div>
-                        </div>
-                    </div>
+                    <button class="carousel-control-prev" type="button" data-bs-target="#cardCarouselNew" data-bs-slide="prev" id="cardCarouselNewPrev">
+                        <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                        <span class="visually-hidden">Previous</span>
+                    </button>
+                    <button class="carousel-control-next" type="button" data-bs-target="#cardCarouselNew" data-bs-slide="next" id="cardCarouselNewNext">
+                        <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                        <span class="visually-hidden">Next</span>
+                    </button>
                 </div>
             </div>
         </div>
-        <div class="col-1 d-flex align-items-center justify-content-center">
-            <button class="carousel-control-next" type="button" data-bs-target="#cardCarouselNew" data-bs-slide="next">
-                <span class="carousel-control-next-icon" aria-hidden="true" style="filter: invert(100%);"></span>
-                <span class="visually-hidden">Next</span>
-            </button>
-        </div>
     </div>
 
-    <div class="row border-bottom align-middle justify-content-center">
+    <div class="row border-bottom justify-content-center align-items-center mb-2">
         <h2>Top-rated titles</h2>
-        <div id="trmCarousel" class="carousel slide carousel-dark" data-bs-ride="carousel" data-bs-touch="false" data-bs-interval="false">
-            <div class="carousel-inner">
-                <div class="card" style="width: 8.75rem;">
-                    <img src="..." class="card-img-top" alt="Poster">
-                    <div class="card-body">
-                        <div class="row">
-                            <div class="col">
-                                <h5 class="card-title">Primary title</h5>
-                            </div>
-                            <div class="col-1">
-                                <i class="text-danger bi bi-explicit-fill"></i>
+        <div class="col">
+            <div id="cardCarouselTrm" class="carousel carousel-dark mb-2" data-bs-ride="carousel" data-bs-touch="false" data-bs-interval="false" data-bs-wrap="false">
+                <div class="carousel-inner" id="cardCarouselTrmInner">
+                    <div class="carousel-item active">
+                        <div class="card">
+                            <div class="row g-0">
+                                <div class="col-md-4" style="min-width: 11.107rem;">
+                                    <div class="card-poster">
+                                        <img src="..." class="rounded-start" alt="Poster">
+                                    </div>
+                                </div>
+                                <div class="col" style="min-width: 224.67px;">
+                                    <div class="card-body">
+                                        <a href="#" class="card-title stretched-link h3 text-reset text-decoration-none">Primary title</a>
+                                        <!-- if explicit: &#128286; -->
+                                        <div class="row justify-content-between mt-1 mb-2">
+                                            <div class="col-md-auto d-flex">
+                                                <h6 class="card-subtitle text-muted">Year</h6>
+                                            </div>
+                                            <div class="col-md-auto d-flex justify-content-center-desktop">
+                                                <h6 class="card-subtitle text-muted"><i class="text-warning bi bi-star-fill"></i> rating</h6>
+                                            </div>
+                                            <div class="col-md-auto d-flex justify-content-end-desktop">
+                                                <h6 class="card-subtitle text-muted">Genres</h6>
+                                            </div>
+                                        </div>
+                                        <p class="card-text line-clamp hide-on-mobile">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Suspendisse rhoncus urna et sapien egestas pellentesque. Cras eget nisl eu dolor vulputate ultrices at quis augue. In ut malesuada mi, sed mattis risus. Pellentesque molestie mattis purus vel finibus. Maecenas nec tellus sit amet velit scelerisque sodales in pulvinar ante. Fusce dictum, odio in tempus vehicula, nibh nulla maximus orci, non molestie urna augue sed enim. Proin ac tincidunt velit. Fusce sem ipsum, luctus eget quam non, semper rhoncus mi. Quisque iaculis et enim et pulvinar. In ullamcorper metus iaculis mi ullamcorper congue. Curabitur sed varius purus. Fusce consectetur justo ut lacus molestie, pretium suscipit nisi fermentum. Nullam leo ante, laoreet vel pretium venenatis, dapibus vel mauris. Etiam interdum sit amet metus a dapibus. Aliquam sit amet justo tincidunt, dignissim felis et, malesuada lectus. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aliquam erat volutpat. Donec eget sodales tellus. Orci varius natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Quisque enim leo, accumsan non leo sit amet, ultricies egestas est. Phasellus rhoncus aliquam lorem eget vehicula.</p>
+                                    </div>
+                                </div>
                             </div>
                         </div>
-                        <h6 class="card-subtitle mb-2 text-muted">Genres</h6>
-                        <h6 class="card-subtitle mb-2 text-muted">Year</h6>
-                        <h6 class="card-subtitle mb-2 text-muted"><i class="text-warning bi bi-star-fill"></i> rating</h6>
-                        <p class="card-text">Plot</p>
-                        <a href="#" class="stretched-link"></a>
                     </div>
+                    <div class="carousel-item">
+                        <div class="card">
+                            <div class="row g-0">
+                                <div class="col-md-4" style="min-width: 11.107rem;">
+                                    <div class="card-poster">
+                                        <img src="..." class="rounded-start" alt="Poster">
+                                    </div>
+                                </div>
+                                <div class="col" style="min-width: 224.67px;">
+                                    <div class="card-body">
+                                        <a href="#" class="card-title stretched-link h3 text-reset text-decoration-none">Primary title</a>
+                                        <!-- if explicit: &#128286; -->
+                                        <div class="row justify-content-between mt-1 mb-2">
+                                            <div class="col-md-auto d-flex">
+                                                <h6 class="card-subtitle text-muted">Year</h6>
+                                            </div>
+                                            <div class="col-md-auto d-flex justify-content-center-desktop">
+                                                <h6 class="card-subtitle text-muted"><i class="text-warning bi bi-star-fill"></i> rating</h6>
+                                            </div>
+                                            <div class="col-md-auto d-flex justify-content-end-desktop">
+                                                <h6 class="card-subtitle text-muted">Genres</h6>
+                                            </div>
+                                        </div>
+                                        <p class="card-text line-clamp hide-on-mobile">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Suspendisse rhoncus urna et sapien egestas pellentesque. Cras eget nisl eu dolor vulputate ultrices at quis augue. In ut malesuada mi, sed mattis risus. Pellentesque molestie mattis purus vel finibus. Maecenas nec tellus sit amet velit scelerisque sodales in pulvinar ante. Fusce dictum, odio in tempus vehicula, nibh nulla maximus orci, non molestie urna augue sed enim. Proin ac tincidunt velit. Fusce sem ipsum, luctus eget quam non, semper rhoncus mi. Quisque iaculis et enim et pulvinar. In ullamcorper metus iaculis mi ullamcorper congue. Curabitur sed varius purus. Fusce consectetur justo ut lacus molestie, pretium suscipit nisi fermentum. Nullam leo ante, laoreet vel pretium venenatis, dapibus vel mauris. Etiam interdum sit amet metus a dapibus. Aliquam sit amet justo tincidunt, dignissim felis et, malesuada lectus. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aliquam erat volutpat. Donec eget sodales tellus. Orci varius natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Quisque enim leo, accumsan non leo sit amet, ultricies egestas est. Phasellus rhoncus aliquam lorem eget vehicula.</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="carousel-item">
+                        <div class="card">
+                            <div class="row g-0">
+                                <div class="col-md-4" style="min-width: 11.107rem;">
+                                    <div class="card-poster">
+                                        <img src="..." class="rounded-start" alt="Poster">
+                                    </div>
+                                </div>
+                                <div class="col" style="min-width: 224.67px;">
+                                    <div class="card-body">
+                                        <a href="#" class="card-title stretched-link h3 text-reset text-decoration-none">Primary title</a>
+                                        <!-- if explicit: &#128286; -->
+                                        <div class="row justify-content-between mt-1 mb-2">
+                                            <div class="col-md-auto d-flex">
+                                                <h6 class="card-subtitle text-muted">Year</h6>
+                                            </div>
+                                            <div class="col-md-auto d-flex justify-content-center-desktop">
+                                                <h6 class="card-subtitle text-muted"><i class="text-warning bi bi-star-fill"></i> rating</h6>
+                                            </div>
+                                            <div class="col-md-auto d-flex justify-content-end-desktop">
+                                                <h6 class="card-subtitle text-muted">Genres</h6>
+                                            </div>
+                                        </div>
+                                        <p class="card-text line-clamp hide-on-mobile">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Suspendisse rhoncus urna et sapien egestas pellentesque. Cras eget nisl eu dolor vulputate ultrices at quis augue. In ut malesuada mi, sed mattis risus. Pellentesque molestie mattis purus vel finibus. Maecenas nec tellus sit amet velit scelerisque sodales in pulvinar ante. Fusce dictum, odio in tempus vehicula, nibh nulla maximus orci, non molestie urna augue sed enim. Proin ac tincidunt velit. Fusce sem ipsum, luctus eget quam non, semper rhoncus mi. Quisque iaculis et enim et pulvinar. In ullamcorper metus iaculis mi ullamcorper congue. Curabitur sed varius purus. Fusce consectetur justo ut lacus molestie, pretium suscipit nisi fermentum. Nullam leo ante, laoreet vel pretium venenatis, dapibus vel mauris. Etiam interdum sit amet metus a dapibus. Aliquam sit amet justo tincidunt, dignissim felis et, malesuada lectus. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aliquam erat volutpat. Donec eget sodales tellus. Orci varius natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Quisque enim leo, accumsan non leo sit amet, ultricies egestas est. Phasellus rhoncus aliquam lorem eget vehicula.</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <button class="carousel-control-prev" type="button" data-bs-target="#cardCarouselTrm" data-bs-slide="prev" id="cardCarouselTrmPrev">
+                        <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                        <span class="visually-hidden">Previous</span>
+                    </button>
+                    <button class="carousel-control-next" type="button" data-bs-target="#cardCarouselTrm" data-bs-slide="next" id="cardCarouselTrmNext">
+                        <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                        <span class="visually-hidden">Next</span>
+                    </button>
                 </div>
             </div>
-            <button class="carousel-control-prev" type="button" data-bs-target="#trmCarousel" data-bs-slide="prev">
-                <span class="carousel-control-prev-icon" aria-hidden="true"></span>
-                <span class="visually-hidden">Previous</span>
-            </button>
-            <button class="carousel-control-next" type="button" data-bs-target="#trmCarousel" data-bs-slide="next">
-                <span class="carousel-control-next-icon" aria-hidden="true"></span>
-                <span class="visually-hidden">Next</span>
-            </button>
         </div>
     </div>
 
-    <div class="row border-bottom align-middle justify-content-center">
+    <div class="row border-bottom justify-content-center align-items-center">
         <h2>Explore</h2>
-        <div id="randCarousel" class="carousel slide carousel-dark" data-bs-ride="carousel" data-bs-touch="false" data-bs-interval="false">
-            <div class="carousel-inner">
-                <div class="card" style="width: 8.75rem;">
-                    <img src="..." class="card-img-top" alt="Poster">
-                    <div class="card-body">
-                        <div class="row">
-                            <div class="col">
-                                <h5 class="card-title">Primary title</h5>
-                            </div>
-                            <div class="col-1">
-                                <i class="text-danger bi bi-explicit-fill"></i>
+        <div class="col">
+            <div id="cardCarouselRand" class="carousel carousel-dark mb-2" data-bs-ride="carousel" data-bs-touch="false" data-bs-interval="false" data-bs-wrap="false">
+                <div class="carousel-inner" id="cardCarouselRandInner">
+                    <div class="carousel-item active">
+                        <div class="card">
+                            <div class="row g-0">
+                                <div class="col-md-4" style="min-width: 11.107rem;">
+                                    <div class="card-poster">
+                                        <img src="..." class="rounded-start" alt="Poster">
+                                    </div>
+                                </div>
+                                <div class="col" style="min-width: 224.67px;">
+                                    <div class="card-body">
+                                        <a href="#" class="card-title stretched-link h3 text-reset text-decoration-none">Primary title</a>
+                                        <!-- if explicit: &#128286; -->
+                                        <div class="row justify-content-between mt-1 mb-2">
+                                            <div class="col-md-auto d-flex">
+                                                <h6 class="card-subtitle text-muted">Year</h6>
+                                            </div>
+                                            <div class="col-md-auto d-flex justify-content-center-desktop">
+                                                <h6 class="card-subtitle text-muted"><i class="text-warning bi bi-star-fill"></i> rating</h6>
+                                            </div>
+                                            <div class="col-md-auto d-flex justify-content-end-desktop">
+                                                <h6 class="card-subtitle text-muted">Genres</h6>
+                                            </div>
+                                        </div>
+                                        <p class="card-text line-clamp hide-on-mobile">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Suspendisse rhoncus urna et sapien egestas pellentesque. Cras eget nisl eu dolor vulputate ultrices at quis augue. In ut malesuada mi, sed mattis risus. Pellentesque molestie mattis purus vel finibus. Maecenas nec tellus sit amet velit scelerisque sodales in pulvinar ante. Fusce dictum, odio in tempus vehicula, nibh nulla maximus orci, non molestie urna augue sed enim. Proin ac tincidunt velit. Fusce sem ipsum, luctus eget quam non, semper rhoncus mi. Quisque iaculis et enim et pulvinar. In ullamcorper metus iaculis mi ullamcorper congue. Curabitur sed varius purus. Fusce consectetur justo ut lacus molestie, pretium suscipit nisi fermentum. Nullam leo ante, laoreet vel pretium venenatis, dapibus vel mauris. Etiam interdum sit amet metus a dapibus. Aliquam sit amet justo tincidunt, dignissim felis et, malesuada lectus. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aliquam erat volutpat. Donec eget sodales tellus. Orci varius natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Quisque enim leo, accumsan non leo sit amet, ultricies egestas est. Phasellus rhoncus aliquam lorem eget vehicula.</p>
+                                    </div>
+                                </div>
                             </div>
                         </div>
-                        <h6 class="card-subtitle mb-2 text-muted">Genres</h6>
-                        <h6 class="card-subtitle mb-2 text-muted">Year</h6>
-                        <h6 class="card-subtitle mb-2 text-muted"><i class="text-warning bi bi-star-fill"></i> rating</h6>
-                        <p class="card-text">Plot</p>
-                        <a href="#" class="stretched-link"></a>
                     </div>
+                    <div class="carousel-item">
+                        <div class="card">
+                            <div class="row g-0">
+                                <div class="col-md-4" style="min-width: 11.107rem;">
+                                    <div class="card-poster">
+                                        <img src="..." class="rounded-start" alt="Poster">
+                                    </div>
+                                </div>
+                                <div class="col" style="min-width: 224.67px;">
+                                    <div class="card-body">
+                                        <a href="#" class="card-title stretched-link h3 text-reset text-decoration-none">Primary title</a>
+                                        <!-- if explicit: &#128286; -->
+                                        <div class="row justify-content-between mt-1 mb-2">
+                                            <div class="col-md-auto d-flex">
+                                                <h6 class="card-subtitle text-muted">Year</h6>
+                                            </div>
+                                            <div class="col-md-auto d-flex justify-content-center-desktop">
+                                                <h6 class="card-subtitle text-muted"><i class="text-warning bi bi-star-fill"></i> rating</h6>
+                                            </div>
+                                            <div class="col-md-auto d-flex justify-content-end-desktop">
+                                                <h6 class="card-subtitle text-muted">Genres</h6>
+                                            </div>
+                                        </div>
+                                        <p class="card-text line-clamp hide-on-mobile">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Suspendisse rhoncus urna et sapien egestas pellentesque. Cras eget nisl eu dolor vulputate ultrices at quis augue. In ut malesuada mi, sed mattis risus. Pellentesque molestie mattis purus vel finibus. Maecenas nec tellus sit amet velit scelerisque sodales in pulvinar ante. Fusce dictum, odio in tempus vehicula, nibh nulla maximus orci, non molestie urna augue sed enim. Proin ac tincidunt velit. Fusce sem ipsum, luctus eget quam non, semper rhoncus mi. Quisque iaculis et enim et pulvinar. In ullamcorper metus iaculis mi ullamcorper congue. Curabitur sed varius purus. Fusce consectetur justo ut lacus molestie, pretium suscipit nisi fermentum. Nullam leo ante, laoreet vel pretium venenatis, dapibus vel mauris. Etiam interdum sit amet metus a dapibus. Aliquam sit amet justo tincidunt, dignissim felis et, malesuada lectus. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aliquam erat volutpat. Donec eget sodales tellus. Orci varius natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Quisque enim leo, accumsan non leo sit amet, ultricies egestas est. Phasellus rhoncus aliquam lorem eget vehicula.</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="carousel-item">
+                        <div class="card">
+                            <div class="row g-0">
+                                <div class="col-md-4" style="min-width: 11.107rem;">
+                                    <div class="card-poster">
+                                        <img src="..." class="rounded-start" alt="Poster">
+                                    </div>
+                                </div>
+                                <div class="col" style="min-width: 224.67px;">
+                                    <div class="card-body">
+                                        <a href="#" class="card-title stretched-link h3 text-reset text-decoration-none">Primary title</a>
+                                        <!-- if explicit: &#128286; -->
+                                        <div class="row justify-content-between mt-1 mb-2">
+                                            <div class="col-md-auto d-flex">
+                                                <h6 class="card-subtitle text-muted">Year</h6>
+                                            </div>
+                                            <div class="col-md-auto d-flex justify-content-center-desktop">
+                                                <h6 class="card-subtitle text-muted"><i class="text-warning bi bi-star-fill"></i> rating</h6>
+                                            </div>
+                                            <div class="col-md-auto d-flex justify-content-end-desktop">
+                                                <h6 class="card-subtitle text-muted">Genres</h6>
+                                            </div>
+                                        </div>
+                                        <p class="card-text line-clamp hide-on-mobile">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Suspendisse rhoncus urna et sapien egestas pellentesque. Cras eget nisl eu dolor vulputate ultrices at quis augue. In ut malesuada mi, sed mattis risus. Pellentesque molestie mattis purus vel finibus. Maecenas nec tellus sit amet velit scelerisque sodales in pulvinar ante. Fusce dictum, odio in tempus vehicula, nibh nulla maximus orci, non molestie urna augue sed enim. Proin ac tincidunt velit. Fusce sem ipsum, luctus eget quam non, semper rhoncus mi. Quisque iaculis et enim et pulvinar. In ullamcorper metus iaculis mi ullamcorper congue. Curabitur sed varius purus. Fusce consectetur justo ut lacus molestie, pretium suscipit nisi fermentum. Nullam leo ante, laoreet vel pretium venenatis, dapibus vel mauris. Etiam interdum sit amet metus a dapibus. Aliquam sit amet justo tincidunt, dignissim felis et, malesuada lectus. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aliquam erat volutpat. Donec eget sodales tellus. Orci varius natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Quisque enim leo, accumsan non leo sit amet, ultricies egestas est. Phasellus rhoncus aliquam lorem eget vehicula.</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <button class="carousel-control-prev" type="button" data-bs-target="#cardCarouselRand" data-bs-slide="prev" id="cardCarouselRandPrev">
+                        <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                        <span class="visually-hidden">Previous</span>
+                    </button>
+                    <button class="carousel-control-next" type="button" data-bs-target="#cardCarouselRand" data-bs-slide="next" id="cardCarouselRandNext">
+                        <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                        <span class="visually-hidden">Next</span>
+                    </button>
                 </div>
             </div>
-            <button class="carousel-control-prev" type="button" data-bs-target="#randCarousel" data-bs-slide="prev">
-                <span class="carousel-control-prev-icon" aria-hidden="true"></span>
-                <span class="visually-hidden">Previous</span>
-            </button>
-            <button class="carousel-control-next" type="button" data-bs-target="#randCarousel" data-bs-slide="next">
-                <span class="carousel-control-next-icon" aria-hidden="true"></span>
-                <span class="visually-hidden">Next</span>
-            </button>
-        </div>
-    </div>
-
-    <div class="row align-middle justify-content-center">
-        <h2>Top-rated personalities</h2>
-        <div id="traCarousel" class="carousel slide carousel-dark" data-bs-ride="carousel" data-bs-touch="false" data-bs-interval="false">
-            <div class="carousel-inner">
-                <div class="card" style="width: 8.75rem;">
-                    <img src="..." class="card-img-top" alt="Photo">
-                    <div class="card-body">
-                        <h5 class="card-title">Name</h5>
-                        <h6 class="card-subtitle mb-2 text-muted">Age</h6>
-                        <h6 class="card-subtitle mb-2 text-muted"><i class="text-warning bi bi-star-fill"></i> rating</h6>
-                        <a href="#" class="stretched-link"></a>
-                    </div>
-                </div>
-            </div>
-            <button class="carousel-control-prev" type="button" data-bs-target="#traCarousel" data-bs-slide="prev">
-                <span class="carousel-control-prev-icon" aria-hidden="true"></span>
-                <span class="visually-hidden">Previous</span>
-            </button>
-            <button class="carousel-control-next" type="button" data-bs-target="#traCarousel" data-bs-slide="next">
-                <span class="carousel-control-next-icon" aria-hidden="true"></span>
-                <span class="visually-hidden">Next</span>
-            </button>
         </div>
     </div>
 </div>

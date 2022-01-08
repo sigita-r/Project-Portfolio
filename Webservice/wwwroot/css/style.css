@@ -1,10 +1,67 @@
-﻿@media (min-width: 768px) {
-    .carousel-inner {
-        display: flex;
+﻿.carousel-inner {
+    padding: 1em;
+    display: flex;
+}
+
+.card {
+    margin: 0 0.5em;
+    max-width: 768px;
+    width: 11.107rem;
+    min-width: 11.107rem;
+}
+
+.card-poster {
+    min-width: 11.107rem;
+    min-height: 16.438rem;
+    object-fit: cover;
+    height: auto;
+    width: auto;
+}
+
+.carousel-item {
+    margin-right: 0;
+    flex: 0 0 33.333333%;
+    display: block;
+}
+
+.line-clamp {
+    display: -webkit-box;
+    -webkit-line-clamp: 7;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+}
+
+@media (max-width: 1119.9px) {
+    .line-clamp {
+        -webkit-line-clamp: 6;
     }
-    .carousel-item {
-        margin-right: 0;
-        flex: 0 0 33.333333%;
-        display: block;
+}
+
+@media (max-width: 915.9px) {
+    .line-clamp {
+        -webkit-line-clamp: 5;
+    }
+}    
+
+@media (min-width: 768px) {
+    .card-body {
+        max-height: 16.438rem;
+        height: auto;
+    }
+    .card {
+        width: auto;
+        min-height: 16.438rem;
+    }
+    .justify-content-center-desktop {
+        justify-content: center;
+    }
+    .justify-content-end-desktop {
+        justify-content: end;
+    }
+}
+
+@media only screen and (max-width: 767.9px) {
+    .hide-on-mobile {
+        display: none;
     }
 }
