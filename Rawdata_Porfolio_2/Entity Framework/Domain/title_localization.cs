@@ -9,10 +9,10 @@ namespace Rawdata_Porfolio_2.Pages.Entity_Framework.Domain
     public class Title_Localization
     {
 
-        public Int64 Title_Id { get; set; }
+        public long Title_Id { get; set; }
         public Title Title { get; set; }
         [Key]
-        public int Id { get; set; }
+        public long Id { get; set; }
         public string Name { get; set; }
         public string Language { get; set; }
         public string Region { get; set; }

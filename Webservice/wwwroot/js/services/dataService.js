@@ -30,10 +30,17 @@ define([], () => {
             .then(response => response.json())
             .then(json => callback(json));
     };
+    
+    let getNewTitles = (callback) => {
+        fetch("api/title/newTitles")
+            .then(response => response.json())
+            .then(json => callback(json));
+    };
 
     return {
         getCharsFromTitle,
         register,
-        login
+        login,
+        getNewTitles
     }
 });

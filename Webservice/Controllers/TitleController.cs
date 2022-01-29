@@ -25,7 +25,7 @@ namespace Webservice.Controllers
         }
 
         [HttpGet("{id}", Name = nameof(GetTitleById))]
-        public IActionResult GetTitleById(int id)
+        public IActionResult GetTitleById(long id)
         {
             var title = _dataService.GetTitleById(id);
 
@@ -44,9 +44,22 @@ namespace Webservice.Controllers
 
             return Ok(titles.Select(x => GetTitleViewModel(x)));
         }
+        
+        [HttpGet("newTitles")]
+        public IActionResult GetNewTitles()
+        {
+            var titles = _dataService.GetNewTitles();
+
+            if (titles == null)
+            {
+                return NotFound();
+            }    
+            
+            return Ok(titles.Select(x => GetTitleViewModel(x)));
+        }
 
         [HttpGet("{id}/CharactersFromTitle")]
-        public IActionResult GetCharactersFromTitle(int id)
+        public IActionResult GetCharactersFromTitle(long id)
         {
             List<Character> characters = _dataService.GetCharactersFromTitleById(id);
 
@@ -103,14 +116,15 @@ namespace Webservice.Controllers
         {
             Console.WriteLine("heyo1");
 
-            String titleGenresFromTable = string.Join(",", title.Title_Genres);
+            //String titleGenresFromTable = string.Join(",", title.Title_Genres);
             Console.WriteLine("heyo");
             return new TitleViewModel
             {
                 Url = _linkGenerator.GetUriByName(HttpContext, nameof(GetTitleById), new { title.Id }).Replace("%20", ""),
                 Type = title.Type,
+                Name = title.Name,
 
-                Title_Genres = titleGenresFromTable,
+                Genres = title.Genres,
                 //  Primary_Title = title.Primary_Title,
                 Is_Adult = title.IsAdult,
                 Year_Start = title.Year_Start,

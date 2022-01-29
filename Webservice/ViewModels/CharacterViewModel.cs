@@ -9,7 +9,7 @@ namespace Webservice.ViewModels
     {
         public string Name { get; set; }
         public int Personality_Id { get; set; }
-        public Int64 Title_Id { get; set; }
+        public long Title_Id { get; set; }
         public int Id { get; set; }
         public string CharacterOfPersonality { get; set; }
         public bool Known_For { get; set; }

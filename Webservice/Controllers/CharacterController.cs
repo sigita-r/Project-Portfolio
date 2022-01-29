@@ -26,7 +26,7 @@ namespace Webservice.Controllers
         }
 
           [HttpGet("{id}")]
-          public IActionResult GetCharactersFromTitle(int id)
+          public IActionResult GetCharactersFromTitle(long id)
           {
             
               List<Character> character = _dataService.GetCharactersFromTitleById(id);
@@ -40,7 +40,7 @@ namespace Webservice.Controllers
           }
 
          [HttpGet("KnownCharacters")]
-          public IActionResult GetKnownCharactersFromTitle(int id)
+          public IActionResult GetKnownCharactersFromTitle(long id)
           {
               List<Character> character = _dataService.GetKnownCharactersFromTitleById(id);
 

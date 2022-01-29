@@ -9,7 +9,7 @@ namespace Rawdata_Porfolio_2.Pages.Entity_Framework.Domain
     public class Wi
     {
         [Key]
-        public Int64 Title_Id { get; set; }
+        public long Title_Id { get; set; }
         public Title Title { get; set; }
         public string Word { get; set; }
         public string Field { get; set; }

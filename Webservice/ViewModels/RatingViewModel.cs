@@ -8,8 +8,8 @@ namespace Webservice.ViewModels
     public class RatingViewModel
     {
         public int User_Id { get; set; }
-        public Int64 Title_Id { get; set; }
-        public int RatingOfTitle { get; set; }
+        public long Title_Id { get; set; }
+        public short RatingOfTitle { get; set; }
         public DateTime Timestamp { get; set; }
 
     }

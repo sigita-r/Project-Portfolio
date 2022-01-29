@@ -11,9 +11,9 @@ namespace Rawdata_Porfolio_2.Pages.Entity_Framework.Domain
         [Key]
         public int User_Id { get; set; }
         public User User { get; set; }
-        public Int64 Title_Id { get; set; }
+        public long Title_Id { get; set; }
         public Title Title { get; set; }
-        public int RatingOfTitle { get; set; }
+        public short RatingOfTitle { get; set; }
         public DateTime Timestamp { get; set; }
 
         public override string ToString()

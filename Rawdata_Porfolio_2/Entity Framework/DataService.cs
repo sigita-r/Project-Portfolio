@@ -23,19 +23,21 @@ namespace Rawdata_Porfolio_2.Entity_Framework   // There's a typo in "Portfolio"
 
         List<Title> GetTitles();
 
-        Title GetTitleById(int Id);
+        List<Title> GetNewTitles();
 
-        public List<Character> GetKnownCharactersFromTitleById(int title_Id);
+        Title GetTitleById(long Id);
 
-        public List<Character> GetCharactersFromTitleById(int title_Id);
+        public List<Character> GetKnownCharactersFromTitleById(long title_Id);
 
-        public List<Episode> GetEpisode(int titleID);
+        public List<Character> GetCharactersFromTitleById(long title_Id);
 
-        public List<Episode> GetAllEpisodes(int titleID);
+        public List<Episode> GetEpisode(long titleID);
 
-        public List<Title_Genre> GetTitleGenre(int title_Id);
+        public List<Episode> GetAllEpisodes(long titleID);
 
-        public List<Title_Localization> GetTitleLocalization(int title_id);
+        public List<Title_Genre> GetTitleGenre(long title_Id);
+
+        public List<Title_Localization> GetTitleLocalization(long title_id);
 
         ////////////////////////////////////////////////////////////
         //                      PERSONALITY                       //
@@ -64,13 +66,13 @@ namespace Rawdata_Porfolio_2.Entity_Framework   // There's a typo in "Portfolio"
 
         public void UpdatePersonalityBM(int userID, int personalityID, string note);
 
-        public void CreateTitleBM(int userID, int titleID, string note);
+        public void CreateTitleBM(int userID, long titleID, string note);
 
         public List<Bookmarks_Title> GetTitleBMsByUserID(int userID);
 
-        public void DeleteTitleBM(int userID, int titleID);
+        public void DeleteTitleBM(int userID, long titleID);
 
-        public void UpdateTitleBM(int userID, int titleID, string note);
+        public void UpdateTitleBM(int userID, long titleID, string note);
 
         ////////////////////////////////////////////////////////////
         //                          USER                          //
@@ -92,15 +94,15 @@ namespace Rawdata_Porfolio_2.Entity_Framework   // There's a typo in "Portfolio"
         //                         RATINGS                        //
         ////////////////////////////////////////////////////////////
 
-        public List<Title> GetAvgRatingFromTitleId(int title_ID);
+        public List<Title> GetAvgRatingFromTitleId(long title_ID);
 
-        public void CreateRating(int user_ID, int title_ID, Int16 rating);
+        public void CreateRating(int user_ID, long title_ID, short rating);
 
         List<Rating> GetRating(int userID);
 
-        public void UpdateRating(int user_ID, int title_ID, Int16 rating);
+        public void UpdateRating(int user_ID, long title_ID, short rating);
 
-        public void DeleteRating(int user_ID, int title_ID);
+        public void DeleteRating(int user_ID, long title_ID);
 
         ////////////////////////////////////////////////////////////
         //                          SEARCH                        //
@@ -108,7 +110,7 @@ namespace Rawdata_Porfolio_2.Entity_Framework   // There's a typo in "Portfolio"
 
         List<Search_results> ActorSearch(int? user_Id, string query);
 
-        public List<Search_Queries> GetSQ(Int64 userID);
+        public List<Search_Queries> GetSQ(int userID);
 
         public void DeleteSQ(int queryID);
 
@@ -120,7 +122,7 @@ namespace Rawdata_Porfolio_2.Entity_Framework   // There's a typo in "Portfolio"
         //                          OTHER                         //
         ////////////////////////////////////////////////////////////
 
-        public List<Role> GetRolesFromTitleById(int title_Id);
+        public List<Role> GetRolesFromTitleById(long title_Id);
 
         //  List<Role> GetRole(int titleID, int personalityID);
 
@@ -188,7 +190,7 @@ namespace Rawdata_Porfolio_2.Entity_Framework   // There's a typo in "Portfolio"
         //                        TITLES                          //
         ////////////////////////////////////////////////////////////
 
-        public Title GetTitleById(int Id) // This SQL query should return the title details including its primary name, but I'm not sure how to implement it without breaking stuff in webservice: SELECT title.*, title_localization.name FROM public.title, public.title_localization WHERE title.\"ID\" = @TID AND title.\"ID\" = title_localization.\"title_ID\" AND title_localization.primary_title = true;
+        public Title GetTitleById(long Id) // This SQL query should return the title details including its primary name, but I'm not sure how to implement it without breaking stuff in webservice: SELECT title.*, title_localization.name FROM public.title, public.title_localization WHERE title.\"ID\" = @TID AND title.\"ID\" = title_localization.\"title_ID\" AND title_localization.primary_title = true;
         {
             return ctx.Titles.Find(Id);
         }
@@ -203,16 +205,18 @@ namespace Rawdata_Porfolio_2.Entity_Framework   // There's a typo in "Portfolio"
                 {
                     Title row = new Title()
                     {
-                        Id = (Int64)reader["ID"],
+                        Id = (long)reader["ID"],
                         Type = reader["type"].ToString(),
+                        Name = reader["name"].ToString(),
                         IsAdult = (bool)reader["isadult"],
-                        Year_Start = (Int16?)reader["year_start"],
-                        Year_End = (Int16?)reader["year_end"],
-                        Runtime = (Int32?)reader["runtime"],
-                        AvgRating = (double?)reader["avg_rating"],
+                        Year_Start = Convert.IsDBNull(reader["year_start"]) ? null : (short?) reader["year_start"],
+                        Year_End = Convert.IsDBNull(reader["year_end"]) ? null : (short?) reader["year_end"],
+                        Runtime = Convert.IsDBNull(reader["runtime"]) ? null : (int?) reader["runtime"],
+                        AvgRating = Convert.IsDBNull(reader["avg_rating"]) ? null : (double?) reader["avg_rating"],
                         Poster = reader["poster"].ToString(),
                         Plot = reader["plot"].ToString(),
                         Awards = reader["awards"].ToString(),
+                        Genres = reader["genres"].ToString()
                     };
                     result.Add(row);
                 }
@@ -222,8 +226,41 @@ namespace Rawdata_Porfolio_2.Entity_Framework   // There's a typo in "Portfolio"
 
             //return ctx.Titles.ToList();
         }
+        
+        public List<Title> GetNewTitles()
+        {
+            using (var cmd = new NpgsqlCommand("SELECT * FROM select_new_titles();", connection.Connect()))
+            {
+                NpgsqlDataReader reader = cmd.ExecuteReader();
+                List<Title> result = new List<Title>();
+                while (reader.Read())
+                {
+                    Title row = new Title()
+                    {
+                        Id = (long)reader["ID"],
+                        Type = reader["type"].ToString(),
+                        Name = reader["name"].ToString(),
+                        IsAdult = (bool)reader["isadult"],
+                        Year_Start = Convert.IsDBNull(reader["year_start"]) ? null : (short?) reader["year_start"],
+                        Year_End = Convert.IsDBNull(reader["year_end"]) ? null : (short?) reader["year_end"],
+                        Runtime = Convert.IsDBNull(reader["runtime"]) ? null : (int?) reader["runtime"],
+                        AvgRating = Convert.IsDBNull(reader["avg_rating"]) ? null : (double?) reader["avg_rating"],
+                        Poster = reader["poster"].ToString(),
+                        Plot = reader["plot"].ToString(),
+                        Awards = reader["awards"].ToString(),
+                        Genres = reader["genres"].ToString()
+                    };
+                    result.Add(row);
+                }
+                connection.Connect().Close();
+                Console.WriteLine(result);
+                return result;
+            }
 
-        public List<Character> GetCharactersFromTitleById(int title_Id)
+            //return ctx.Titles.ToList();
+        }
+
+        public List<Character> GetCharactersFromTitleById(long title_Id)
         {
             using (var cmd = new NpgsqlCommand("SELECT DISTINCT characters.\"title_ID\", personality.\"ID\", personality.\"name\", characters.\"character\" FROM public.personality, public.characters " +
                 "WHERE characters.\"title_ID\" = @TID AND characters.\"personality_ID\" = personality.\"ID\";", connection.Connect()))
@@ -235,7 +272,7 @@ namespace Rawdata_Porfolio_2.Entity_Framework   // There's a typo in "Portfolio"
                 {
                     Character row = new Character()
                     {
-                        Title_Id = (Int64)reader["title_ID"],
+                        Title_Id = (long)reader["title_ID"],
                         CharacterOfPersonality = reader["character"].ToString(),
                         Name = reader["name"].ToString(),
                         Personality_Id = (int)reader["ID"],
@@ -248,7 +285,7 @@ namespace Rawdata_Porfolio_2.Entity_Framework   // There's a typo in "Portfolio"
             }
         }
 
-        public List<Character> GetKnownCharactersFromTitleById(int title_Id)
+        public List<Character> GetKnownCharactersFromTitleById(long title_Id)
         {
             using (var cmd = new NpgsqlCommand("SELECT DISTINCT characters.\"title_ID\", personality.\"ID\", personality.\"name\", characters.\"character\", characters.known_for FROM public.personality, public.characters " +
                 "WHERE characters.\"title_ID\" = @TID AND characters.known_for = true AND characters.\"personality_ID\" = personality.\"ID\";", connection.Connect()))
@@ -260,7 +297,7 @@ namespace Rawdata_Porfolio_2.Entity_Framework   // There's a typo in "Portfolio"
                 {
                     Character row = new Character()
                     {
-                        Title_Id = (Int64)reader["title_ID"],
+                        Title_Id = (long)reader["title_ID"],
                         CharacterOfPersonality = reader["character"].ToString(),
                         Name = reader["name"].ToString(),
                         Personality_Id = (int)reader["ID"],
@@ -273,7 +310,7 @@ namespace Rawdata_Porfolio_2.Entity_Framework   // There's a typo in "Portfolio"
             }
         }
 
-        public List<Episode> GetEpisode(int titleID)
+        public List<Episode> GetEpisode(long titleID)
         {
             using (var cmd = new NpgsqlCommand("SELECT episode.\"parent_ID\", ep_number, season FROM public.episode WHERE episode.\"ID\" = @TID;", connection.Connect()))
             {
@@ -284,9 +321,9 @@ namespace Rawdata_Porfolio_2.Entity_Framework   // There's a typo in "Portfolio"
                 {
                     Episode row = new Episode()
                     {
-                        Parent_Id = (Int64)reader["parent_ID"],
-                        Ep_Number = (int)reader["ep_number"],
-                        Season = (int)reader["season"],
+                        Parent_Id = (long)reader["parent_ID"],
+                        Ep_Number = (short)reader["ep_number"],
+                        Season = (short)reader["season"],
                     };
                     result.Add(row);
                 }
@@ -294,7 +331,7 @@ namespace Rawdata_Porfolio_2.Entity_Framework   // There's a typo in "Portfolio"
             }
         }
 
-        public List<Episode> GetAllEpisodes(int titleID)
+        public List<Episode> GetAllEpisodes(long titleID)
         {
             using (var cmd = new NpgsqlCommand("SELECT Episode.\"parent_ID\", title_localization.name, episode.\"ID\", episode.ep_number, episode.season FROM public.title_localization, public.episode " +
                                                "WHERE episode.\"parent_ID\" = @TID AND title_localization.\"title_ID\" = episode.\"ID\" AND title_localization.primary_title = true;", connection.Connect()))
@@ -306,10 +343,10 @@ namespace Rawdata_Porfolio_2.Entity_Framework   // There's a typo in "Portfolio"
                 {
                     Episode row = new Episode()
                     {
-                        Parent_Id = (Int64)reader["parent_ID"],
+                        Parent_Id = (long)reader["parent_ID"],
                         Name = reader["name"].ToString(),
-                        Ep_Number = (int)reader["ep_number"],
-                        Season = (int)reader["season"],
+                        Ep_Number = (short)reader["ep_number"],
+                        Season = (short)reader["season"],
                         Id = (int)reader["ID"],
                     };
                     result.Add(row);
@@ -318,7 +355,7 @@ namespace Rawdata_Porfolio_2.Entity_Framework   // There's a typo in "Portfolio"
             }
         }
 
-        public List<Title_Genre> GetTitleGenre(int title_id)
+        public List<Title_Genre> GetTitleGenre(long title_id)
         {
             using (var cmd = new NpgsqlCommand("SELECT * FROM public.title_genres WHERE \"title_ID\" = @TID;", connection.Connect()))
             {
@@ -329,7 +366,7 @@ namespace Rawdata_Porfolio_2.Entity_Framework   // There's a typo in "Portfolio"
                 {
                     Title_Genre row = new Title_Genre()
                     {
-                        Title_Id = (Int64)reader["title_ID"],
+                        Title_Id = (long)reader["title_ID"],
                         Genre = reader["genre"].ToString(),
                     };
                     result.Add(row);
@@ -339,7 +376,7 @@ namespace Rawdata_Porfolio_2.Entity_Framework   // There's a typo in "Portfolio"
             }
         }
 
-        public List<Title_Localization> GetTitleLocalization(int title_id)
+        public List<Title_Localization> GetTitleLocalization(long title_id)
         {
             using (var cmd = new NpgsqlCommand("SELECT * FROM title_localization WHERE @TID = \"title_ID\";", connection.Connect()))
             {
@@ -350,8 +387,8 @@ namespace Rawdata_Porfolio_2.Entity_Framework   // There's a typo in "Portfolio"
                 {
                     Title_Localization row = new Title_Localization()
                     {
-                        Title_Id = (Int64)reader["title_ID"],
-                        Id = (int)reader["ID"],
+                        Title_Id = (long)reader["title_ID"],
+                        Id = (long)reader["ID"],
                         Name = reader["name"].ToString(),
                         Language = reader["langauge"].ToString(),
                         Region = reader["region"].ToString(),
@@ -389,7 +426,7 @@ namespace Rawdata_Porfolio_2.Entity_Framework   // There's a typo in "Portfolio"
                     {
                         Personality_Id = (int)reader["personality_ID"],
                         CharacterOfPersonality = reader["character"].ToString(),
-                        Title_Id = (Int64)reader["title_ID"],
+                        Title_Id = (long)reader["title_ID"],
                         Name = reader["name"].ToString(),
                        
                     };
@@ -413,7 +450,7 @@ namespace Rawdata_Porfolio_2.Entity_Framework   // There's a typo in "Portfolio"
                     Character row = new Character()
                     {
                         CharacterOfPersonality = reader["character"].ToString(),
-                        Title_Id = (Int64)reader["title_ID"],
+                        Title_Id = (long)reader["title_ID"],
                         Name = reader["name"].ToString(),
                     };
                     result.Add(row);
@@ -513,7 +550,7 @@ namespace Rawdata_Porfolio_2.Entity_Framework   // There's a typo in "Portfolio"
             }
         }
 
-        public void CreateTitleBM(int userID, int titleID, string note)
+        public void CreateTitleBM(int userID, long titleID, string note)
         {
             using (var cmd = new NpgsqlCommand("CALL update_bookmark('n', 't', @ID, @PID, @note);", connection.Connect()))
             {
@@ -538,7 +575,7 @@ namespace Rawdata_Porfolio_2.Entity_Framework   // There's a typo in "Portfolio"
                     Name = reader["name"].ToString(),
                     Note = reader["note"].ToString(),
                     Timestamp = (DateTime)reader["timestamp"],
-                    Title_Id = (Int64)reader["title_ID"]
+                    Title_Id = (long)reader["title_ID"]
                 };
                 result.Add(row);
             }
@@ -546,7 +583,7 @@ namespace Rawdata_Porfolio_2.Entity_Framework   // There's a typo in "Portfolio"
             return result;
         }
 
-        public void DeleteTitleBM(int userID, int titleID)
+        public void DeleteTitleBM(int userID, long titleID)
         {
             using (var cmd = new NpgsqlCommand("CALL update_bookmark('d','t', @ID, @PID);", connection.Connect()))
             {
@@ -556,7 +593,7 @@ namespace Rawdata_Porfolio_2.Entity_Framework   // There's a typo in "Portfolio"
             }
         }
 
-        public void UpdateTitleBM(int userID, int titleID, string note)
+        public void UpdateTitleBM(int userID, long titleID, string note)
         {
             using (var cmd = new NpgsqlCommand("CALL update_bookmark('u','t', @ID, @TID, @NOTE);", connection.Connect()))
             {
@@ -657,7 +694,7 @@ namespace Rawdata_Porfolio_2.Entity_Framework   // There's a typo in "Portfolio"
         //                         RATINGS                        //
         ////////////////////////////////////////////////////////////
 
-        public void CreateRating(int user_ID, int title_ID, Int16 rating)
+        public void CreateRating(int user_ID, long title_ID, short rating)
         {
             using (var cmd = new NpgsqlCommand("CALL update_rating(@UID, @TID, @RATING, @DEL);", connection.Connect()))
             {
@@ -681,8 +718,8 @@ namespace Rawdata_Porfolio_2.Entity_Framework   // There's a typo in "Portfolio"
                 Rating row = new Rating()
                 {
                     User_Id = (int)reader["user_ID"],
-                    Title_Id = (Int64)reader["title_ID"],
-                    RatingOfTitle = (int)reader["rating"],
+                    Title_Id = (long)reader["title_ID"],
+                    RatingOfTitle = (short)reader["rating"],
                     Timestamp = (DateTime)reader["timestamp"],
                 };
                 result.Add(row);
@@ -691,7 +728,7 @@ namespace Rawdata_Porfolio_2.Entity_Framework   // There's a typo in "Portfolio"
             return result;
         }
 
-        public void UpdateRating(int user_ID, int title_ID, Int16 rating)
+        public void UpdateRating(int user_ID, long title_ID, short rating)
         {
             using (var cmd = new NpgsqlCommand("CALL update_rating(@UID, @TID, @RATING, @DEL);", connection.Connect()))
             {
@@ -704,7 +741,7 @@ namespace Rawdata_Porfolio_2.Entity_Framework   // There's a typo in "Portfolio"
             connection.Connect().Close();
         }
 
-        public void DeleteRating(int user_ID, int title_ID)
+        public void DeleteRating(int user_ID, long title_ID)
         {
             using (var cmd = new NpgsqlCommand("CALL update_rating(@UID, @TID, @RATING, @DEL);", connection.Connect()))
             {
@@ -717,7 +754,7 @@ namespace Rawdata_Porfolio_2.Entity_Framework   // There's a typo in "Portfolio"
             connection.Connect().Close();
         }
 
-        public List<Title> GetAvgRatingFromTitleId(int title_ID)
+        public List<Title> GetAvgRatingFromTitleId(long title_ID)
         {
             var cmd = new NpgsqlCommand("SELECT avg_rating, \"ID\" FROM title WHERE \"ID\" = @TID;", connection.Connect());
             cmd.Parameters.AddWithValue("TID", title_ID);
@@ -727,8 +764,8 @@ namespace Rawdata_Porfolio_2.Entity_Framework   // There's a typo in "Portfolio"
             {
                 Title row = new Title()
                 {
-                    Id = (int)reader["ID"],
-                    AvgRating = (int)reader["avg_rating"],
+                    Id = (long)reader["ID"],
+                    AvgRating = (double)reader["avg_rating"],
                 };
                 result.Add(row);
             }
@@ -739,7 +776,7 @@ namespace Rawdata_Porfolio_2.Entity_Framework   // There's a typo in "Portfolio"
         ////////////////////////////////////////////////////////////
         //                          SEARCH                        //
         ////////////////////////////////////////////////////////////
-        public List<Search_Queries> GetSQ(Int64 userID)
+        public List<Search_Queries> GetSQ(int userID)
         {
             var cmd = new NpgsqlCommand("SELECT * FROM search_queries WHERE \"user_ID\" = @UID ORDER BY timestamp DESC;", connection.Connect());
             cmd.Parameters.AddWithValue("UID", userID);
@@ -752,7 +789,7 @@ namespace Rawdata_Porfolio_2.Entity_Framework   // There's a typo in "Portfolio"
                     User_Id = (int)reader["user_ID"],
                     Query = reader["query"].ToString(), // we have to do some separating the string up some time, should we do it now?
                     Timestamp = (DateTime)reader["timestamp"],
-                    Id = (Int64)reader["ID"]
+                    Id = (int)reader["ID"]
                 };
                 result.Add(row);
             }
@@ -824,7 +861,7 @@ namespace Rawdata_Porfolio_2.Entity_Framework   // There's a typo in "Portfolio"
                 Search_results row = new Search_results()
                 {
                     User_Id = (int)reader["user_ID"],
-                    Title_ID = (Int64)reader["title_ID"],
+                    Title_ID = (long)reader["title_ID"],
                     Title_Name = reader["title_name"].ToString(),
                 };
                 result.Add(row);
@@ -855,7 +892,7 @@ namespace Rawdata_Porfolio_2.Entity_Framework   // There's a typo in "Portfolio"
                 Search_results row = new Search_results()
                 {
                     User_Id = (int)reader["user_ID"],
-                    Title_ID = (Int64)reader["title_ID"],
+                    Title_ID = (long)reader["title_ID"],
                     Title_Name = reader["title_name"].ToString(),
                 };
                 result.Add(row);
@@ -868,7 +905,7 @@ namespace Rawdata_Porfolio_2.Entity_Framework   // There's a typo in "Portfolio"
         //                          OTHER                         //
         ////////////////////////////////////////////////////////////
 
-        public List<Role> GetRolesFromTitleById(int title_Id)
+        public List<Role> GetRolesFromTitleById(long title_Id)
         {
             using (var cmd = new NpgsqlCommand("SELECT DISTINCT roles.\"title_ID\", personality.\"ID\", personality.\"name\", roles.\"role\" FROM public.title_localization, public.roles " +
                                                "WHERE roles.\"title_ID\" = @TID AND title_localization.primary_title = true AND roles.\"personality_ID\" = personality.\"ID\";", connection.Connect()))
@@ -880,7 +917,7 @@ namespace Rawdata_Porfolio_2.Entity_Framework   // There's a typo in "Portfolio"
                 {
                     Role row = new Role()
                     {
-                        Title_Id = (Int64)reader["title_ID"],
+                        Title_Id = (long)reader["title_ID"],
                         RoleOfPersonality = reader["role"].ToString(),
                         Name = reader["name"].ToString(),
                         Personality_Id = (int)reader["ID"],

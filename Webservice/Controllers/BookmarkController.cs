@@ -42,7 +42,7 @@ namespace Webservice.Controllers
         }
 
         [HttpPost("createTitleBookmark")]
-        public IActionResult CreateBookmarkTitle(int userID, int titleID, string note)
+        public IActionResult CreateBookmarkTitle(int userID, long titleID, string note)
         {
             // checks
             if (_dataService.GetUser(userID).Username == null)
