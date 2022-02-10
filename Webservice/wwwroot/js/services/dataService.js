@@ -38,7 +38,7 @@ define([], () => {
     };
 
     let getFavTitles = (uid, callback) => {
-        fetch("api/title/favTitles")
+        fetch("api/title/favTitles/" + uid)
             .then(response => response.json())
             .then(json => callback(json));
     };

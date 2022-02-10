@@ -24,7 +24,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <None Include="wwwroot\js\components\Frontpage\poster-placeholder.png" />
+    <None Include="wwwroot\poster-placeholder.png" />
   </ItemGroup>
 
 </Project>

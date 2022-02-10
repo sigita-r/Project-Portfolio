@@ -37,7 +37,7 @@ namespace Webservice.Controllers
             byte[] pwBytes = Encoding.Unicode.GetBytes(dto.Password);
             string secret = _configuration.GetSection("Auth:Secret").Value;
             var user = _dataService.GetUserByName(dto.Username);
-            if (user.Id == null || !_dataService.Login(dto.Username, pwBytes))
+            if (user == null || !_dataService.Login(dto.Username, pwBytes))
             {
                 return BadRequest("Invalid username or password");
             }

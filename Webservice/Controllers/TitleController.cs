@@ -58,7 +58,7 @@ namespace Webservice.Controllers
             return Ok(titles.Select(x => GetTitleViewModel(x)));
         }
         
-        [HttpGet("favTitles")]
+        [HttpGet("favTitles/{uid}")]
         public IActionResult GetFavTitles(int uid)
         {
             var titles = _dataService.GetUserFavTitles(uid);

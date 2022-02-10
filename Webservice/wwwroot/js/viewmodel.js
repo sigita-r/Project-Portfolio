@@ -32,6 +32,7 @@ define(["knockout", "postman", 'dataService'], function (ko, postman, ds) {
         ds.register(user, data => {
             console.log(data);
         });
+        alert("If you have entered valid data, the registration was successful - you may now try to log in.");
         location.reload();
     };
 
@@ -41,22 +42,20 @@ define(["knockout", "postman", 'dataService'], function (ko, postman, ds) {
             Password: passwordLogin()
         };
 
-        localStorage.removeItem("username");
-        localStorage.removeItem("token");
-        localStorage.removeItem("id");
-
         ds.login(user, data => {
             console.log(data);
-            localStorage.setItem("username", data.username);
-            localStorage.setItem("token", data.token);
-            localStorage.setItem("id", JSON.parse(atob(data.token.split('.')[1])).id);
+            sessionStorage.setItem("username", data.username);
+            sessionStorage.setItem("token", data.token);
+            sessionStorage.setItem("id", JSON.parse(atob(data.token.split('.')[1])).id);
         });
+        alert("If you have entered correct data, you will now be logged in.");
+        location.reload();
     };
 
     let logout = () => {
-        localStorage.removeItem("username");
-        localStorage.removeItem("token");
-        localStorage.removeItem("id");
+        sessionStorage.removeItem("username");
+        sessionStorage.removeItem("token");
+        sessionStorage.removeItem("id");
         postman.publish("changeView", "Frontpage");
         location.reload();
     };

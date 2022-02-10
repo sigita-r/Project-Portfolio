@@ -148,7 +148,7 @@ namespace Rawdata_Porfolio_2.Entity_Framework   // There's a typo in "Portfolio"
             public NpgsqlConnection Connect()
             {
                 string connStringFromFile;
-                using (var readtext = new StreamReader("C:/Login/Login.txt"))
+                using (var readtext = new StreamReader("./Login.txt"))
                 {
                     connStringFromFile = readtext.ReadLine();
                 }

@@ -3,22 +3,23 @@
         let carouselControls = () => {
             $('*[id^="cardCarousel"]').each(function () {
                 if (window.matchMedia("(min-width: 768px)").matches) {
-                    let carouselWidth = $("#inner_" + this.id)[0].scrollWidth;
+                    let carousel = this.id
+                    let carouselWidth = $("#inner_" + carousel)[0].scrollWidth;
                     let cardWidth = $(".carousel-item").width();
                     let scrollPosition = 0;
-                    $("#next_" + this.id).on("click", function () {
+                    $("#next_" + carousel).on("click", function () {
                         if (scrollPosition < carouselWidth - cardWidth * 4) {
                             scrollPosition += cardWidth;
-                            $("#inner_" + this.id).animate(
+                            $("#inner_" + carousel).animate(
                                 {scrollLeft: scrollPosition},
                                 600
                             );
                         }
                     });
-                    $("#prev_" + this.id).on("click", function () {
+                    $("#prev_" + carousel).on("click", function () {
                         if (scrollPosition > 0) {
                             scrollPosition -= cardWidth;
-                            $("#inner_" + this.id).animate(
+                            $("#inner_" + carousel).animate(
                                 {scrollLeft: scrollPosition},
                                 600
                             );
@@ -29,6 +30,7 @@
                 }
             });
         };
+        carouselControls();
 
         let newTitles = ko.observableArray([]);
         let favTitles = ko.observableArray([]);
@@ -46,7 +48,7 @@
 
         let getFavTitles = () => {
             console.log("getFavTitles");
-            ds.getFavTitles(localStorage.getItem('id'), data => {
+            ds.getFavTitles(sessionStorage.getItem('id'), data => {
                 console.log(data);
                 favTitles(data);
             });

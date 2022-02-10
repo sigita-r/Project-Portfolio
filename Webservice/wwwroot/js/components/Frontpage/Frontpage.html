@@ -1,6 +1,5 @@
-﻿<!-- TO DO: Fix line clamps, fix poster -->
-<div class="container-fluid">
-    <!-- ko ifnot: localStorage.getItem("username") === null; -->
+﻿<div class="container-fluid">
+    <!-- ko ifnot: sessionStorage.getItem("username") === null; -->
     <div class="row border-bottom justify-content-center align-items-center mb-2">
         <h2>Your favorites</h2>
         <!-- ko ifnot: favTitles().length == 0; -->
@@ -11,7 +10,7 @@
                         <div class="card">
                             <div class="row g-0">
                                 <div class="col-md-4 justify-content-center" style="min-width: 11.107rem;">
-                                    <img class="rounded card-poster" alt="Poster" data-bind="attr: { src: poster === null ? './poster-placeholder.png' : poster }">
+                                    <img class="rounded card-poster" alt="Poster" data-bind="attr: { src: poster === '' ? './poster-placeholder.png' : poster }">
                                 </div>
                                 <div class="col" style="min-width: 224.67px;">
                                     <div class="card-body">
@@ -61,7 +60,7 @@
                         <div class="card">
                             <div class="row g-0">
                                 <div class="col-md-4 justify-content-center" style="min-width: 11.107rem;">
-                                    <img class="rounded card-poster" alt="Poster" data-bind="attr: { src: poster === null ? './poster-placeholder.png' : poster }">
+                                    <img class="rounded card-poster" alt="Poster" data-bind="attr: { src: poster === '' ? './poster-placeholder.png' : poster }">
                                 </div>
                                 <div class="col" style="min-width: 224.67px;">
                                     <div class="card-body">
@@ -106,7 +105,7 @@
                         <div class="card">
                             <div class="row g-0">
                                 <div class="col-md-4 justify-content-center" style="min-width: 11.107rem;">
-                                    <img class="rounded card-poster" alt="Poster" data-bind="attr: { src: poster === null ? './poster-placeholder.png' : poster }">
+                                    <img class="rounded card-poster" alt="Poster" data-bind="attr: { src: poster === '' ? './poster-placeholder.png' : poster }">
                                 </div>
                                 <div class="col" style="min-width: 224.67px;">
                                     <div class="card-body">
@@ -151,7 +150,7 @@
                         <div class="card">
                             <div class="row g-0">
                                 <div class="col-md-4 justify-content-center" style="min-width: 11.107rem;">
-                                    <img class="rounded card-poster" alt="Poster" data-bind="attr: { src: poster === null ? './poster-placeholder.png' : poster }">
+                                    <img class="rounded card-poster" alt="Poster" data-bind="attr: { src: poster === '' ? './poster-placeholder.png' : poster }">
                                 </div>
                                 <div class="col" style="min-width: 224.67px;">
                                     <div class="card-body">

@@ -29,13 +29,13 @@
                     </div>
                     <button class="btn btn-primary" type="submit"><i class="bi bi-search"></i> Search</button>
                 </div>
-                <!-- ko ifnot: localStorage.getItem("username") === null; -->
+                <!-- ko ifnot: sessionStorage.getItem("username") === null; -->
                 <div class="btn-group btn-group-sm mb-1 mb-lg-0 ps-2" role="group">
                     <a href="#" type="button" class="btn btn-secondary text-nowrap" role="button"><i class="bi bi-person-circle"></i> My profile</a> <!-- data-bind="click: gotoProfile"-->
                     <a href="#" type="button" class="btn btn-danger text-nowrap" role="button" data-bind="click: logout">Log out</a>
                 </div>
                 <!-- /ko -->
-                <!-- ko if: localStorage.getItem("username") === null; -->
+                <!-- ko if: sessionStorage.getItem("username") === null; -->
                 <div class="btn-group btn-group-sm mb-1 mb-lg-0 ps-2" role="group">
                     <button type="button" class="btn btn-secondary text-nowrap" data-bs-toggle="modal" data-bs-target="#signupModal">Create account</button>
                     <button type="button" class="btn btn-success text-nowrap" data-bs-toggle="modal" data-bs-target="#loginModal">Log in</button>

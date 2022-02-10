@@ -36,7 +36,7 @@ namespace Rawdata_Porfolio_2.Entity_Framework
            
             string connStringFromFile;
 
-            using (StreamReader readtext = new StreamReader("C:/Login/Login.txt"))
+            using (StreamReader readtext = new StreamReader("./Login.txt"))
             {
                 connStringFromFile = readtext.ReadLine();
             }
