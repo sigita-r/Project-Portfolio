@@ -12,86 +12,86 @@
 </head>
 
 <body>
-    <!-- Navbar -->
-    <header class="site-header sticky-top shadow">
-        <nav class="navbar navbar-expand-md navbar-dark bg-dark">
-            <div class="container-fluid">
-                    <a class="navbar-brand h1" href="#">OurMDB</a>
-                    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#searchBar" aria-controls="searchBarCollapse" aria-expanded="false" aria-label="Toggle search bar"><span class="navbar-toggler-icon"></span></button>
-                <div class="collapse navbar-collapse" id="searchBar">
-                    <div class="input-group input-group-sm mb-1 mb-lg-0">
-                        <input class="form-control" type="search" placeholder="Find..." aria-label="Search">
-                        <div class="input-group-text">
-                            <input class="form-check-input mt-0" type="radio" name="searchType" id="searchTitles" checked>
-                            <label class="form-check-label ms-1" for="searchTitles">Titles</label>
-                            <input class="form-check-input mt-0 ms-2" type="radio" name="searchType" id="searchActors" disabled>
-                            <label class="form-check-label ms-1" for="searchActors">Actors</label>
-                        </div>    
-                        <button class="btn btn-primary" type="submit"><i class="bi bi-search"></i> Search</button>
+<!-- Navbar -->
+<header class="site-header sticky-top shadow">
+    <nav class="navbar navbar-expand-md navbar-dark bg-dark">
+        <div class="container-fluid">
+            <a class="navbar-brand h1" href="#">OurMDB</a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#searchBar" aria-controls="searchBarCollapse" aria-expanded="false" aria-label="Toggle search bar"><span class="navbar-toggler-icon"></span></button>
+            <div class="collapse navbar-collapse" id="searchBar">
+                <div class="input-group input-group-sm mb-1 mb-lg-0">
+                    <input class="form-control" type="search" placeholder="Find..." aria-label="Search">
+                    <div class="input-group-text">
+                        <input class="form-check-input mt-0" type="radio" name="searchType" id="searchTitles" checked>
+                        <label class="form-check-label ms-1" for="searchTitles">Titles</label>
+                        <input class="form-check-input mt-0 ms-2" type="radio" name="searchType" id="searchActors" disabled>
+                        <label class="form-check-label ms-1" for="searchActors">Actors</label>
                     </div>
-                    <!-- ko ifnot: localStorage.getItem("username") === null; -->
-                        <div class="btn-group btn-group-sm mb-1 mb-lg-0 ps-2" role="group">
-                            <a href="#" type="button" class="btn btn-secondary text-nowrap" role="button"><i class="bi bi-person-circle"></i> My profile</a> <!-- data-bind="click: gotoProfile"-->
-                            <a href="#" type="button" class="btn btn-danger text-nowrap" role="button" data-bind="click: logout">Log out</a>
-                        </div>
-                    <!-- /ko -->
-                    <!-- ko if: localStorage.getItem("username") === null; -->
-                        <div class="btn-group btn-group-sm mb-1 mb-lg-0 ps-2" role="group">
-                            <button type="button" class="btn btn-secondary text-nowrap" data-bs-toggle="modal" data-bs-target="#signupModal">Create account</button>
-                            <button type="button" class="btn btn-success text-nowrap" data-bs-toggle="modal" data-bs-target="#loginModal">Log in</button>
-                        </div>
-                    <!-- /ko -->
-                </div>    
+                    <button class="btn btn-primary" type="submit"><i class="bi bi-search"></i> Search</button>
+                </div>
+                <!-- ko ifnot: localStorage.getItem("username") === null; -->
+                <div class="btn-group btn-group-sm mb-1 mb-lg-0 ps-2" role="group">
+                    <a href="#" type="button" class="btn btn-secondary text-nowrap" role="button"><i class="bi bi-person-circle"></i> My profile</a> <!-- data-bind="click: gotoProfile"-->
+                    <a href="#" type="button" class="btn btn-danger text-nowrap" role="button" data-bind="click: logout">Log out</a>
+                </div>
+                <!-- /ko -->
+                <!-- ko if: localStorage.getItem("username") === null; -->
+                <div class="btn-group btn-group-sm mb-1 mb-lg-0 ps-2" role="group">
+                    <button type="button" class="btn btn-secondary text-nowrap" data-bs-toggle="modal" data-bs-target="#signupModal">Create account</button>
+                    <button type="button" class="btn btn-success text-nowrap" data-bs-toggle="modal" data-bs-target="#loginModal">Log in</button>
+                </div>
+                <!-- /ko -->
             </div>
-        </nav>
-    </header>
+        </div>
+    </nav>
+</header>
 
-    <main>
-        <div data-bind="component: {name: currentView}"></div>
-    </main>
+<main>
+    <div data-bind="component: {name: currentView}"></div>
+</main>
 
-    
-    <!-- Log in modal -->
-    <div class="modal fade" id="loginModal" tabindex="-1" aria-hidden="true">
-        <div class="modal-dialog modal-dialog-centered">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title" id="loginModalLabel">Log in</h5>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                </div>
-                <div class="modal-body text-center">
-                    <form>
-                        <div class="form-floating mb-3"><input type="text" class="form-control" id="floatingLoginUsername" aria-label="Username" placeholder=" " data-bind="value: usernameLogin"><label for="floatingLoginUsername">Username</label></input></div>
-                        <div class="form-floating mb-3"><input type="password" class="form-control" id="floatingLoginPass" aria-label="Password" placeholder=" " data-bind="value: passwordLogin" autocomplete="off"><label for="floatingLoginPass">Password</label></input></div>
-                        <button type="submit" class="btn btn-success" data-bind="click: login">Log in</button>
-                    </form>
-                </div>
+
+<!-- Log in modal -->
+<div class="modal fade" id="loginModal" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="loginModalLabel">Log in</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body text-center">
+                <form>
+                    <div class="form-floating mb-3"><input type="text" class="form-control" id="floatingLoginUsername" aria-label="Username" placeholder=" " data-bind="value: usernameLogin"><label for="floatingLoginUsername">Username</label></input></div>
+                    <div class="form-floating mb-3"><input type="password" class="form-control" id="floatingLoginPass" aria-label="Password" placeholder=" " data-bind="value: passwordLogin" autocomplete="off"><label for="floatingLoginPass">Password</label></input></div>
+                    <button type="submit" class="btn btn-success" data-bind="click: login">Log in</button>
+                </form>
             </div>
         </div>
     </div>
+</div>
 
-    <!-- Sign up modal -->
-    <div class="modal fade" id="signupModal" tabindex="-1" aria-hidden="true">
-        <div class="modal-dialog modal-dialog-centered">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title" id="signupModalLabel">Create account</h5>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                </div>
-                <div class="modal-body text-center">
-                    <form>
-                        <div class="form-floating mb-3"><input type="text" class="form-control" id="floatingSignupUsername" aria-label="Username" placeholder=" " data-bind="value: usernameSignup"><label for="floatingSignupUsername">Username</label></input></div>
-                        <div class="form-floating mb-3"><input type="password" class="form-control" id="floatingSignupPass" aria-label="Password" placeholder=" " data-bind="value: passwordSignup" autocomplete="off"><label for="floatingSignupPass">Password</label></input></div>
-                        <div class="form-floating mb-3"><input type="email" class="form-control" id="floatingSignupEmail" aria-label="Email" placeholder=" " data-bind="value: emailSignup"><label for="floatingSignupEmail">Email</label></input></div>
-                        <div class="form-floating mb-3"><input type="text" class="form-control" id="floatingSignupDOB" aria-label="Date of birth" placeholder=" " data-bind="value: dobSignup"><label for="floatingSignupDOB">Date of birth (DD/MM/YYYY)</label></input></div>
-                        <button type="submit" class="btn btn-success" data-bind="click: register">Create account</button>
-                    </form>
-                </div>
+<!-- Sign up modal -->
+<div class="modal fade" id="signupModal" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="signupModalLabel">Create account</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body text-center">
+                <form>
+                    <div class="form-floating mb-3"><input type="text" class="form-control" id="floatingSignupUsername" aria-label="Username" placeholder=" " data-bind="value: usernameSignup"><label for="floatingSignupUsername">Username</label></input></div>
+                    <div class="form-floating mb-3"><input type="password" class="form-control" id="floatingSignupPass" aria-label="Password" placeholder=" " data-bind="value: passwordSignup" autocomplete="off"><label for="floatingSignupPass">Password</label></input></div>
+                    <div class="form-floating mb-3"><input type="email" class="form-control" id="floatingSignupEmail" aria-label="Email" placeholder=" " data-bind="value: emailSignup"><label for="floatingSignupEmail">Email</label></input></div>
+                    <div class="form-floating mb-3"><input type="text" class="form-control" id="floatingSignupDOB" aria-label="Date of birth" placeholder=" " data-bind="value: dobSignup"><label for="floatingSignupDOB">Date of birth (YYYY-MM-DD)</label></input></div>
+                    <button type="submit" class="btn btn-success" data-bind="click: register">Create account</button>
+                </form>
             </div>
         </div>
     </div>
-    
-    <!-- Script tags should be the very last thing within body! -->
-    <script data-main="/js/main.js" src="/js/lib/requirejs/require.js"></script>
+</div>
+
+<!-- Script tags should be the very last thing within body! -->
+<script data-main="/js/main.js" src="/js/lib/requirejs/require.js"></script>
 </body>
 </html>

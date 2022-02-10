@@ -30,9 +30,27 @@ define([], () => {
             .then(response => response.json())
             .then(json => callback(json));
     };
-    
+
     let getNewTitles = (callback) => {
         fetch("api/title/newTitles")
+            .then(response => response.json())
+            .then(json => callback(json));
+    };
+
+    let getFavTitles = (uid, callback) => {
+        fetch("api/title/favTitles")
+            .then(response => response.json())
+            .then(json => callback(json));
+    };
+
+    let getTrTitles = (callback) => {
+        fetch("api/title/trTitles")
+            .then(response => response.json())
+            .then(json => callback(json));
+    };
+
+    let getRandTitles = (callback) => {
+        fetch("api/title/randTitles")
             .then(response => response.json())
             .then(json => callback(json));
     };
@@ -41,6 +59,9 @@ define([], () => {
         getCharsFromTitle,
         register,
         login,
-        getNewTitles
+        getNewTitles,
+        getFavTitles,
+        getTrTitles,
+        getRandTitles
     }
 });
