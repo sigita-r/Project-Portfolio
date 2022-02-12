@@ -37,6 +37,14 @@ namespace Webservice.Controllers
 
             return Ok(rating.Select(x => GetRatingViewModel(x)));
         }
+
+        [HttpPost("rate")]
+        public IActionResult UpdateTitleRating(RatingViewModel model)
+        {
+            _dataService.UpdateRating(model.User_Id, model.Title_Id, model.RatingOfTitle);
+            return CreatedAtRoute(null, new {model.Title_Id});
+        }
+        
         private RatingViewModel GetRatingViewModel(Rating rating)
         {
             return new RatingViewModel

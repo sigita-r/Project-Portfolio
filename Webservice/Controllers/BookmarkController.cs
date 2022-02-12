@@ -42,26 +42,10 @@ namespace Webservice.Controllers
         }
 
         [HttpPost("createTitleBookmark")]
-        public IActionResult CreateBookmarkTitle(int userID, long titleID, string note)
+        public IActionResult CreateBookmarkTitle(BookmarkTitleViewModel model)
         {
-            // checks
-            if (_dataService.GetUser(userID).Username == null)
-            {
-                return NotFound("No user found");
-            }
-
-            if (_dataService.GetTitleById(titleID) == null)
-            {
-                return NotFound("No title Found");
-            }
-
-            _dataService.CreateTitleBM(userID, titleID, note);
-
-            //  ending may need change, this is just something i tried
-            // Bookmarks_Title bookmark = new Bookmarks_Title();
-
-            // I dont know what else to put here, but it works and adds to database
-            return Created("", null);
+            _dataService.CreateTitleBM(model.UserID, model.TitleID, model.TitleNote);
+            return CreatedAtRoute(null, new {model.TitleID});
         }
 
         private BookmarkTitleViewModel GetBookmarkTitleViewModel(Bookmarks_Title bookmarkTitle)

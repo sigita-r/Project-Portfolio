@@ -17,7 +17,7 @@ namespace Rawdata_Porfolio_2.Pages.Entity_Framework.Domain
         public short? Year_Start { get; set; }
         public short? Year_End { get; set; }
         public int? Runtime { get; set; }
-        public double? AvgRating { get; set; }
+        public decimal? Avg_Rating { get; set; }
         public string Poster { get; set; }
         public string Plot { get; set; }
         public string Awards { get; set; }
@@ -34,7 +34,7 @@ namespace Rawdata_Porfolio_2.Pages.Entity_Framework.Domain
 
         public override string ToString()
         {
-            return $"Title ID = {Id}, Type = {Type}, Is Adult? = {IsAdult}, Start year = {Year_Start}, End year = {Year_End}, Runtime = {Runtime}, Average Rating = {AvgRating}, Poster URL = {Poster}, Plot = {Plot}, Awards = {Awards}";
+            return $"Title ID = {Id}, Type = {Type}, Is Adult? = {IsAdult}, Start year = {Year_Start}, End year = {Year_End}, Runtime = {Runtime}, Average Rating = {Avg_Rating}, Poster URL = {Poster}, Plot = {Plot}, Awards = {Awards}";
         }
     }
 }

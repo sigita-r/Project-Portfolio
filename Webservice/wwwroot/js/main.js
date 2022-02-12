@@ -24,7 +24,7 @@ require(['knockout'], (ko) => {
 
     ko.components.register("specificTitle", {
         viewModel: { require: "components/title/specificTitle" },
-        template: { require: "text!components/specificTitle/specificTitle.html" }
+        template: { require: "text!components/title/specificTitle.html" }
     });
 
     //ko.bindinghandlers.currency = {

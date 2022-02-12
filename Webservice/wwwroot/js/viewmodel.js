@@ -59,6 +59,16 @@ define(["knockout", "postman", 'dataService'], function (ko, postman, ds) {
         postman.publish("changeView", "Frontpage");
         location.reload();
     };
+    
+    let gohome = () => {
+        sessionStorage.removeItem("requestedTID");
+        postman.publish("changeView", "Frontpage");
+    }
+
+    let showTitle = (id) => {
+        sessionStorage.setItem("requestedTID", id);
+        postman.publish("changeView", "specificTitle");
+    }
 
     return {
         currentView,
@@ -72,6 +82,8 @@ define(["knockout", "postman", 'dataService'], function (ko, postman, ds) {
         passwordLogin,
         register,
         login,
-        logout
+        logout,
+        gohome,
+        showTitle
     }
 });

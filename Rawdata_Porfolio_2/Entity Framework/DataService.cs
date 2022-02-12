@@ -196,9 +196,30 @@ namespace Rawdata_Porfolio_2.Entity_Framework   // There's a typo in "Portfolio"
         //                        TITLES                          //
         ////////////////////////////////////////////////////////////
 
-        public Title GetTitleById(long Id) // This SQL query should return the title details including its primary name, but I'm not sure how to implement it without breaking stuff in webservice: SELECT title.*, title_localization.name FROM public.title, public.title_localization WHERE title.\"ID\" = @TID AND title.\"ID\" = title_localization.\"title_ID\" AND title_localization.primary_title = true;
+        public Title GetTitleById(long Id)
         {
-            return ctx.Titles.Find(Id);
+            using (var cmd = new NpgsqlCommand("SELECT * FROM select_title(@TID);", connection.Connect()))
+            {
+                cmd.Parameters.AddWithValue("TID", Id);
+                NpgsqlDataReader reader = cmd.ExecuteReader();
+                Title result = new Title();
+                reader.Read();
+                result.Id = (long) reader["ID"];
+                result.Type = reader["type"].ToString();
+                result.Name = reader["name"].ToString();
+                result.IsAdult = (bool) reader["isadult"];
+                result.Year_Start = Convert.IsDBNull(reader["year_start"]) ? null : (short?) reader["year_start"];
+                result.Year_End = Convert.IsDBNull(reader["year_end"]) ? null : (short?) reader["year_end"];
+                result.Runtime = Convert.IsDBNull(reader["runtime"]) ? null : (int?) reader["runtime"];
+                result.Avg_Rating = Convert.IsDBNull(reader["avg_rating"]) ? null : (decimal?) reader["avg_rating"];
+                result.Poster = reader["poster"].ToString();
+                result.Plot = reader["plot"].ToString();
+                result.Awards = reader["awards"].ToString();
+                result.Genres = reader["genres"].ToString();
+                connection.Connect().Close();
+                Console.WriteLine(result);
+                return result;
+            }
         }
 
         public List<Title> GetTitles()
@@ -218,7 +239,7 @@ namespace Rawdata_Porfolio_2.Entity_Framework   // There's a typo in "Portfolio"
                         Year_Start = Convert.IsDBNull(reader["year_start"]) ? null : (short?) reader["year_start"],
                         Year_End = Convert.IsDBNull(reader["year_end"]) ? null : (short?) reader["year_end"],
                         Runtime = Convert.IsDBNull(reader["runtime"]) ? null : (int?) reader["runtime"],
-                        AvgRating = Convert.IsDBNull(reader["avg_rating"]) ? null : (double?) reader["avg_rating"],
+                        Avg_Rating = Convert.IsDBNull(reader["avg_rating"]) ? null : (decimal?) reader["avg_rating"],
                         Poster = reader["poster"].ToString(),
                         Plot = reader["plot"].ToString(),
                         Awards = reader["awards"].ToString(),
@@ -250,7 +271,7 @@ namespace Rawdata_Porfolio_2.Entity_Framework   // There's a typo in "Portfolio"
                         Year_Start = Convert.IsDBNull(reader["year_start"]) ? null : (short?) reader["year_start"],
                         Year_End = Convert.IsDBNull(reader["year_end"]) ? null : (short?) reader["year_end"],
                         Runtime = Convert.IsDBNull(reader["runtime"]) ? null : (int?) reader["runtime"],
-                        AvgRating = Convert.IsDBNull(reader["avg_rating"]) ? null : (double?) reader["avg_rating"],
+                        Avg_Rating = Convert.IsDBNull(reader["avg_rating"]) ? null : (decimal?) reader["avg_rating"],
                         Poster = reader["poster"].ToString(),
                         Plot = reader["plot"].ToString(),
                         Awards = reader["awards"].ToString(),
@@ -281,7 +302,7 @@ namespace Rawdata_Porfolio_2.Entity_Framework   // There's a typo in "Portfolio"
                         Year_Start = Convert.IsDBNull(reader["year_start"]) ? null : (short?) reader["year_start"],
                         Year_End = Convert.IsDBNull(reader["year_end"]) ? null : (short?) reader["year_end"],
                         Runtime = Convert.IsDBNull(reader["runtime"]) ? null : (int?) reader["runtime"],
-                        AvgRating = Convert.IsDBNull(reader["avg_rating"]) ? null : (double?) reader["avg_rating"],
+                        Avg_Rating = Convert.IsDBNull(reader["avg_rating"]) ? null : (decimal?) reader["avg_rating"],
                         Poster = reader["poster"].ToString(),
                         Plot = reader["plot"].ToString(),
                         Awards = reader["awards"].ToString(),
@@ -312,7 +333,7 @@ namespace Rawdata_Porfolio_2.Entity_Framework   // There's a typo in "Portfolio"
                         Year_Start = Convert.IsDBNull(reader["year_start"]) ? null : (short?) reader["year_start"],
                         Year_End = Convert.IsDBNull(reader["year_end"]) ? null : (short?) reader["year_end"],
                         Runtime = Convert.IsDBNull(reader["runtime"]) ? null : (int?) reader["runtime"],
-                        AvgRating = Convert.IsDBNull(reader["avg_rating"]) ? null : (double?) reader["avg_rating"],
+                        Avg_Rating = Convert.IsDBNull(reader["avg_rating"]) ? null : (decimal?) reader["avg_rating"],
                         Poster = reader["poster"].ToString(),
                         Plot = reader["plot"].ToString(),
                         Awards = reader["awards"].ToString(),
@@ -344,7 +365,7 @@ namespace Rawdata_Porfolio_2.Entity_Framework   // There's a typo in "Portfolio"
                         Year_Start = Convert.IsDBNull(reader["year_start"]) ? null : (short?) reader["year_start"],
                         Year_End = Convert.IsDBNull(reader["year_end"]) ? null : (short?) reader["year_end"],
                         Runtime = Convert.IsDBNull(reader["runtime"]) ? null : (int?) reader["runtime"],
-                        AvgRating = Convert.IsDBNull(reader["avg_rating"]) ? null : (double?) reader["avg_rating"],
+                        Avg_Rating = Convert.IsDBNull(reader["avg_rating"]) ? null : (decimal?) reader["avg_rating"],
                         Poster = reader["poster"].ToString(),
                         Plot = reader["plot"].ToString(),
                         Awards = reader["awards"].ToString(),
@@ -360,7 +381,7 @@ namespace Rawdata_Porfolio_2.Entity_Framework   // There's a typo in "Portfolio"
 
         public List<Character> GetCharactersFromTitleById(long title_Id)
         {
-            using (var cmd = new NpgsqlCommand("SELECT DISTINCT characters.\"title_ID\", personality.\"ID\", personality.\"name\", characters.\"character\" FROM public.personality, public.characters " +
+            using (var cmd = new NpgsqlCommand("SELECT DISTINCT characters.\"title_ID\", personality.\"ID\", personality.\"name\", characters.\"character\" FROM personality, characters " +
                 "WHERE characters.\"title_ID\" = @TID AND characters.\"personality_ID\" = personality.\"ID\";", connection.Connect()))
             {
                 cmd.Parameters.AddWithValue("TID", title_Id);
@@ -488,7 +509,7 @@ namespace Rawdata_Porfolio_2.Entity_Framework   // There's a typo in "Portfolio"
                         Title_Id = (long)reader["title_ID"],
                         Id = (long)reader["ID"],
                         Name = reader["name"].ToString(),
-                        Language = reader["langauge"].ToString(),
+                        Language = reader["language"].ToString(),
                         Region = reader["region"].ToString(),
                         Type = reader["type"].ToString(),
                         Attribute = reader["attribute"].ToString(),
@@ -863,7 +884,7 @@ namespace Rawdata_Porfolio_2.Entity_Framework   // There's a typo in "Portfolio"
                 Title row = new Title()
                 {
                     Id = (long)reader["ID"],
-                    AvgRating = (double)reader["avg_rating"],
+                    Avg_Rating = (decimal)reader["avg_rating"],
                 };
                 result.Add(row);
             }
@@ -1005,8 +1026,8 @@ namespace Rawdata_Porfolio_2.Entity_Framework   // There's a typo in "Portfolio"
 
         public List<Role> GetRolesFromTitleById(long title_Id)
         {
-            using (var cmd = new NpgsqlCommand("SELECT DISTINCT roles.\"title_ID\", personality.\"ID\", personality.\"name\", roles.\"role\" FROM public.title_localization, public.roles " +
-                                               "WHERE roles.\"title_ID\" = @TID AND title_localization.primary_title = true AND roles.\"personality_ID\" = personality.\"ID\";", connection.Connect()))
+            using (var cmd = new NpgsqlCommand("SELECT DISTINCT roles.\"title_ID\", personality.\"ID\", personality.\"name\", roles.\"role\" FROM roles, personality " +
+                                               "WHERE roles.\"title_ID\" = @TID AND roles.\"personality_ID\" = personality.\"ID\";", connection.Connect()))
             {
                 cmd.Parameters.AddWithValue("TID", title_Id);
                 NpgsqlDataReader reader = cmd.ExecuteReader();

@@ -10,10 +10,11 @@ namespace Webservice.ViewModels
         public string Url { get; set; }
 
         public string Username { get; set; }
+        public string TitleName { get; set; }
 
         public int UserID { get; set; }
 
-        public string TitleName { get; set; }
+        public long TitleID { get; set; }
         public string TitleNote { get; set; }
     }
 }

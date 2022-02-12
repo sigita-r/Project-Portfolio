@@ -16,7 +16,7 @@ namespace Webservice.ViewModels
         public short? Year_Start { get; set; }
         public short? Year_End { get; set; }
         public int? Runtime { get; set; }
-        public double? Avg_Rating { get; set; }
+        public decimal? Avg_Rating { get; set; }
         public string Poster { get; set; }
         public string Plot { get; set; }
         public string Awards { get; set; }

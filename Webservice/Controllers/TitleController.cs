@@ -109,6 +109,32 @@ namespace Webservice.Controllers
 
             return Ok(characters);
         }
+        
+        [HttpGet("{id}/RolesFromTitle")]
+        public IActionResult GetRolesFromTitle(long id)
+        {
+            List<Role> roles = _dataService.GetRolesFromTitleById(id);
+
+            if (roles == null)
+            {
+                return NotFound();
+            }
+
+            return Ok(roles);
+        }
+        
+        [HttpGet("{id}/titleLocalizations")]
+        public IActionResult GetTitleLocalizations(long id)
+        {
+            List<Title_Localization> localizations = _dataService.GetTitleLocalization(id);
+
+            if (localizations == null)
+            {
+                return NotFound();
+            }
+
+            return Ok(localizations);
+        }
 
         private object CreateResultModel(QueryString queryString, int total, IEnumerable<TitleViewModel> model)
         {
@@ -153,12 +179,9 @@ namespace Webservice.Controllers
 
         private TitleViewModel GetTitleViewModel(Title title)
         {
-            Console.WriteLine("heyo1");
-
-            //String titleGenresFromTable = string.Join(",", title.Title_Genres);
-            Console.WriteLine("heyo");
             return new TitleViewModel
             {
+                Id = title.Id,
                 Url = _linkGenerator.GetUriByName(HttpContext, nameof(GetTitleById), new { title.Id }).Replace("%20", ""),
                 Type = title.Type,
                 Name = title.Name,
@@ -173,6 +196,7 @@ namespace Webservice.Controllers
                 Poster = title.Poster,
                 Plot = title.Plot,
                 Awards = title.Awards,
+                Avg_Rating = title.Avg_Rating
                 // Language = title.Language,
                 //   Region = title.Region,
             };

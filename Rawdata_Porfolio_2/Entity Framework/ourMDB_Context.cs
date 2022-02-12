@@ -116,7 +116,7 @@ namespace Rawdata_Porfolio_2.Entity_Framework
             modelBuilder.Entity<Title>().Property(x => x.Year_Start).HasColumnName("year_start");
             modelBuilder.Entity<Title>().Property(x => x.Year_End).HasColumnName("year_end");
             modelBuilder.Entity<Title>().Property(x => x.Runtime).HasColumnName("runtime");
-            modelBuilder.Entity<Title>().Property(x => x.AvgRating).HasColumnName("avg_rating");
+            modelBuilder.Entity<Title>().Property(x => x.Avg_Rating).HasColumnName("avg_rating");
             modelBuilder.Entity<Title>().Property(x => x.Poster).HasColumnName("poster");
             modelBuilder.Entity<Title>().Property(x => x.Plot).HasColumnName("plot");
             modelBuilder.Entity<Title>().Property(x => x.Awards).HasColumnName("awards");

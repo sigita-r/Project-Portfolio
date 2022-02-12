@@ -30,7 +30,6 @@
                 }
             });
         };
-        carouselControls();
 
         let newTitles = ko.observableArray([]);
         let favTitles = ko.observableArray([]);
@@ -72,6 +71,8 @@
             });
         }
         getRandTitles();
+
+        carouselControls();
 
         return {
             carouselControls,

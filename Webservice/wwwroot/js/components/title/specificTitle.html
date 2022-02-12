@@ -1,39 +1,91 @@
-﻿<!DOCTYPE html>
-<html>
-<head>
-    <meta charset="utf-8" />
-    <title></title>
-</head>
-<body>
-    <h1 data-bind=""></h1>
-
-    <div>
-        Personalities in the titles:
-        <table class="table">
-            <thead>
-                <tr><th>Name</th></tr>
-            </thead>
-            <tbody data-bind="foreach: personalitiesInTitle">
-                <tr>
-                    <td data-bind="text: url"></td>
-                    <td data-bind="text: name"></td>
-                </tr>
-            </tbody>
-        </table>
+﻿<div class="container-fluid mt-2">
+    <div class="col" data-bind="with: titleDetails">
+        <div class="row border-bottom mb-2" >
+            <div class="col-md-auto">
+                <img class="card-poster mb-2" alt="Poster" data-bind="attr: { src: poster === '' ? './poster-placeholder.png' : poster }">
+            </div>
+            <div class="col mt-2">
+                <div class="row">
+                    <p><span class="h1" data-bind="text: name"></span><span data-bind="visible: is_Adult">&#128286;</span></p>
+                </div>
+                <div class="row">
+                    <h5 class="text-muted"><span data-bind="text: genres"></span></h5>
+                </div>
+                <div class="row">
+                    <h5 class="text-muted"><span data-bind="text: year_Start"></span><span data-bind="visible: year_End !== null"> - <span data-bind="text: year_End"></span></span></h5>
+                </div>
+                <div class="row">
+                    <h5 class="text-muted"><i class="bi bi-stopwatch"></i> <span data-bind="text: runtime"></span> minutes</h5>
+                </div>
+                <div class="row">
+                    <h5 class="text-muted"><i class="text-warning bi bi-star-fill"></i> <span data-bind="text: avg_Rating === null ? 'No ratings' : avg_Rating"></span></h5>
+                </div>
+                <div class="row justify-content-between" data-bind="visible: sessionStorage.getItem('username') !== null">
+                    <div class="col border-end mb-2">
+                        <button type="button" class="btn btn-warning btn-sm" data-bind="click: $parent.bookmark"><i class="bi bi-bookmark"></i> Add bookmark</button>
+                    </div>
+                    <div class="col mb-2">
+                        <div class="input-group input-group-sm">
+                            <input type="number" class="form-control" placeholder="Rating" autocomplete="off" min="0" max="10" step="1" data-bind="value: $parent.rating">
+                            <button class="btn btn-secondary" type="button" id="rate-button" data-bind="click: $parent.rate">Rate</button>
+                        </div>    
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="row border-bottom mb-2" data-bind="visible: plot !== ''">
+            <h2>Plot</h2>
+            <p data-bind="text: plot"></p>
+        </div>
+        <div class="row border-bottom mb-2" data-bind="visible: awards !== ''">
+            <h2>Awards</h2>
+            <p data-bind="text: awards"></p>
+        </div>
+    </div>    
+    <div class="row mb-2">
+        <h2>Characters</h2>
+        <div class="row justify-content-between border-bottom">
+            <div class="col">
+                <h5>Actor</h5>
+            </div>
+            <div class="col">
+                <h5>Character</h5>
+            </div>        
+        </div>    
+        <div class="row justify-content-between border-bottom" data-bind="foreach: $parent.charactersInTitle">
+            <div class="col">
+                <p data-bind="text: $data.name"></p>
+            </div>
+            <div class="col">
+                <p data-bind="text: $data.characterOfPersonality"></p>
+            </div>
+        </div>
     </div>
-    <div>
-        Personalities in the titles:
-        <table class="table">
-            <thead>
-                <tr><th>Name</th></tr>
-            </thead>
-            <tbody data-bind="foreach: personalitiesInTitle">
-                <tr>
-                    <td data-bind="text: url"></td>
-                    <td data-bind="text: name"></td>
-                </tr>
-            </tbody>
-        </table>
+    <div class="row mb-2">
+        <h2>Production roles</h2>
+        <div class="row justify-content-between border-bottom">
+            <div class="col">
+                <h5>Person</h5>
+            </div>
+            <div class="col">
+                <h5>Role</h5>
+            </div>
+        </div>
+        <div class="row justify-content-between border-bottom" data-bind="foreach: rolesInTitle">
+            <div class="col">
+                <p data-bind="text: $data.name"></p>
+            </div>
+            <div class="col">
+                <p data-bind="text: $data.roleOfPersonality"></p>
+            </div>
+        </div>
     </div>
-</body>
-</html>
+    <div class="row" data-bind="visible: getTitleLocalizations () !== null">
+        <h2>Also known as</h2>
+        <div class="row border-bottom" data-bind="foreach: alternateLocalizations">
+            <div class="col">
+                <p data-bind="text: name"></p>
+            </div>
+        </div>
+    </div> 
+</div>    

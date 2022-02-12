@@ -1,30 +1,76 @@
-﻿const { data } = require("jquery");
-
-define(['knockout', 'dataService', 'postman'], function (ko, ds, postman) {
+﻿define(['knockout', 'dataService', 'postman'], function (ko, ds, postman) {
     return function (params) {
-        // let currentComponent = ko.observable("");
+        let titleDetails = ko.observableArray([]);
+        let rating = ko.observable();
+        let charactersInTitle = ko.observableArray([]);
+        let rolesInTitle = ko.observableArray([]);
+        let alternateLocalizations = ko.observableArray([]);
+        let id = sessionStorage.getItem("requestedTID");
+        
+        let rate = () => {
+            let rating_details = {
+                User_Id: sessionStorage.getItem("id"),
+                Title_Id: id,
+                RatingOfTitle: rating()
+            };
+            ds.rate(rating_details);
+            alert("Rating saved.");
+        };
 
-        let currentView = ko.observable();
-        let titleName = ko.observable();
-        let selectedTitleId = ko.observable();
-        let getCharactersFromTitle = ko.observableArray([]);
-
-        let getCharactersFromTitle = () => {
-            console.log("getCharsFromTitle");
-            ds.getCharsFromTitle(2, data => {
+        let bookmark = () => {
+            let bookmark_details = {
+                UserID: sessionStorage.getItem("id"),
+                TitleID: id,
+                TitleNote: "placeholder"
+            };
+            ds.createTitleBookmark(bookmark_details);
+            alert("Title bookmarked.");
+        };
+        
+        let getTitle = () => {
+            ds.getTitleDetails(id, data => {
                 console.log(data);
-                charsFromTitle(data);
+                titleDetails(data);
             });
-            //         currentView("Frontpage");
         }
-        getCharsFromTitle();
+        getTitle();
 
+        let getCharactersInTitle = () => {
+            ds.getCharsFromTitle(id, data => {
+                console.log(data);
+                charactersInTitle(data);
+            });
+        }
+        getCharactersInTitle();
+
+        let getRolesInTitle = () => {
+            ds.getRolesFromTitle(id, data => {
+                console.log(data);
+                rolesInTitle(data);
+            });
+        }
+        getRolesInTitle();
+        
+        let getTitleLocalizations = () => {
+            ds.getTitleLocalizations(id, data => {
+                console.log(data);
+                alternateLocalizations(data);
+            });
+        }
+        getTitleLocalizations();
+        
         return {
-            currentView,
-            titleName,
-            selectedTitleId,
-            charactersFromTitle,
-            getCharactersFromTitle
+            charactersInTitle,
+            rolesInTitle,
+            getRolesInTitle,
+            getCharactersInTitle,
+            alternateLocalizations,
+            getTitleLocalizations,
+            rating,
+            rate,
+            bookmark,
+            getTitle,
+            titleDetails
         }
     };
 });
