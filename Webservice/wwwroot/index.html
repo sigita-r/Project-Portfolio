@@ -20,14 +20,14 @@
             <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#searchBar" aria-controls="searchBarCollapse" aria-expanded="false" aria-label="Toggle search bar"><span class="navbar-toggler-icon"></span></button>
             <div class="collapse navbar-collapse" id="searchBar">
                 <div class="input-group input-group-sm mb-1 mb-lg-0">
-                    <input class="form-control" type="search" placeholder="Find... (NOT IMPLEMENTED - we ran out of time)" aria-label="Search">
+                    <input class="form-control" type="search" placeholder="Find..." aria-label="Search" data-bind="textInput: searchQuery">
                     <div class="input-group-text">
                         <input class="form-check-input mt-0" type="radio" name="searchType" id="searchTitles" checked>
                         <label class="form-check-label ms-1" for="searchTitles">Titles</label>
-                        <input class="form-check-input mt-0 ms-2" type="radio" name="searchType" id="searchActors">
+                        <input class="form-check-input mt-0 ms-2" type="radio" name="searchType" id="searchActors" disabled>
                         <label class="form-check-label ms-1" for="searchActors">Actors</label>
                     </div>
-                    <button class="btn btn-primary" type="submit" disabled><i class="bi bi-search"></i> Search</button>
+                    <button class="btn btn-primary" type="submit" data-bind="click: function($root) { showSearchResults(searchQuery()) }"><i class="bi bi-search"></i> Search</button>
                 </div>
                 <!-- ko ifnot: sessionStorage.getItem("username") === null; -->
                 <div class="btn-group btn-group-sm mb-1 mb-lg-0 ps-2" role="group">

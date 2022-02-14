@@ -5,6 +5,7 @@ define(["knockout", "postman", 'dataService'], function (ko, postman, ds) {
     let dobSignup = ko.observable();
     let usernameLogin = ko.observable();
     let passwordLogin = ko.observable();
+    let searchQuery = ko.observable();
 
     let currentView = ko.observable('Frontpage');
 
@@ -62,12 +63,18 @@ define(["knockout", "postman", 'dataService'], function (ko, postman, ds) {
     
     let gohome = () => {
         sessionStorage.removeItem("requestedTID");
+        sessionStorage.removeItem("requestedSearchQuery");
         postman.publish("changeView", "Frontpage");
     }
 
     let showTitle = (id) => {
         sessionStorage.setItem("requestedTID", id);
         postman.publish("changeView", "specificTitle");
+    }
+    
+    let showSearchResults = (query) => {
+        sessionStorage.setItem("requestedSearchQuery", query);
+        postman.publish("changeView", "searchResults");
     }
 
     return {
@@ -80,10 +87,12 @@ define(["knockout", "postman", 'dataService'], function (ko, postman, ds) {
         dobSignup,
         usernameLogin,
         passwordLogin,
+        searchQuery,
         register,
         login,
         logout,
         gohome,
-        showTitle
+        showTitle,
+        showSearchResults
     }
 });

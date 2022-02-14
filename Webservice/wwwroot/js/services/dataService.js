@@ -98,6 +98,12 @@ define([], () => {
             .then(response => response.json())
             .then(json => callback(json));
     };
+    
+    let performSearch = (query, callback) => {
+        fetch('api/Search/titles/' + query.userID + '/' + query.titleString)
+            .then(response => response.json())
+            .then(json => callback(json));
+    };
 
     return {
         getCharsFromTitle,
@@ -111,6 +117,7 @@ define([], () => {
         getRandTitles,
         rate,
         createTitleBookmark,
-        getTitleDetails
+        getTitleDetails,
+        performSearch
     }
 });

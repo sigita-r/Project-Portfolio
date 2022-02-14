@@ -31,12 +31,19 @@ namespace Webservice.Controllers
             return Ok(result);
         }
 
-        [HttpGet("titles/{titleString}", Name = nameof(GetTitlesFromSearchResults))]
+        [HttpGet("titles/{userID}/{titleString}")]
         public IActionResult GetTitlesFromSearchResults(int? userID, string titleString)
         {
+            Console.WriteLine(userID);
+            Console.WriteLine(titleString);
             var result = _dataService.StringSearch(userID, titleString);
 
-            return Ok(result);
+            if (result == null)
+            {
+                return NotFound();
+            }    
+            
+            return Ok(result.Select(x => GetSearchResultsViewModel(x)));
         }
 
         /*
@@ -48,5 +55,23 @@ namespace Webservice.Controllers
             return Ok(result);
         }
         */
+        private SearchResultsViewModel GetSearchResultsViewModel(Search_results results)
+        {
+            return new SearchResultsViewModel
+            {
+                Title_ID = results.Title_ID,
+                Plot = results.Plot,
+                Type = results.Type,
+                Name = results.Name,
+                IsAdult = results.IsAdult,
+                Year_Start = results.Year_Start,
+                Year_End = results.Year_End,
+                Runtime = results.Runtime,
+                Avg_Rating = results.Avg_Rating,
+                Poster = results.Poster,
+                Awards = results.Awards,
+                Genres = results.Genres
+            };
+        }
     }
 }

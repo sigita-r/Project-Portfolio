@@ -1,0 +1,27 @@
+﻿<div class="container-fluid">
+    <h1>Search results</h1>
+    <span data-bind="foreach: searchMatch">
+        <div class="row border-top position-relative">
+            <a class="stretched-link" href="/" data-bind="click: function(data) { $root.showTitle(title_ID) }"></a>
+            <div class="col-md-auto justify-content-center mb-2 mt-2">
+                <img class="card-poster" alt="Poster" data-bind="attr: { src: poster === '' ? './poster-placeholder.png' : poster }">
+            </div>
+            <div class="col mb-2 mt-2">
+                <h3 data-bind="text: name"></h3>
+                <span data-bind="visible: isAdult">&#128286;</span>
+                <div class="row justify-content-between mt-1 mb-2">
+                    <div class="col-md-auto d-flex">
+                        <h6 class="text-muted"><span data-bind="text: year_Start"></span></h6>
+                    </div>
+                    <div class="col-md-auto d-flex justify-content-center-desktop">
+                        <h6 class="text-muted"><i class="text-warning bi bi-star-fill"></i> <span data-bind="text: avg_Rating === null ? 'No ratings' : avg_Rating"></span></h6>
+                    </div>
+                    <div class="col-md-auto d-flex justify-content-end-desktop">
+                        <h6 class="text-muted"><span data-bind="text: genres"></span></h6>
+                    </div>
+                    <p class="line-clamp-search"><span data-bind="text: plot"></span></p>
+                </div>
+            </div>
+        </div>
+    </span>    
+</div>

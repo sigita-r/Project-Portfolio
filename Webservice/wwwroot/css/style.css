@@ -28,6 +28,13 @@
     overflow: hidden;
 }
 
+.line-clamp-search {
+    display: -webkit-box;
+    -webkit-line-clamp: 3;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+}
+
 @media (max-width: 1119.9px) {
     .line-clamp {
         -webkit-line-clamp: 4;
@@ -36,6 +43,9 @@
 
 @media (max-width: 915.9px) {
     .line-clamp {
+        -webkit-line-clamp: 3;
+    }
+    .line-clamp-search {
         -webkit-line-clamp: 3;
     }
 }
@@ -54,6 +64,9 @@
     }
     .justify-content-end-desktop {
         justify-content: end;
+    }
+    .line-clamp-search {
+        -webkit-line-clamp: 8;
     }
 }
 

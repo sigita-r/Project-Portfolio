@@ -10,7 +10,7 @@ using Rawdata_Porfolio_2.Entity_Framework;
 using System.Security.Cryptography;
 using System.Text;
 using Rawdata_Porfolio_2.Pages.Entity_Framework.Domain;
-using Rawdata_Porfolio_2.Entity_Framework.Domain;
+using Rawdata_Porfolio_2.Entity_Framework;
 
 
 namespace Rawdata_Porfolio_2

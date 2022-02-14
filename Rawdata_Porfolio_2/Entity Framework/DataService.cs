@@ -6,11 +6,11 @@ using System.Linq;
 //using System.Threading.Tasks;
 using Npgsql;
 using System.IO;
-using Rawdata_Porfolio_2.Pages.Entity_Framework;
+using Rawdata_Porfolio_2.Entity_Framework;
 
 //using System.Reflection;
 //using System.Text;
-using Rawdata_Porfolio_2.Entity_Framework.Domain;
+using Rawdata_Porfolio_2.Pages.Entity_Framework.Domain;
 using System.Security.Cryptography;
 
 namespace Rawdata_Porfolio_2.Entity_Framework   // There's a typo in "Portfolio" - is that an issue, or is that namespace referenced in other places under that name already, so should not be changed?
@@ -951,7 +951,6 @@ namespace Rawdata_Porfolio_2.Entity_Framework   // There's a typo in "Portfolio"
             {
                 Search_results row = new Search_results()
                 {
-                    User_Id = (int)reader["user_ID"],
                     Personality_ID = (int)reader["personality_ID"],
                     Character_Name = reader["personality_name"].ToString(),
                 };
@@ -963,7 +962,7 @@ namespace Rawdata_Porfolio_2.Entity_Framework   // There's a typo in "Portfolio"
 
         public List<Search_results> StringSearch(int? userId, string query)
         {
-            var cmd = new NpgsqlCommand("SELECT * FROM string_search(@UID, @QUERY);", connection.Connect());
+            var cmd = new NpgsqlCommand("SELECT * FROM title_search(@UID, @QUERY);", connection.Connect());
             if (userId.HasValue)
             {
                 cmd.Parameters.AddWithValue("UID", userId);
@@ -979,9 +978,18 @@ namespace Rawdata_Porfolio_2.Entity_Framework   // There's a typo in "Portfolio"
             {
                 Search_results row = new Search_results()
                 {
-                    User_Id = (int)reader["user_ID"],
-                    Title_ID = (long)reader["title_ID"],
-                    Title_Name = reader["title_name"].ToString(),
+                    Title_ID = (long)reader["ID"],
+                    Type = reader["type"].ToString(),
+                    Name = reader["name"].ToString(),
+                    IsAdult = (bool)reader["isadult"],
+                    Year_Start = Convert.IsDBNull(reader["year_start"]) ? null : (short?) reader["year_start"],
+                    Year_End = Convert.IsDBNull(reader["year_end"]) ? null : (short?) reader["year_end"],
+                    Runtime = Convert.IsDBNull(reader["runtime"]) ? null : (int?) reader["runtime"],
+                    Avg_Rating = Convert.IsDBNull(reader["avg_rating"]) ? null : (decimal?) reader["avg_rating"],
+                    Poster = reader["poster"].ToString(),
+                    Plot = reader["plot"].ToString(),
+                    Awards = reader["awards"].ToString(),
+                    Genres = reader["genres"].ToString()
                 };
                 result.Add(row);
             }
@@ -1010,9 +1018,8 @@ namespace Rawdata_Porfolio_2.Entity_Framework   // There's a typo in "Portfolio"
             {
                 Search_results row = new Search_results()
                 {
-                    User_Id = (int)reader["user_ID"],
                     Title_ID = (long)reader["title_ID"],
-                    Title_Name = reader["title_name"].ToString(),
+                    Name = reader["title_name"].ToString(),
                 };
                 result.Add(row);
             }
