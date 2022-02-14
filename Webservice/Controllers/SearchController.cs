@@ -31,11 +31,9 @@ namespace Webservice.Controllers
             return Ok(result);
         }
 
-        [HttpGet("titles/{userID}/{titleString}")]
+        [HttpGet("titles/{userID:int}/{titleString}")]
         public IActionResult GetTitlesFromSearchResults(int? userID, string titleString)
         {
-            Console.WriteLine(userID);
-            Console.WriteLine(titleString);
             var result = _dataService.StringSearch(userID, titleString);
 
             if (result == null)

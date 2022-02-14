@@ -100,7 +100,8 @@ define([], () => {
     };
     
     let performSearch = (query, callback) => {
-        fetch('api/Search/titles/' + query.userID + '/' + query.titleString)
+        console.log(query);
+        fetch('api/Search/titles/' + (query.userID + 0) + '/' + query.titleString)
             .then(response => response.json())
             .then(json => callback(json));
     };
